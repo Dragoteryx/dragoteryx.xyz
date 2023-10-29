@@ -48,6 +48,11 @@ jobs:
         run: npm run build-wasm
       - name: Build
         run: npm run build
+      - name: Create 404.html
+        uses: canastro/copy-file-action@master
+        with:
+          source: "dist/index.html"
+          target: "dist/404.html"
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
