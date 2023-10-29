@@ -1,0 +1,115 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  color: var(--text);
+  font-family: "Segoe UI";
+  font-size: 16px;
+
+  --white: #eef;
+  --gray: #ccd;
+  --green: hsl(90, 50%, 50%);
+  --red: hsl(0, 50%, 50%);
+  --blue: hsl(210, 50%, 50%);
+  --orange: hsl(20, 50%, 50%);
+  --light: hsl(270, 20%, 25%);
+  --medium: hsl(270, 20%, 18%);
+  --dark: hsl(270, 20%, 11%);
+
+  --background-center: var(--white);
+  --background-edges: var(--gray);
+  --text: var(--dark);
+  
+  &.dark {
+    --background-center: var(--medium);
+    --background-edges: var(--dark);
+    --text: var(--white);
+  }
+}
+
+ul, ol {
+  list-style: inside;
+}
+
+ul > li::marker {
+  content: "ඞ ";
+}
+
+hr {
+  border: 1px solid var(--dark);
+}
+
+.padded {
+  padding: 10px 20px;
+}
+
+.markdown-body {
+  @extend .column, .spaced, .padded;
+}
+
+.row {
+  display: flex;
+
+  > .large {
+    flex: 1;
+  }
+
+  &:not(.reversed) {
+    flex-direction: row;
+
+    &.spaced > :not(:last-child) {
+      margin-right: 10px;
+    }
+
+    &.separated > :not(:last-child) {
+      border-right: 1px solid var(--dark);
+    }
+  }
+
+  &.reversed {
+    flex-direction: row-reverse;
+
+    &.spaced > :not(:first-child) {
+      margin-right: 10px;
+    }
+
+    &.separated > :not(:first-child) {
+      border-right: 1px solid var(--dark);
+    }
+  }
+}
+
+.column {
+  display: flex;
+
+  > .large {
+    flex: 1;
+  }
+
+  &:not(.reversed) {
+    flex-direction: column;
+
+    &.spaced > :not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    &.separated > :not(:last-child) {
+      border-bottom: 1px solid var(--dark);
+    }
+  }
+
+  &.reversed {
+    flex-direction: column-reverse;
+
+    &.spaced > :not(:first-child) {
+      margin-bottom: 10px;
+    }
+
+    &.separated > :not(:first-child) {
+      border-bottom: 1px solid var(--dark);
+    }
+  }
+}

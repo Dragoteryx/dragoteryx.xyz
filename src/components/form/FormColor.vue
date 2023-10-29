@@ -1,0 +1,59 @@
+<template>
+	<div class="column spaced">
+		<FormRange v-model="color.h" :min="0" :max="360">H</FormRange>
+		<FormRange v-model="color.s" :min="0" :max="100">S</FormRange>
+		<FormRange v-model="color.l" :min="0" :max="100">L</FormRange>
+		<div class="row spaced">
+			<div ref="colorPreview" class="color-preview large"></div>
+			<FormButton v-if="reset != undefined" class="pi pi-replay" @click="resetColor"/>
+		</div>
+	</div>
+</template>
+
+<script setup lang="ts">
+	import FormButton from "./FormButton.vue";
+	import FormRange from "./FormRange.vue";
+	import { ref, watchEffect } from "vue";
+
+	const colorPreview = ref<HTMLDivElement>();
+	const props = defineProps<{
+		color: {
+			h: number;
+			s: number;
+			l: number;
+		};
+		reset?: {
+			h: number;
+			s: number;
+			l: number;
+		};
+	}>();
+
+	watchEffect(() => {
+		if (colorPreview.value) {
+			const h = props.color.h;
+			const s = `${props.color.s}%`;
+			const l = `${props.color.l}%`;
+			colorPreview.value.style.background = `hsl(${h}, ${s}, ${l})`;
+		}
+	});
+
+	function resetColor() {
+		if (props.reset) {
+			props.color.h = props.reset.h;
+			props.color.s = props.reset.s;
+			props.color.l = props.reset.l;
+		}
+	}
+</script>
+
+<style scoped lang="scss">
+	button {
+		font-size: 12px;
+		height: 24px;
+	}
+	.color-preview {
+		border: 1px solid var(--dark);
+		height: 24px;
+	}
+</style>

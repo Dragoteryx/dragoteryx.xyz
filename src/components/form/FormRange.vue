@@ -1,0 +1,58 @@
+<template>
+	<div class="row spaced">
+		<label><slot></slot></label>
+		<input class="large" type="range" v-model="value" :min="min" :max="max">
+		<FormButton v-if="reset != undefined" class="pi pi-replay" @click="value = reset"/>
+	</div>
+</template>
+
+<script setup lang="ts">
+	import FormButton from './FormButton.vue';
+
+  const value = defineModel<number>({ default: 0 });
+
+	defineProps<{
+		reset?: number,
+		min?: number,
+		max?: number,
+	}>();
+</script>
+
+<style scoped lang="scss">
+	button {
+		font-size: 12px;
+		height: 24px;
+	}
+
+	input[type=range] {
+		appearance: none;
+
+		height: 16px;
+		min-width: 100px;
+		position: relative;
+		top: 4px;
+
+		background-color: var(--medium);;
+		border: 1px solid var(--dark);
+
+		@mixin slider-thumb {
+			cursor: pointer;
+			appearance: none;
+
+			height: 20px;
+			width: 20px;
+
+			background-color: var(--light);
+			border: 1px solid var(--dark);
+			//border-radius: 100%;
+		}
+
+		&::-webkit-slider-thumb {
+			@include slider-thumb;
+		}
+
+		&::-moz-range-thumb {
+			@include slider-thumb;
+		}
+	}
+</style>
