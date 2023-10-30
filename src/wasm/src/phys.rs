@@ -159,7 +159,7 @@ impl Phys {
 		}
 
 		let area_size = self.entities.iter()
-			.map(|ent| (ent.size() + 1.0) as usize * 3)
+			.map(|ent| (ent.size() + 1.0) as usize * 2)
 			.max()
 			.unwrap_or_default();
 
