@@ -1,5 +1,5 @@
 <template>
-	<aside ref="aside" class="column spaced padded">
+	<aside ref="menu" class="column spaced padded">
 		<header class="row spaced">
 			<img src="@/assets/tako.png" alt="A Minecraft style Takodachi">
 			<div class="column spaced">
@@ -22,8 +22,8 @@
 		</div>
 		<hr>
 		<nav class="column spaced large">
-			<NavButton to="/" highlight="exact">Home</NavButton>
-			<NavButton to="/sandbox" highlight="partial">2D Sandbox</NavButton>
+			<NavButton text="Home" icon="pi-home" to="/" highlight="exact"/>
+			<NavButton text="2D Sandbox" icon="pi-box" to="/sandbox" highlight="partial"/>
 		</nav>
 		<hr>
 		<footer class="row">
@@ -42,15 +42,15 @@
 
 <script setup lang="ts">
 	import NavButton from "@/components/NavButton.vue";
-	import { useMiscStore } from "@/stores/misc";
 	import { vHover } from "@/directives/animations";
+	import { useDimensionsStore } from "@/stores/dimensions";
 	import { ref, watchEffect } from "vue";
-	
-	const aside = ref<HTMLDivElement>();
-	const miscStore = useMiscStore();
+
+	const menu = ref<HTMLElement>();
+	const dimensionsStore = useDimensionsStore();
 
 	watchEffect(() => {
-		miscStore.asideWidth = aside.value?.offsetWidth ?? Infinity;
+		dimensionsStore.asideMenuWidth = menu.value?.offsetWidth ?? 0
 	});
 </script>
 
@@ -60,6 +60,7 @@
   
     color: var(--white);
     background: var(--light);
+		border-left: 1px solid var(--dark);
 
 		display: flex;
 

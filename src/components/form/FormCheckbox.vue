@@ -1,8 +1,8 @@
 <template>
-	<div class="row spaced">
-		<label class="large"><slot></slot></label>
+	<label class="row spaced">
+		<span class="large"><slot></slot></span>
 		<input type="checkbox" class="green" v-model="value"/>
-	</div>
+	</label>
 </template>
 
 <script setup lang="ts">

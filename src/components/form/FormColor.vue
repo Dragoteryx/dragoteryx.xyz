@@ -4,8 +4,8 @@
 		<FormRange v-model="color.s" :min="0" :max="100">S</FormRange>
 		<FormRange v-model="color.l" :min="0" :max="100">L</FormRange>
 		<div class="row spaced">
-			<div ref="colorPreview" class="color-preview large"></div>
-			<FormButton v-if="reset != undefined" class="pi pi-replay" @click="resetColor"/>
+			<div ref="preview" class="color-preview large"></div>
+			<FormButton v-if="reset != undefined" icon="pi-replay" @click="resetColor"/>
 		</div>
 	</div>
 </template>
@@ -15,7 +15,7 @@
 	import FormRange from "./FormRange.vue";
 	import { ref, watchEffect } from "vue";
 
-	const colorPreview = ref<HTMLDivElement>();
+	const preview = ref<HTMLDivElement>();
 	const props = defineProps<{
 		color: {
 			h: number;
@@ -30,11 +30,11 @@
 	}>();
 
 	watchEffect(() => {
-		if (colorPreview.value) {
+		if (preview.value) {
 			const h = props.color.h;
 			const s = `${props.color.s}%`;
 			const l = `${props.color.l}%`;
-			colorPreview.value.style.background = `hsl(${h}, ${s}, ${l})`;
+			preview.value.style.background = `hsl(${h}, ${s}, ${l})`;
 		}
 	});
 

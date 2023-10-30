@@ -1,7 +1,7 @@
 <template>
-	<div class="row separated">
-		<SandboxCanvas />
-		<SandboxMenu />
+	<div id="sandbox" class="row separated">
+		<SandboxCanvas class="large"/>
+		<SandboxMenu/>
 	</div>
 </template>
 
@@ -21,3 +21,9 @@
 		sandboxStore.controls.pause();
 	});
 </script>
+
+<style scoped lang="scss">
+	#sandbox {
+		height: 100%;
+	}
+</style>

@@ -1,5 +1,5 @@
 <template>
-	<FormButton :class="{ highlight: shouldHighlight }" @click="click"><slot></slot></FormButton>
+	<FormButton :text="text" :icon="icon" :class="{ highlight: shouldHighlight }" @click="click"/>
 </template>
 
 <script setup lang="ts">
@@ -9,6 +9,8 @@
 
 	const props = defineProps<{
 		highlight?: "exact" | "partial";
+		text?: string;
+		icon?: string;
 		to: string;
 	}>();
 

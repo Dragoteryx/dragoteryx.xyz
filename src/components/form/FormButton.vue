@@ -1,9 +1,18 @@
 <template>
-	<button @click="emit('click')"><slot></slot></button>
+	<button class="row" @click="emit('click')">
+		<span v-if="icon" :class="{ pi: true, 'pi-spin': spin, [icon]: true }"></span>
+		<span v-if="text" class="large">{{ text }}</span>
+	</button>
 </template>
 
 <script setup lang="ts">
 	const emit = defineEmits<{click: []}>();
+	
+	defineProps<{
+		text?: string;
+		icon?: string;
+		spin?: boolean;
+	}>();
 </script>
 
 <style scoped lang="scss">;

@@ -1,14 +1,10 @@
 <template>
-	<div class="column spaced">
-		<FormButton class="green" @click="spawn(1)">Spawn 1</FormButton>
-		<FormButton class="green" @click="spawn(5)">Spawn 5</FormButton>
-		<FormButton class="green" @click="spawn(10)">Spawn 10</FormButton>
-		<FormButton class="green" @click="spawn(50)">Spawn 50</FormButton>
-		<FormButton class="green" @click="spawn(100)">Spawn 100</FormButton>
-		<FormButton class="green" @click="spawn(500)">Spawn 500</FormButton>
-		<FormButton class="green" @click="spawn(1000)">Spawn 1000</FormButton>
-		<FormButton class="red" @click="clear">Clear</FormButton>
-	</div>
+	<FormButton text="Spawn 10" icon="pi-plus" class="green" @click="spawn(10)"/>
+	<FormButton text="Spawn 50" icon="pi-plus" class="green" @click="spawn(50)"/>
+	<FormButton text="Spawn 100" icon="pi-plus" class="green" @click="spawn(100)"/>
+	<FormButton text="Spawn 500" icon="pi-plus" class="green" @click="spawn(500)"/>
+	<FormButton text="Spawn 1000" icon="pi-plus" class="green" @click="spawn(1000)"/>
+	<FormButton text="Clear" icon="pi-trash" class="red" @click="clear"/>
 </template>
 
 <script setup lang="ts">
@@ -20,8 +16,8 @@
 	function spawn(amount: number) {
 		for (let i = 0; i < amount; i++) {
 			sandboxStore.addCircle(
-				Math.random() * sandboxStore.width,
-				Math.random() * sandboxStore.height,
+				Math.random() * sandboxStore.worldWidth,
+				Math.random() * sandboxStore.worldHeight,
 			);
 		}
 	}

@@ -1,5 +1,5 @@
 <template>
-	<FormButton :class="dark ? 'pi pi-moon' : 'pi pi-sun'" @click="dark = !dark"/>
+	<FormButton :icon="dark ? 'pi-moon' : 'pi-sun'" @click="dark = !dark"/>
 </template>
 
 <script setup lang="ts">

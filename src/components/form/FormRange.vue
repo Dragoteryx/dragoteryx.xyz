@@ -1,9 +1,9 @@
 <template>
-	<div class="row spaced">
-		<label><slot></slot></label>
+	<label class="row spaced">
+		<span><slot></slot></span>
 		<input class="large" type="range" v-model="value" :min="min" :max="max">
-		<FormButton v-if="reset != undefined" class="pi pi-replay" @click="value = reset"/>
-	</div>
+		<FormButton v-if="reset != undefined" icon="pi-replay" @click="value = reset"/>
+	</label>
 </template>
 
 <script setup lang="ts">
