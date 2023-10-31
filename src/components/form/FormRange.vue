@@ -7,15 +7,26 @@
 </template>
 
 <script setup lang="ts">
-	import FormButton from './FormButton.vue';
+	import FormButton from "./FormButton.vue";
+	import { computed } from "vue";
 
-  const value = defineModel<number>({ default: 0 });
-
-	defineProps<{
+	const props = defineProps<{
+		modelValue?: number,
 		reset?: number,
 		min?: number,
 		max?: number,
 	}>();
+
+	const emits = defineEmits<{
+		"update:modelValue": [value: number]
+	}>();
+
+  const value = computed({
+		get: () => props.modelValue ?? 0,
+		set(value: string | number) {
+			emits("update:modelValue", Number(value));
+		}
+	});
 </script>
 
 <style scoped lang="scss">
@@ -44,7 +55,6 @@
 
 			background-color: var(--light);
 			border: 1px solid var(--dark);
-			//border-radius: 100%;
 		}
 
 		&::-webkit-slider-thumb {

@@ -24,6 +24,10 @@ export default createRouter({
           component: () => import("@/views/sandbox/SandboxSettings.vue")
         }
       ]
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: () => import("@/views/NotFound.md")
     }
   ]
 });

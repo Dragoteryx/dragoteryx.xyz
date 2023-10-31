@@ -17,10 +17,10 @@
 	const route = useRoute();
 	const router = useRouter();
 	const shouldHighlight = computed(() => {
-		if (props.highlight === "exact") {
-			return route.path === props.to;
-		} else if (props.highlight === "partial") {
-			return route.path.startsWith(props.to);
+		if (props.highlight == "exact") {
+			return route.path == props.to;
+		} else if (props.highlight == "partial") {
+			return route.path == props.to || route.path.startsWith(props.to + "/");
 		} else {
 			return false;
 		}

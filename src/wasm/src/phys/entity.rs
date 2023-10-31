@@ -14,7 +14,7 @@ impl Entity {
 		Self {
 			cur_pos: Cell::new(pos),
 			prev_pos: Cell::new(pos),
-			shape: Shape::Circle(radius),
+			shape: Shape::circle(radius),
 			color,
 		}
 	}
@@ -28,7 +28,7 @@ impl Entity {
 	}
 
 	pub fn size(&self) -> f32 {
-		let Shape::Circle(radius) = self.shape;
+		let Shape::Circle { radius } = self.shape;
 		radius * 2.0
 	}
 
@@ -38,7 +38,8 @@ impl Entity {
 	}
 
 	pub fn distance(&self, other: &Self) -> f32 {
-		let (Shape::Circle(radius1), Shape::Circle(radius2)) = (self.shape, other.shape);
+		let Shape::Circle { radius: radius1 } = self.shape;
+		let Shape::Circle { radius: radius2 } = other.shape;
 		self.pos().distance(other.pos()) - radius1 - radius2
 	}
 
@@ -57,7 +58,8 @@ impl Entity {
 	}
 
 	pub fn handle_collisions(&self, other: &Self) {
-		let (Shape::Circle(radius1), Shape::Circle(radius2)) = (self.shape, other.shape);
+		let Shape::Circle { radius: radius1 } = self.shape;
+		let Shape::Circle { radius: radius2 } = other.shape;
 		let axis = other.pos() - self.pos();
 		let dist = axis.length();
 		if dist < radius1 + radius2 {

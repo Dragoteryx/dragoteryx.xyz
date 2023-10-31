@@ -9,13 +9,17 @@ pub struct Color {
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub enum Shape {
-	Circle(f32),
+	Circle { radius: f32 },
 }
 
 impl Shape {
+	pub fn circle(radius: f32) -> Self {
+		Self::Circle { radius }
+	}
+
 	#[allow(unused_must_use)]
 	pub fn draw(&self, ctx: &CanvasRenderingContext2d, pos: Vector, color: Color) {
-		let Self::Circle(radius) = *self;
+		let Self::Circle { radius } = *self;
 		let Color { h, s, l } = color;
 		let Vector { x, y } = pos;
 		ctx.set_fill_style(&format!("hsl({h}, {s}%, {l}%)").into());
@@ -29,7 +33,7 @@ impl Shape {
 	}
 
 	pub fn bounds(&self) -> (Vector, Vector) {
-		let Self::Circle(radius) = *self;
+		let Self::Circle { radius } = *self;
 		let radius = Vector::splat(radius);
 		(-radius, radius)
 	}

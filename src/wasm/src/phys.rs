@@ -21,7 +21,7 @@ pub fn delta_time() -> f32 {
 #[wasm_bindgen]
 pub struct Phys {
 	entities: Vec<Entity>,
-	debug: bool,
+	console_logs: bool,
 	world_size: Vector,
 	gravity_strength: f32,
 	gravity_angle: f32,
@@ -40,7 +40,7 @@ impl Phys {
 	pub fn new() -> Self {
 		Self {
 			entities: Vec::new(),
-			debug: false,
+			console_logs: false,
 			world_size: Vector::ORIGIN,
 			gravity_strength: 981.0,
 			gravity_angle: 0.0,
@@ -53,13 +53,13 @@ impl Phys {
 	}
 
 	#[wasm_bindgen(getter)]
-	pub fn debug(&self) -> bool {
-		self.debug
+	pub fn console_logs(&self) -> bool {
+		self.console_logs
 	}
 
 	#[wasm_bindgen(setter)]
-	pub fn set_debug(&mut self, debug: bool) {
-		self.debug = debug;
+	pub fn set_console_logs(&mut self, console_logs: bool) {
+		self.console_logs = console_logs;
 	}
 	
 	#[wasm_bindgen(getter)]
@@ -133,7 +133,7 @@ impl Phys {
 	}
 
 	pub fn add_circle(&mut self, x: f32, y: f32, radius: f32) {
-		self.entities.push(Entity::circle(Vector { x, y }, radius, self.color));
+		self.entities.push(Entity::circle(Vector::new(x, y), radius, self.color));
 	}
 
 	pub fn clear_entities(&mut self) {
@@ -147,12 +147,12 @@ impl Phys {
 	}
 
 	pub fn tick(&self) {
-		if self.debug {
+		if self.console_logs {
 			console_log!("=== TICK ===");
 		}
 
 		if self.entities.is_empty() {
-			if self.debug {
+			if self.console_logs {
 				console_log!("No entities");
 			}
 			return;
@@ -163,7 +163,7 @@ impl Phys {
 			.max()
 			.unwrap_or_default();
 
-		if self.debug {
+		if self.console_logs {
 			console_log!("Area size: {}", area_size);
 		}
 
@@ -173,7 +173,7 @@ impl Phys {
 			areas.entry(area).or_default().push(ent);
 		}
 
-		if self.debug {
+		if self.console_logs {
 			console_log!("Areas: {}", areas.len());
 			console_log!("Average area population: {}", self.entities.len() / areas.len());
 		}
@@ -204,7 +204,7 @@ impl Phys {
 			}
 		}
 
-		if self.debug {
+		if self.console_logs {
 			console_log!("Possible collisions: {}", possible_collisions.len());
 		}
 

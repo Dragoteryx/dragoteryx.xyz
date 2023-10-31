@@ -1,17 +1,20 @@
 <template>
-	<canvas ref="canvas" @click="click" :width="sandboxStore.worldWidth" :height="sandboxStore.worldHeight"></canvas>
+	<canvas
+		ref="canvas"
+		:width="sandboxStore.worldWidth"
+		:height="sandboxStore.worldHeight"
+		@click="click"
+	></canvas>
 </template>
 
 <script setup lang="ts">
 	import { useDimensionsStore } from "@/stores/dimensions";
 	import { useSandboxStore } from "@/stores/sandbox";
-	import { onMounted, ref, watchEffect } from "vue";
+	import { ref, watchEffect } from "vue";
 
 	const dimensionsStore = useDimensionsStore();
 	const sandboxStore = useSandboxStore();
 	const canvas = ref<HTMLCanvasElement>();
-	const asideMenu = ref<HTMLDivElement>();
-	const menu = ref<HTMLDivElement>();
 
 	watchEffect(() => {
 		sandboxStore.worldHeight = Math.max(1, dimensionsStore.windowHeight);
@@ -23,11 +26,6 @@
 
 	watchEffect(() => {
 		sandboxStore.ctx = canvas.value?.getContext("2d") ?? undefined;
-	});
-
-	onMounted(() => {
-		asideMenu.value = document.querySelector("aside") as HTMLDivElement ?? undefined;
-		menu.value = document.querySelector("#sandbox-menu") as HTMLDivElement ?? undefined;
 	});
 
 	function click(event: MouseEvent) {

@@ -4,8 +4,8 @@ import { defineStore } from "pinia";
 import { Phys } from "@/wasm/pkg";
 
 export const useSandboxStore = defineStore("sandbox", () => {
-	const ctx = ref<CanvasRenderingContext2D>();
 	const controls = useIntervalFn(update, 1000/60);
+	const ctx = ref<CanvasRenderingContext2D>();
 	const worldHeight = ref(1);
 	const worldWidth = ref(1);
 	const entities = ref(0);
@@ -13,17 +13,17 @@ export const useSandboxStore = defineStore("sandbox", () => {
 
 	const paused = useLocalStorage("sandbox-paused", false);
 	const radius = useLocalStorage("sandbox-radius", 15);
-	const gravityStrenth = useLocalStorage("sandbox-gravity-strength", 981);
-	const gravityAngle = useLocalStorage("sandbox-gravity-angle", 0);
 	const clearCanvas = useLocalStorage("sandbox-clear-canvas", true);
 	const consoleLogs = useLocalStorage("sandbox-console-logs", false);
+	const gravityStrenth = useLocalStorage("sandbox-gravity-strength", 981);
+	const gravityAngle = useLocalStorage("sandbox-gravity-angle", 0);
 	const color = ref({
 		h: useLocalStorage("sandbox-color-h", 90),
 		s: useLocalStorage("sandbox-color-s", 50),
 		l: useLocalStorage("sandbox-color-l", 50)
 	});
 
-	watchEffect(() => phys.debug = consoleLogs.value);
+	watchEffect(() => phys.console_logs = consoleLogs.value);
 	watchEffect(() => phys.world_height = worldHeight.value);
 	watchEffect(() => phys.world_width = worldWidth.value);
 	watchEffect(() => phys.gravity_strength = gravityStrenth.value);
@@ -56,12 +56,13 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	}
 
 	return {
-		ctx, clearCanvas,
+		controls, ctx,
+		tick, paused,
+		color, radius,
 		worldHeight, worldWidth,
-		entities, tick, addCircle,
-		clearEntities,
-		controls, paused, color,
-		radius, gravityStrenth, gravityAngle,
-		consoleLogs,
+		gravityStrenth, gravityAngle,
+		clearCanvas, consoleLogs, 
+		entities, addCircle,
+		clearEntities, 
 	};
 });
