@@ -22,8 +22,8 @@
 		</div>
 		<hr>
 		<nav class="column spaced large">
-			<NavButton text="Home" icon="pi-home" to="/" highlight="exact"/>
-			<NavButton text="2D Sandbox" icon="pi-box" to="/sandbox" highlight="partial"/>
+			<NavButton icon="pi-home" to="/" highlight="exact">Home</NavButton>
+			<NavButton icon="pi-box" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
 		</nav>
 		<hr>
 		<footer class="row">

@@ -1,17 +1,16 @@
 <template>
 	<div ref="menu" id="sandbox-menu" class="column spaced padded">
 		<div class="row spaced reversed">
-			<FormButton text="Step" icon="pi-forward" class="large blue" @click="sandboxStore.tick"/>
+			<FormButton icon="pi-forward" class="large blue" @click="sandboxStore.tick">Step</FormButton>
 			<FormButton
-				:text="sandboxStore.paused ? 'Resume' : 'Pause'"
 				:icon="sandboxStore.paused ? 'pi-play' : 'pi-pause'"
 				:class="sandboxStore.paused ? 'large blue' : 'large orange'"
 				@click="sandboxStore.paused = !sandboxStore.paused"
-			/>
+			>{{ sandboxStore.paused ? "Resume" : "Pause" }}</FormButton>
 		</div>
 		<hr>
-		<NavButton text="Spawn entities" icon="pi-box" to="/sandbox" highlight="exact"/>
-		<NavButton text="Settings" icon="pi-cog" to="/sandbox/settings" highlight="exact"/>
+		<NavButton icon="pi-box" to="/sandbox" highlight="exact">Spawn entities</NavButton>
+		<NavButton icon="pi-cog" to="/sandbox/settings" highlight="exact">Settings</NavButton>
 		<hr>
 		<div class="column spaced large">
 			<RouterView/>
@@ -35,8 +34,8 @@
 	import { ref, watchEffect } from "vue";
 
 	const menu = ref<HTMLElement>();
-	const dimensionsStore = useDimensionsStore();
 	const sandboxStore = useSandboxStore();
+	const dimensionsStore = useDimensionsStore();
 
 	watchEffect(() => {
 		dimensionsStore.sandboxMenuWidth = menu.value?.offsetWidth ?? 0;

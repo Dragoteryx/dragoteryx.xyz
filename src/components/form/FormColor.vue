@@ -4,14 +4,14 @@
 		<FormRange v-model="color.s" :min="0" :max="100">S</FormRange>
 		<FormRange v-model="color.l" :min="0" :max="100">L</FormRange>
 		<div class="row spaced">
-			<div ref="preview" class="color-preview large"></div>
-			<FormButton v-if="reset != undefined" icon="pi-replay" @click="resetColor"/>
+			<div ref="preview" class="preview large"></div>
+			<ResetButton v-if="reset != undefined" @click="resetColor"/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-	import FormButton from "./FormButton.vue";
+	import ResetButton from "./ResetButton.vue";
 	import FormRange from "./FormRange.vue";
 	import { ref, watchEffect } from "vue";
 
@@ -48,11 +48,7 @@
 </script>
 
 <style scoped lang="scss">
-	button {
-		font-size: 12px;
-		height: 24px;
-	}
-	.color-preview {
+	.preview {
 		border: 1px solid var(--dark);
 		height: 24px;
 	}

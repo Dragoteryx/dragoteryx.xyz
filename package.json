@@ -8,8 +8,7 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
-    "build-wasm": "wasm-pack build src/wasm --target bundler",
-    "dev-wasm": "run-p build-wasm dev"
+    "build-wasm": "wasm-pack build src/wasm --target bundler"
   },
   "dependencies": {
     "@vueuse/core": "^10.2.1",

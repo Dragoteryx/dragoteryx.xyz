@@ -12,9 +12,9 @@
 	import { useSandboxStore } from "@/stores/sandbox";
 	import { ref, watchEffect } from "vue";
 
-	const dimensionsStore = useDimensionsStore();
-	const sandboxStore = useSandboxStore();
 	const canvas = ref<HTMLCanvasElement>();
+	const sandboxStore = useSandboxStore();
+	const dimensionsStore = useDimensionsStore();
 
 	watchEffect(() => {
 		sandboxStore.worldHeight = Math.max(1, dimensionsStore.windowHeight);

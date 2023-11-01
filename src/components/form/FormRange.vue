@@ -2,12 +2,12 @@
 	<label class="row spaced">
 		<span><slot></slot></span>
 		<input class="large" type="range" v-model="value" :min="min" :max="max">
-		<FormButton v-if="reset != undefined" icon="pi-replay" @click="value = reset"/>
+		<ResetButton v-if="reset != undefined" @click="value = reset"/>
 	</label>
 </template>
 
 <script setup lang="ts">
-	import FormButton from "./FormButton.vue";
+	import ResetButton from "./ResetButton.vue";
 	import { computed } from "vue";
 
 	const props = defineProps<{
@@ -30,11 +30,6 @@
 </script>
 
 <style scoped lang="scss">
-	button {
-		font-size: 12px;
-		height: 24px;
-	}
-
 	input[type=range] {
 		appearance: none;
 
