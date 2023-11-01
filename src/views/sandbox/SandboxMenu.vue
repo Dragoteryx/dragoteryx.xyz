@@ -1,12 +1,8 @@
 <template>
 	<div ref="menu" id="sandbox-menu" class="column spaced padded">
-		<div class="row spaced reversed">
+		<div class="row spaced">
+			<PauseButton class="large" v-model="sandboxStore.paused"/>
 			<FormButton icon="pi-forward" class="large blue" @click="sandboxStore.tick">Step</FormButton>
-			<FormButton
-				:icon="sandboxStore.paused ? 'pi-play' : 'pi-pause'"
-				:class="sandboxStore.paused ? 'large blue' : 'large orange'"
-				@click="sandboxStore.paused = !sandboxStore.paused"
-			>{{ sandboxStore.paused ? "Resume" : "Pause" }}</FormButton>
 		</div>
 		<hr>
 		<NavButton icon="pi-box" to="/sandbox" highlight="exact">Spawn entities</NavButton>
@@ -28,6 +24,7 @@
 	import FormColor from "@/components/form/FormColor.vue";
 	import FormRange from "@/components/form/FormRange.vue";
 	import NavButton from "@/components/NavButton.vue";
+	import PauseButton from "@/components/form/PauseButton.vue";
 	import { useDimensionsStore } from "@/stores/dimensions";
 	import { useSandboxStore } from "@/stores/sandbox";
 	import { RouterView } from "vue-router";
@@ -47,6 +44,6 @@
 		width: 250px;
 		color: var(--white);
 		background: var(--light);
-		border-right: 1px solid var(--dark);
+		border-left: 1px solid var(--dark);
 	}
 </style>

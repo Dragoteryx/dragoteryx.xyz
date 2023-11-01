@@ -8,11 +8,13 @@ export const useDimensionsStore = defineStore("dimensions", () => {
 	const windowHeight = computed(() => windowSize.height.value);
 	const asideMenuWidth = ref(0);
 	const sandboxMenuWidth = ref(0);
+	const gameOfLifeMenuHeight = ref(0);
 
 	return {
 		windowWidth,
 		windowHeight,
 		asideMenuWidth,
 		sandboxMenuWidth, 
+		gameOfLifeMenuHeight,
 	};
 });

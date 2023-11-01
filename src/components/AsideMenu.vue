@@ -24,6 +24,7 @@
 		<nav class="column spaced large">
 			<NavButton icon="pi-home" to="/" highlight="exact">Home</NavButton>
 			<NavButton icon="pi-box" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
+			<NavButton icon="pi-heart" to="/game-of-life" highlight="partial">Game of Life (WIP)</NavButton>
 		</nav>
 		<hr>
 		<footer class="row">
@@ -60,7 +61,7 @@
   
     color: var(--white);
     background: var(--light);
-		border-left: 1px solid var(--dark);
+		border-right: 1px solid var(--dark);
 
 		display: flex;
 

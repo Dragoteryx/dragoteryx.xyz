@@ -1,3 +1,4 @@
+#![allow(clippy::new_without_default)]
 #![deny(unsafe_code)]
 
 macro_rules! console_log {
@@ -17,5 +18,7 @@ macro_rules! console_error {
 		::web_sys::console::error_1(&format!($($t)*).into());
 	}
 }
+
+pub mod gameoflife;
 
 pub mod phys;

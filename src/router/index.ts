@@ -26,6 +26,11 @@ export default createRouter({
       ]
     },
     {
+      path: "/game-of-life",
+      name: "game-of-life",
+      component: () => import("@/views/GameOfLife.vue")
+    },
+    {
       path: '/:pathMatch(.*)*',
       component: () => import("@/views/NotFound.md")
     }

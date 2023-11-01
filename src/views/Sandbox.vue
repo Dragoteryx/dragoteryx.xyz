@@ -1,6 +1,6 @@
 <template>
-	<div id="sandbox" class="row separated">
-		<SandboxCanvas class="large"/>
+	<div id="sandbox" class="row">
+		<SandboxCanvas/>
 		<SandboxMenu/>
 	</div>
 </template>

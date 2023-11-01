@@ -19,6 +19,7 @@ pub fn delta_time() -> f32 {
 }
 
 #[wasm_bindgen]
+#[derive(Default, Debug, Clone, PartialEq)]
 pub struct Phys {
 	entities: Vec<Entity>,
 	console_logs: bool,
@@ -26,12 +27,6 @@ pub struct Phys {
 	gravity_strength: f32,
 	gravity_angle: f32,
 	color: Color,
-}
-
-impl Default for Phys {
-	fn default() -> Self {
-		Self::new()
-	}
 }
 
 #[wasm_bindgen]
