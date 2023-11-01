@@ -1,4 +1,4 @@
-import { useIntervalFn, useLocalStorage } from "@vueuse/core";
+import { useIntervalFn } from "@vueuse/core";
 import { GameOfLife } from "@/wasm/pkg/wasm";
 import { defineStore } from "pinia";
 import { ref } from "vue";
@@ -8,7 +8,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	const ctx = ref<CanvasRenderingContext2D>();
 	const game = new GameOfLife();
 
-	const paused = useLocalStorage("game-of-life-paused", true);
+	const paused = ref(true);
 	const cells = ref(0);
 
 	function birthCell(x: number, y: number) {
