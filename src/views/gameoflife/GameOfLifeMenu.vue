@@ -2,12 +2,14 @@
 	<div ref="menu" id="game-of-life-menu" class="row spaced padded">
 		<PauseButton class="large" v-model="gameOfLifeStore.paused"/>
 		<FormButton class="large" icon="pi-forward" @click="gameOfLifeStore.tick">Next step</FormButton>
-		<FormButton class="large red" icon="pi-trash" @click="gameOfLifeStore.clear">Remove {{ gameOfLifeStore.cells }} cells</FormButton>
+		<FormButton class="large red" icon="pi-trash" @click="gameOfLifeStore.clear">Kill {{ gameOfLifeStore.aliveCells }} alive cells</FormButton>
+		<FormRange class="large" :reset="10" :min="1" :max="60" v-model="gameOfLifeStore.speed">Speed</FormRange>
 	</div>
 </template>
 
 <script setup lang="ts">
 	import FormButton from "@/components/form/FormButton.vue";
+	import FormRange from "@/components/form/FormRange.vue";
 	import PauseButton from "@/components/form/PauseButton.vue";
 	import { useDimensionsStore } from "@/stores/dimensions";
 	import { useGameOfLifeStore } from "@/stores/gameoflife";

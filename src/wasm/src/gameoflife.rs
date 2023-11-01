@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::fmt::{self, Debug};
 use std::mem::replace;
 use wasm_bindgen::prelude::*;
 use web_sys::CanvasRenderingContext2d;
@@ -18,12 +19,13 @@ impl GameOfLife {
 		}
 	}
 
-	pub fn is_alive(&self, x: i32, y: i32) -> bool {
-		self.cells.get(&(x, y)).map_or(false, |cell| cell.is_alive())
-	}
-
+	#[wasm_bindgen(getter)]
 	pub fn alive_cells(&self) -> usize {
 		self.cells.values().filter(|cell| cell.is_alive()).count()
+	}
+
+	pub fn is_alive(&self, x: i32, y: i32) -> bool {
+		self.cells.get(&(x, y)).map_or(false, |cell| cell.is_alive())
 	}
 
 	pub fn birth_cell(&mut self, x: i32, y: i32) {
@@ -64,24 +66,28 @@ impl GameOfLife {
 			self.birth_cell(x, y);
 		}
 	}
-
+	
 	pub fn clear(&mut self) {
 		self.cells.clear();
 	}
 
-	pub fn draw(&self, ctx: &CanvasRenderingContext2d, color: &str) {
+	pub fn draw(&self, ctx: &CanvasRenderingContext2d, color: &str, size: f64, x_offset: f64, y_offset: f64) {
 		ctx.set_fill_style(&JsValue::from_str(color));
 		for (&(x, y), cell) in &self.cells {
 			if cell.is_alive() {
-				ctx.fill_rect((x * 10) as f64, (y * 10) as f64, 10.0, 10.0);
+				ctx.fill_rect(
+					(x as f64 * size) + x_offset,
+					(y as f64 * size) + y_offset,
+					size, size,
+				);
 			}
 		}
 	}
 
 	pub fn tick(&mut self) {
 		let cells_len = self.cells.len();
-		let previous_cells = replace(&mut self.cells, HashMap::with_capacity(cells_len));
-		for ((x, y), cell) in previous_cells {
+		let cells = replace(&mut self.cells, HashMap::with_capacity(cells_len));
+		for ((x, y), cell) in cells {
 			if cell.becomes_alive() {
 				self.birth_cell(x, y);
 			}
@@ -90,7 +96,7 @@ impl GameOfLife {
 }
 
 #[repr(transparent)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Cell {
 	data: u8,
 }
@@ -132,5 +138,14 @@ impl Cell {
 
 	pub fn remove_neighbor(&mut self) {
 		self.data -= 1;
+	}
+}
+
+impl Debug for Cell {
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		f.debug_struct("Cell")
+			.field("alive", &self.is_alive())
+			.field("neighbors", &self.neighbors())
+			.finish()
 	}
 }

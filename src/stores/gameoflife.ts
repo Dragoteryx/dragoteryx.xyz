@@ -1,46 +1,81 @@
-import { useIntervalFn } from "@vueuse/core";
+import { useIntervalFn, useLocalStorage } from "@vueuse/core";
 import { GameOfLife } from "@/wasm/pkg/wasm";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
-	const controls = useIntervalFn(update, 100);
+	const controls = useIntervalFn(update, 1000 / 60);
 	const ctx = ref<CanvasRenderingContext2D>();
 	const game = new GameOfLife();
-
+	const aliveCells = ref(0);
+	
+	const speed = useLocalStorage("game-of-life-speed", 10);
 	const paused = ref(true);
-	const cells = ref(0);
+	const xOffset = ref(0);
+	const yOffset = ref(0);
 
-	function birthCell(x: number, y: number) {
-		game.birth_cell(x, y);
-		cells.value = game.alive_cells();
-	}
-
-	function killCell(x: number, y: number) {
-		game.kill_cell(x, y);
-		cells.value = game.alive_cells();
-	}
+	const zoom = useLocalStorage("game-of-life-zoom", 4);
+	const size = computed(() => {
+		switch (zoom.value) {
+			case 1:
+				return 3;
+			case 2:
+				return 5;
+			case 3:
+				return 8;
+			case 4:
+				return 13;
+			case 5:
+				return 21;
+			case 6:
+				return 34;
+			case 7:
+				return 55;
+			case 8:
+				return 89;
+			default:
+				return NaN;
+		}
+	});
 
 	function toggleCell(x: number, y: number) {
-		game.toggle_cell(x, y);
-		cells.value = game.alive_cells();
+		const xCoord = Math.floor((x - xOffset.value) / size.value);
+		const yCoord = Math.floor((y - yOffset.value) / size.value);
+		game.toggle_cell(xCoord, yCoord);
+		aliveCells.value = game.alive_cells;
+	}
+
+	function zoomIn(x: number, y: number) {
+		zoom.value = Math.min(8, zoom.value + 1);
+	}
+
+	function zoomOut(x: number, y: number) {
+		zoom.value = Math.max(1, zoom.value - 1);
 	}
 
 	function clear() {
 		game.clear();
-		cells.value = game.alive_cells();
+		aliveCells.value = game.alive_cells;
 	}
 
 	function tick() {
 		game.tick();
-		cells.value = game.alive_cells();
+		aliveCells.value = game.alive_cells;
 	}
 
+	let lastTime = 0;
 	function update() {
-		if (!paused.value) tick();
+		if (!paused.value) {
+			const now = performance.now();
+			if (now - lastTime >= 1000 / speed.value) {
+				lastTime = now;
+				tick();
+			}
+		}
+
 		if (ctx.value) {
 			ctx.value.clearRect(0, 0, ctx.value.canvas.width, ctx.value.canvas.height);
-			game.draw(ctx.value, getComputedStyle(ctx.value.canvas).getPropertyValue("--text"));
+			game.draw(ctx.value, getComputedStyle(ctx.value.canvas).getPropertyValue("--text"), size.value, xOffset.value, yOffset.value);
 		}
 	}
 
@@ -49,10 +84,13 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		controls,
 		tick,
 		paused,
-		birthCell,
-		killCell,
 		toggleCell,
 		clear,
-		cells,
+		aliveCells,
+		xOffset,
+		yOffset,
+		zoomIn,
+		zoomOut,
+		speed,
 	};
 });

@@ -1,6 +1,6 @@
 <template>
 	<div id="game-of-life" class="column">
-		<GameOfLifeCanvas/>
+		<GameOfLifeCanvas class="large"/>
 		<GameOfLifeMenu/>
 	</div>
 </template>
@@ -21,9 +21,3 @@
 		gameOfLifeStore.controls.pause();
 	});
 </script>
-
-<style scoped lang="scss">
-	#game-of-life {
-		height: 100%;
-	}
-</style>

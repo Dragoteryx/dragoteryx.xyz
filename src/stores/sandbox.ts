@@ -1,9 +1,12 @@
 import { useIntervalFn, useLocalStorage } from "@vueuse/core";
+import { useDimensionsStore } from "./dimensions";
 import { ref, watchEffect } from "vue";
 import { defineStore } from "pinia";
 import { Phys } from "@/wasm/pkg";
 
 export const useSandboxStore = defineStore("sandbox", () => {
+	const dimensionsStore = useDimensionsStore();
+
 	const controls = useIntervalFn(update, 1000/60);
 	const ctx = ref<CanvasRenderingContext2D>();
 	const worldHeight = ref(1);
@@ -31,6 +34,14 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	watchEffect(() => phys.color_h = color.value.h);
 	watchEffect(() => phys.color_s = color.value.s);
 	watchEffect(() => phys.color_l = color.value.l);
+
+	watchEffect(() => {
+		worldHeight.value = Math.max(1, dimensionsStore.windowHeight);
+	});
+
+	watchEffect(() => {
+		worldWidth.value = Math.max(1, dimensionsStore.windowWidth - dimensionsStore.asideMenuWidth - dimensionsStore.sandboxMenuWidth);
+	});
 	
 	function update() {
 		if (!paused.value) tick();
