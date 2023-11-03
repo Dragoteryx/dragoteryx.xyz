@@ -1,9 +1,16 @@
 <template>
-	<canvas ref="canvas" :width="width" :height="height" v-mouse-interactions></canvas>
+	<canvas
+		ref="canvas"
+		:width="width"
+		:height="height"
+		@mouseup="mouseup"
+		@mousedown="mousedown"
+		@mousemove="mousemove"
+		@wheel.passive="wheel"
+	></canvas>
 </template>
 
 <script setup lang="ts">
-	import { useMouseInteractions } from "@/composables/mouse";
 	import { ref, watchEffect } from "vue";
 
 	defineProps<{
@@ -12,7 +19,6 @@
 	}>();
 
 	const canvas = ref<HTMLCanvasElement>();
-
 	const emit = defineEmits<{
 		ctx: [ctx?: CanvasRenderingContext2D];
 		click: [x: number, y: number];
@@ -20,15 +26,38 @@
 		scroll: [up: boolean, x: number, y: number];
 	}>();
 
-	const vMouseInteractions = useMouseInteractions({
-		scroll: (up, x, y) => emit("scroll", up, x, y),
-		click: (x, y) => emit("click", x, y),
-		drag: (x, y) => emit("drag", x, y),
-	});
-
 	watchEffect(() => {
 		emit("ctx", canvas.value?.getContext("2d") ?? undefined);
 	});
+
+	let mouseState: "up" | "down" | "drag" = "up";
+
+	function mousedown(event: MouseEvent){
+		mouseState = "down";
+	}
+
+	function mouseup(event: MouseEvent) {
+		if (mouseState == "down") {
+			const x = event.x - (canvas.value?.offsetLeft ?? 0);
+			const y = event.y - (canvas.value?.offsetTop ?? 0);
+			emit("click", x, y);
+		}
+		
+		mouseState = "up";
+	}
+
+	function mousemove(event: MouseEvent) {
+		if (mouseState == "down" || mouseState == "drag") {
+			emit("drag", event.movementX, event.movementY);
+			mouseState = "drag";
+		}
+	}
+
+	function wheel(event: WheelEvent) {
+		const x = event.x - (canvas.value?.offsetLeft ?? 0);
+		const y = event.y - (canvas.value?.offsetTop ?? 0);
+		emit("scroll", event.deltaY < 0, x, y);
+	}
 </script>
 
 <style scoped lang="scss">

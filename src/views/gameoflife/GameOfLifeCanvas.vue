@@ -14,23 +14,25 @@
 
 	const gameOfLifeStore = useGameOfLifeStore();
 	const dimensionsStore = useDimensionsStore();
-	const width = computed(() => dimensionsStore.windowWidth - dimensionsStore.asideMenuWidth);
-	const height = computed(() => dimensionsStore.windowHeight - dimensionsStore.gameOfLifeMenuHeight);
+	const height = computed(() => Math.max(1, dimensionsStore.windowHeight));
+	const width = computed(() => {
+		return Math.max(1, dimensionsStore.windowWidth - dimensionsStore.asideMenuWidth - dimensionsStore.gameOfLifeMenuWidth);
+	});
 
 	function click(x: number, y: number) {
 		gameOfLifeStore.toggleCell(x, y);
 	}
-
+	
 	function drag(x: number, y: number) {
-		gameOfLifeStore.xOffset += x;
-		gameOfLifeStore.yOffset += y;
+		gameOfLifeStore.pos.x -= x;
+		gameOfLifeStore.pos.y -= y;
 	}
 
 	function scroll(up: boolean, x: number, y: number) {
-		/*if (up) {
+		if (up) {
 			gameOfLifeStore.zoomIn(x, y);
 		} else {
 			gameOfLifeStore.zoomOut(x, y);
-		}*/
+		}
 	}
 </script>

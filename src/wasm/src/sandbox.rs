@@ -20,7 +20,7 @@ pub fn delta_time() -> f32 {
 
 #[wasm_bindgen]
 #[derive(Default, Debug, Clone, PartialEq)]
-pub struct Phys {
+pub struct Sandbox {
 	entities: Vec<Entity>,
 	console_logs: bool,
 	world_size: Vector,
@@ -30,7 +30,7 @@ pub struct Phys {
 }
 
 #[wasm_bindgen]
-impl Phys {
+impl Sandbox {
 	#[wasm_bindgen(constructor)]
 	pub fn new() -> Self {
 		Self {
