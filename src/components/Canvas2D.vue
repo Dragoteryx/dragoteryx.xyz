@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 	import { ref, watchEffect } from "vue";
+	import { useWindowScroll } from "@vueuse/core";
 
 	defineProps<{
 		width: number;
@@ -19,6 +20,7 @@
 	}>();
 
 	const canvas = ref<HTMLCanvasElement>();
+	const windowScroll = useWindowScroll();
 	const emit = defineEmits<{
 		ctx: [ctx?: CanvasRenderingContext2D];
 		click: [x: number, y: number];
@@ -38,8 +40,8 @@
 
 	function mouseup(event: MouseEvent) {
 		if (mouseState == "down") {
-			const x = event.x - (canvas.value?.offsetLeft ?? 0);
-			const y = event.y - (canvas.value?.offsetTop ?? 0);
+			const x = event.x - (canvas.value?.offsetLeft ?? 0) + windowScroll.x.value;
+			const y = event.y - (canvas.value?.offsetTop ?? 0) + windowScroll.y.value;
 			emit("click", x, y);
 		}
 		

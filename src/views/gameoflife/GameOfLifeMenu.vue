@@ -15,7 +15,7 @@
 <script setup lang="ts">
 	import FormButton from "@/components/form/FormButton.vue";
 	import FormRange from "@/components/form/FormRange.vue";
-	import PauseButton from "@/components/form/PauseButton.vue";
+	import PauseButton from "@/components/PauseButton.vue";
 	import { useDimensionsStore } from "@/stores/dimensions";
 	import { useGameOfLifeStore } from "@/stores/gameoflife";
 	import { ref, watchEffect } from "vue";

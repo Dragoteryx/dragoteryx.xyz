@@ -24,7 +24,7 @@
 	import FormColor from "@/components/form/FormColor.vue";
 	import FormRange from "@/components/form/FormRange.vue";
 	import NavButton from "@/components/NavButton.vue";
-	import PauseButton from "@/components/form/PauseButton.vue";
+	import PauseButton from "@/components/PauseButton.vue";
 	import { useDimensionsStore } from "@/stores/dimensions";
 	import { useSandboxStore } from "@/stores/sandbox";
 	import { RouterView } from "vue-router";
