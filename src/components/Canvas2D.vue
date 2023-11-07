@@ -1,36 +1,45 @@
 <template>
-	<canvas
-		ref="canvas"
-		:width="width"
-		:height="height"
-		@mouseup="mouseup"
-		@mousedown="mousedown"
-		@mousemove="mousemove"
-		@wheel.passive="wheel"
-	></canvas>
+	<div ref="parent">
+		<canvas
+			ref="canvas"
+			:width="size.width"
+			:height="size.height"
+			@mouseup="mouseup"
+			@mouseleave="mouseup"
+			@mousedown="mousedown"
+			@mousemove="mousemove"
+			@wheel.passive="wheel"
+		></canvas>
+	</div>
 </template>
 
 <script setup lang="ts">
-	import { ref, watchEffect } from "vue";
-	import { useWindowScroll } from "@vueuse/core";
+	import { useElementSize, useWindowScroll } from "@vueuse/core";
+	import { reactive, ref, watchEffect } from "vue";
 
-	defineProps<{
-		width: number;
-		height: number;
-	}>();
-
+	const parent = ref<HTMLDivElement>();
 	const canvas = ref<HTMLCanvasElement>();
 	const windowScroll = useWindowScroll();
+	const size = reactive(useElementSize(parent));
+
 	const emit = defineEmits<{
-		ctx: [ctx?: CanvasRenderingContext2D];
+		ready: [ctx: CanvasRenderingContext2D];
 		click: [x: number, y: number];
 		drag: [x: number, y: number];
 		scroll: [up: boolean, x: number, y: number];
+		resize: [width: number, height: number];
 	}>();
+	
+	watchEffect(() => {
+		const ctx = canvas.value?.getContext("2d");
+		if (ctx) emit("ready", ctx);
+	});
 
 	watchEffect(() => {
-		emit("ctx", canvas.value?.getContext("2d") ?? undefined);
+		emit("resize", size.width, size.height);
 	});
+
+	// mouse stuff
 
 	let mouseState: "up" | "down" | "drag" = "up";
 
@@ -63,6 +72,10 @@
 </script>
 
 <style scoped lang="scss">
+	div {
+		line-height: 0;
+	}
+
 	canvas {
 		cursor: pointer;
 	}

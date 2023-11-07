@@ -12,8 +12,8 @@
 	function spawn() {
 		for (let i = 0; i < props.amount; i++) {
 			sandboxStore.addCircle(
-				Math.random() * sandboxStore.worldWidth,
-				Math.random() * sandboxStore.worldHeight,
+				Math.random() * sandboxStore.width,
+				Math.random() * sandboxStore.height,
 			);
 		}
 	}

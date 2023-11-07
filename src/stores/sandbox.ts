@@ -1,18 +1,15 @@
 import { useIntervalFn, useLocalStorage } from "@vueuse/core";
-import { useDimensionsStore } from "./dimensions";
 import { reactive, ref, watchEffect } from "vue";
 import { defineStore } from "pinia";
 import { Sandbox } from "@/wasm/pkg";
 
 export const useSandboxStore = defineStore("sandbox", () => {
-	const dimensionsStore = useDimensionsStore();
-
 	const controls = useIntervalFn(update, 1000/60);
 	const ctx = ref<CanvasRenderingContext2D>();
 	const sandbox = new Sandbox();
-	const worldHeight = ref(1);
-	const worldWidth = ref(1);
 	const entities = ref(0);
+	const height = ref(0);
+	const width = ref(0);
 
 	const paused = ref(false);
 	const radius = useLocalStorage("sandbox-radius", 15);
@@ -27,27 +24,19 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	});
 
 	watchEffect(() => sandbox.console_logs = consoleLogs.value);
-	watchEffect(() => sandbox.world_height = worldHeight.value);
-	watchEffect(() => sandbox.world_width = worldWidth.value);
+	watchEffect(() => sandbox.world_height = height.value);
+	watchEffect(() => sandbox.world_width = width.value);
 	watchEffect(() => sandbox.gravity_strength = gravityStrenth.value);
 	watchEffect(() => sandbox.gravity_angle = gravityAngle.value);
 	watchEffect(() => sandbox.color_h = color.h);
 	watchEffect(() => sandbox.color_s = color.s);
 	watchEffect(() => sandbox.color_l = color.l);
-
-	watchEffect(() => {
-		worldHeight.value = Math.max(1, dimensionsStore.windowHeight);
-	});
-
-	watchEffect(() => {
-		worldWidth.value = Math.max(1, dimensionsStore.windowWidth - dimensionsStore.asideMenuWidth - dimensionsStore.sandboxMenuWidth);
-	});
 	
 	function update() {
 		if (!paused.value) tick();
 		if (ctx.value) {
 			if (clearCanvas.value)
-				ctx.value.clearRect(0, 0, worldWidth.value, worldHeight.value);
+				ctx.value.clearRect(0, 0, width.value, height.value);
 			sandbox.draw(ctx.value);
 		}
 	}
@@ -70,7 +59,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 		controls, ctx,
 		tick, paused,
 		color, radius,
-		worldHeight, worldWidth,
+		height, width,
 		gravityStrenth, gravityAngle,
 		clearCanvas, consoleLogs, 
 		entities, addCircle,

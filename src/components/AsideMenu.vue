@@ -1,5 +1,5 @@
 <template>
-	<aside ref="menu" class="column spaced padded">
+	<aside class="column spaced padded">
 		<header class="row spaced">
 			<img src="@/assets/tako.png" alt="A Minecraft style Takodachi">
 			<div class="column spaced">
@@ -44,15 +44,6 @@
 <script setup lang="ts">
 	import NavButton from "@/components/NavButton.vue";
 	import { vHover } from "@/directives/animations";
-	import { useDimensionsStore } from "@/stores/dimensions";
-	import { ref, watchEffect } from "vue";
-
-	const menu = ref<HTMLElement>();
-	const dimensionsStore = useDimensionsStore();
-
-	watchEffect(() => {
-		dimensionsStore.asideMenuWidth = menu.value?.offsetWidth ?? 0
-	});
 </script>
 
 <style scoped lang="scss">

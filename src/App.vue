@@ -1,7 +1,7 @@
 <template>
   <ThemeButton />
   <AsideMenu />
-  <main class="large">
+  <main class="large column">
     <RouterView />
   </main>
 </template>

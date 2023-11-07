@@ -1,5 +1,5 @@
 <template>
-	<div id="sandbox" class="row">
+	<div id="sandbox" class="large row">
 		<SandboxCanvas class="large"/>
 		<SandboxMenu/>
 	</div>

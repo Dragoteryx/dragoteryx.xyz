@@ -1,5 +1,5 @@
 <template>
-	<div ref="menu" id="sandbox-menu" class="column spaced padded">
+	<div id="sandbox-menu" class="column spaced padded">
 		<div class="row spaced">
 			<PauseButton class="large" v-model="sandboxStore.paused"/>
 			<FormButton icon="pi-forward" class="large blue" @click="sandboxStore.tick">Step</FormButton>
@@ -25,18 +25,10 @@
 	import FormRange from "@/components/form/FormRange.vue";
 	import NavButton from "@/components/NavButton.vue";
 	import PauseButton from "@/components/PauseButton.vue";
-	import { useDimensionsStore } from "@/stores/dimensions";
 	import { useSandboxStore } from "@/stores/sandbox";
 	import { RouterView } from "vue-router";
-	import { ref, watchEffect } from "vue";
 
-	const menu = ref<HTMLElement>();
 	const sandboxStore = useSandboxStore();
-	const dimensionsStore = useDimensionsStore();
-
-	watchEffect(() => {
-		dimensionsStore.sandboxMenuWidth = menu.value?.offsetWidth ?? 0;
-	});
 </script>
 
 <style scoped lang="scss">
