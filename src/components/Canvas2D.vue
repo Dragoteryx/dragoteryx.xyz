@@ -2,8 +2,6 @@
 	<div ref="parent">
 		<canvas
 			ref="canvas"
-			:width="size.width"
-			:height="size.height"
 			@mouseup="mouseup"
 			@mouseleave="mouseup"
 			@mousedown="mousedown"
@@ -14,13 +12,13 @@
 </template>
 
 <script setup lang="ts">
-	import { useElementSize, useWindowScroll } from "@vueuse/core";
-	import { reactive, ref, watchEffect } from "vue";
+	import { useWindowScroll, useWindowSize } from "@vueuse/core";
+	import { ref, watchEffect } from "vue";
 
 	const parent = ref<HTMLDivElement>();
 	const canvas = ref<HTMLCanvasElement>();
 	const windowScroll = useWindowScroll();
-	const size = reactive(useElementSize(parent));
+	const windowSize = useWindowSize();
 
 	const emit = defineEmits<{
 		ready: [ctx: CanvasRenderingContext2D];
@@ -36,7 +34,15 @@
 	});
 
 	watchEffect(() => {
-		emit("resize", size.width, size.height);
+		if (parent.value && canvas.value) {
+			const _height = windowSize.height.value;
+			const _width = windowSize.width.value;
+			canvas.value.width = 1;
+			canvas.value.height = 1;
+			canvas.value.width = parent.value.clientWidth;
+			canvas.value.height = parent.value.clientHeight;
+			emit("resize", canvas.value.width, canvas.value.height);
+		}
 	});
 
 	// mouse stuff
