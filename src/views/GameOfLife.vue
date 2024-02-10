@@ -1,5 +1,5 @@
 <template>
-	<div id="game-of-life" class="large row">
+	<div class="large row">
 		<GameOfLifeCanvas class="large"/>
 		<GameOfLifeMenu/>
 	</div>

@@ -1,7 +1,8 @@
 import { useIntervalFn, useLocalStorage } from "@vueuse/core";
+import { reactive, ref, watchEffect } from "vue";
+import { useFibonacci } from "@/composables/misc";
 import { GameOfLife } from "@/wasm/pkg/wasm";
 import { defineStore } from "pinia";
-import { computed, reactive, ref, watchEffect } from "vue";
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	const controls = useIntervalFn(update, 1000 / 60);
@@ -14,37 +15,20 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	
 	const speed = useLocalStorage("game-of-life-speed", 10);
 	const zoom = useLocalStorage("game-of-life-zoom", 10);
+	const aliveRangeStart = useLocalStorage("game-of-life-alive-range-start", 2);
+	const aliveRangeEnd = useLocalStorage("game-of-life-alive-range-end", 3);
+	const birthRangeStart = useLocalStorage("game-of-life-birth-range-start", 3);
+	const birthRangeEnd = useLocalStorage("game-of-life-birth-range-end", 3);
+	const size = useFibonacci(() => zoom.value + 1);
 	const pos = reactive({ x: 0, y: 0 });
-	const size = computed(() => {
-		switch (zoom.value) {
-			case 1:
-				return 1;
-			case 2:
-				return 2;
-			case 3:
-				return 3;
-			case 4:
-				return 5;
-			case 5:
-				return 8;
-			case 6:
-				return 13;
-			case 7:
-				return 21;
-			case 8:
-				return 34;
-			case 9:
-				return 55;
-			case 10:
-				return 89;
-			default:
-				return NaN;
-		}
-	});
 
 	watchEffect(() => game.pos_x = pos.x);
 	watchEffect(() => game.pos_y = pos.y);
 	watchEffect(() => game.size = size.value);
+	watchEffect(() => game.alive_range_start = aliveRangeStart.value);
+	watchEffect(() => game.alive_range_end = aliveRangeEnd.value);
+	watchEffect(() => game.birth_range_start = birthRangeStart.value);
+	watchEffect(() => game.birth_range_end = birthRangeEnd.value);
 
 	function toGameCoordinates(x: number, y: number) {
 		return {
@@ -116,5 +100,9 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		birthCell, killCell,
 		toggleCell, clear,
 		zoomIn, zoomOut,
+		aliveRangeStart,
+		aliveRangeEnd,
+		birthRangeStart,
+		birthRangeEnd,
 	};
 });

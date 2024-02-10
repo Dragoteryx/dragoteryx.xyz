@@ -7,11 +7,11 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	const controls = useIntervalFn(update, 1000/60);
 	const ctx = ref<CanvasRenderingContext2D>();
 	const sandbox = new Sandbox();
+	const paused = ref(false);
 	const entities = ref(0);
 	const height = ref(0);
 	const width = ref(0);
-
-	const paused = ref(false);
+	
 	const radius = useLocalStorage("sandbox-radius", 15);
 	const clearCanvas = useLocalStorage("sandbox-clear-canvas", true);
 	const consoleLogs = useLocalStorage("sandbox-console-logs", false);

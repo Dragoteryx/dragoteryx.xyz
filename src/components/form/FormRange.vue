@@ -8,56 +8,11 @@
 
 <script setup lang="ts">
 	import ResetButton from "./ResetButton.vue";
-	import { computed } from "vue";
 
-	const props = defineProps<{
-		modelValue?: number,
+	const value = defineModel<number>({ default: 0 });
+	defineProps<{
 		reset?: number,
-		min?: number,
-		max?: number,
+		min: number,
+		max: number,
 	}>();
-
-	const emits = defineEmits<{
-		"update:modelValue": [value: number]
-	}>();
-
-  const value = computed({
-		get: () => props.modelValue ?? 0,
-		set(value: string | number) {
-			emits("update:modelValue", Number(value));
-		}
-	});
 </script>
-
-<style scoped lang="scss">
-	input[type=range] {
-		appearance: none;
-
-		height: 16px;
-		min-width: 100px;
-		position: relative;
-		top: 4px;
-
-		background-color: var(--medium);;
-		border: 1px solid var(--dark);
-
-		@mixin slider-thumb {
-			cursor: pointer;
-			appearance: none;
-
-			height: 20px;
-			width: 20px;
-
-			background-color: var(--light);
-			border: 1px solid var(--dark);
-		}
-
-		&::-webkit-slider-thumb {
-			@include slider-thumb;
-		}
-
-		&::-moz-range-thumb {
-			@include slider-thumb;
-		}
-	}
-</style>

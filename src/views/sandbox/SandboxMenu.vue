@@ -1,9 +1,6 @@
 <template>
 	<div id="sandbox-menu" class="column spaced padded">
-		<div class="row spaced">
-			<PauseButton class="large" v-model="sandboxStore.paused"/>
-			<FormButton icon="pi-forward" class="large blue" @click="sandboxStore.tick">Step</FormButton>
-		</div>
+		<PauseMenu v-model="sandboxStore.paused" @tick="sandboxStore.tick"/>
 		<hr>
 		<NavButton icon="pi-box" to="/sandbox" highlight="exact">Spawn entities</NavButton>
 		<NavButton icon="pi-cog" to="/sandbox/settings" highlight="exact">Settings</NavButton>
@@ -20,11 +17,10 @@
 </template>
 
 <script setup lang="ts">
-	import FormButton from "@/components/form/FormButton.vue";
 	import FormColor from "@/components/form/FormColor.vue";
 	import FormRange from "@/components/form/FormRange.vue";
 	import NavButton from "@/components/NavButton.vue";
-	import PauseButton from "@/components/PauseButton.vue";
+	import PauseMenu from "@/components/PauseMenu.vue";
 	import { useSandboxStore } from "@/stores/sandbox";
 	import { RouterView } from "vue-router";
 

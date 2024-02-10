@@ -1,17 +1,12 @@
 <template>
 	<button class="row" @click="emit('click')">
 		<span v-if="icon" :class="{ pi: true, [icon]: true }"></span>
-		<span v-if="slots.default" class="large"><slot></slot></span>
+		<span class="large"><slot></slot></span>
 	</button>
 </template>
 
 <script setup lang="ts">
-	import { useSlots } from "vue";
-
-	const slots = useSlots();
-	const emit = defineEmits<{
-		click: [];
-	}>();
+	const emit = defineEmits<{click: []}>();
 	
 	defineProps<{
 		text?: string;
