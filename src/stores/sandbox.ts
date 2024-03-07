@@ -12,7 +12,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	const height = ref(0);
 	const width = ref(0);
 	
-	const radius = useLocalStorage("sandbox-radius", 15);
+	const radius = useLocalStorage("sandbox-radius", 13);
 	const clearCanvas = useLocalStorage("sandbox-clear-canvas", true);
 	const consoleLogs = useLocalStorage("sandbox-console-logs", false);
 	const gravityStrenth = useLocalStorage("sandbox-gravity-strength", 981);
