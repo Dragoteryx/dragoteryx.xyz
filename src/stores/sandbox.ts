@@ -10,11 +10,16 @@ export interface Gravity {
 	angle: number;
 }
 
+export interface Options {
+	clearCanvas: boolean;
+	consoleLogs: boolean;
+}
+
 export const useSandboxStore = defineStore("sandbox", () => {
 	const controls = useControls(paused => {
 		if (!paused) sandbox.tick();
 		if (ctx.value) {
-			if (clearCanvas.value)
+			if (options.clearCanvas)
 				ctx.value.clearRect(0, 0, width.value, height.value);
 			sandbox.draw(ctx.value);
 		}
@@ -25,9 +30,6 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	const entities = ref(0);
 	const height = ref(0);
 	const width = ref(0);
-	
-	const clearCanvas = useLocalStorage("sandbox-clear-canvas", true);
-	const consoleLogs = useLocalStorage("sandbox-console-logs", false);
 
 	const radius = useLocalStorage("sandbox-radius", 13);
 	const color: Color = reactive({
@@ -41,7 +43,12 @@ export const useSandboxStore = defineStore("sandbox", () => {
 		angle: useLocalStorage("sandbox-gravity-angle", 0)
 	});
 
-	watchEffect(() => sandbox.console_logs = consoleLogs.value);
+	const options: Options = reactive({
+		clearCanvas: useLocalStorage("sandbox-clear-canvas", true),
+		consoleLogs: useLocalStorage("sandbox-console-logs", false),
+	});
+
+	watchEffect(() => sandbox.console_logs = options.consoleLogs);
 	watchEffect(() => sandbox.world_height = height.value);
 	watchEffect(() => sandbox.world_width = width.value);
 	watchEffect(() => sandbox.gravity_strength = gravity.strength);
@@ -65,7 +72,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 		color, radius,
 		height, width,
 		gravity,
-		clearCanvas, consoleLogs, 
+		options,
 		entities, addCircle,
 		clearEntities, 
 	};

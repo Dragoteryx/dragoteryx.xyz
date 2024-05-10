@@ -4,8 +4,8 @@
 	<FormRange v-model="sandboxStore.gravity.angle" :min="-180" :max="180" :reset="0" right-to-left>Angle</FormRange>
 	<hr>
 	<span><b>Misc settings</b></span>
-	<FormCheckbox v-model="sandboxStore.clearCanvas">Clear previous frame</FormCheckbox>
-	<FormCheckbox v-model="sandboxStore.consoleLogs">Console logs</FormCheckbox>
+	<FormCheckbox v-model="sandboxStore.options.clearCanvas">Clear previous frame</FormCheckbox>
+	<FormCheckbox v-model="sandboxStore.options.consoleLogs">Console logs</FormCheckbox>
 </template>
 
 <script setup lang="ts">

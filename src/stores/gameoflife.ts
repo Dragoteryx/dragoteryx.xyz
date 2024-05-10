@@ -1,6 +1,6 @@
-import { useIntervalFn, useLocalStorage } from "@vueuse/core";
-import { reactive, ref, watchEffect } from "vue";
 import { useControls, useFibonacci } from "@/composables/misc";
+import { useLocalStorage } from "@vueuse/core";
+import { reactive, ref, watchEffect } from "vue";
 import { GameOfLife } from "@/wasm/pkg/wasm";
 import { defineStore } from "pinia";
 
