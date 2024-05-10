@@ -35,8 +35,8 @@
 
 	watchEffect(() => {
 		if (parent.value && canvas.value) {
-			const _height = windowSize.height.value;
-			const _width = windowSize.width.value;
+			windowSize.height.value;
+			windowSize.width.value;
 			canvas.value.width = 1;
 			canvas.value.height = 1;
 			canvas.value.width = parent.value.clientWidth;
@@ -49,7 +49,7 @@
 
 	let mouseState: "up" | "down" | "drag" = "up";
 
-	function mousedown(event: MouseEvent){
+	function mousedown(){
 		mouseState = "down";
 	}
 
@@ -65,7 +65,7 @@
 
 	function mousemove(event: MouseEvent) {
 		if (mouseState == "down" || mouseState == "drag") {
-			emit("drag", event.movementX, event.movementY);
+			emit("drag", -event.movementX, -event.movementY);
 			mouseState = "drag";
 		}
 	}

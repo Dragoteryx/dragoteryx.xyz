@@ -1,6 +1,6 @@
 <template>
 	<div id="game-of-life-menu" class="column spaced padded">
-		<PauseMenu v-model="gameOfLifeStore.paused" @tick="gameOfLifeStore.tick"/>
+		<PauseMenu v-model="gameOfLifeStore.controls.paused" @tick="gameOfLifeStore.controls.tick"/>
 		<hr>
 		<FormButton class="red" icon="pi-trash" @click="gameOfLifeStore.clear">Kill {{ gameOfLifeStore.aliveCells }} alive cells</FormButton>
 		<hr>

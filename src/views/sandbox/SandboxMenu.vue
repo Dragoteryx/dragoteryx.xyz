@@ -1,6 +1,6 @@
 <template>
 	<div id="sandbox-menu" class="column spaced padded">
-		<PauseMenu v-model="sandboxStore.paused" @tick="sandboxStore.tick"/>
+		<PauseMenu v-model="sandboxStore.controls.paused" @tick="sandboxStore.controls.tick"/>
 		<hr>
 		<NavButton icon="pi-box" to="/sandbox" highlight="exact">Spawn entities</NavButton>
 		<NavButton icon="pi-cog" to="/sandbox/settings" highlight="exact">Settings</NavButton>

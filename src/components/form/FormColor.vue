@@ -15,18 +15,16 @@
 	import FormRange from "./FormRange.vue";
 	import { ref, watchEffect } from "vue";
 
+	export interface Color {
+		h: number;
+		s: number;
+		l: number;
+	}
+
 	const preview = ref<HTMLDivElement>();
 	const props = defineProps<{
-		color: {
-			h: number;
-			s: number;
-			l: number;
-		};
-		reset?: {
-			h: number;
-			s: number;
-			l: number;
-		};
+		color: Color;
+		reset?: Color;
 	}>();
 
 	watchEffect(() => {

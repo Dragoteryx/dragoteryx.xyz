@@ -14,10 +14,10 @@
 	const gameOfLifeStore = useGameOfLifeStore();
 
 	onMounted(() => {
-		gameOfLifeStore.controls.resume();
+		gameOfLifeStore.controls.active = true;
 	});
 
 	onUnmounted(() => {
-		gameOfLifeStore.controls.pause();
+		gameOfLifeStore.controls.active = false;
 	});
 </script>

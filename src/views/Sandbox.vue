@@ -14,10 +14,10 @@
 	const sandboxStore = useSandboxStore();
 
 	onMounted(() => {
-		sandboxStore.controls.resume();
+		sandboxStore.controls.active = true;
 	});
 
 	onUnmounted(() => {
-		sandboxStore.controls.pause();
+		sandboxStore.controls.active = false;
 	});
 </script>
