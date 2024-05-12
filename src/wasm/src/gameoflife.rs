@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 use std::fmt::{self, Debug};
 use std::mem::replace;
-use std::ops::RangeInclusive;
 use wasm_bindgen::prelude::*;
 use web_sys::CanvasRenderingContext2d;
 
@@ -9,8 +8,6 @@ use web_sys::CanvasRenderingContext2d;
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GameOfLife {
 	cells: HashMap<(i32, i32), Cell>,
-	alive_range: RangeInclusive<u8>,
-	birth_range: RangeInclusive<u8>,
 }
 
 #[wasm_bindgen]
@@ -19,49 +16,7 @@ impl GameOfLife {
 	pub fn new() -> Self {
 		Self {
 			cells: HashMap::new(),
-			alive_range: 2..=3,
-			birth_range: 3..=3,
 		}
-	}
-
-	#[wasm_bindgen(getter)]
-	pub fn alive_range_start(&self) -> u8 {
-		*self.alive_range.start()
-	}
-
-	#[wasm_bindgen(setter)]
-	pub fn set_alive_range_start(&mut self, start: u8) {
-		self.alive_range = start..=*self.alive_range.end();
-	}
-
-	#[wasm_bindgen(getter)]
-	pub fn alive_range_end(&self) -> u8 {
-		*self.alive_range.end()
-	}
-
-	#[wasm_bindgen(setter)]
-	pub fn set_alive_range_end(&mut self, end: u8) {
-		self.alive_range = *self.alive_range.start()..=end;
-	}
-
-	#[wasm_bindgen(getter)]
-	pub fn birth_range_start(&self) -> u8 {
-		*self.birth_range.start()
-	}
-
-	#[wasm_bindgen(setter)]
-	pub fn set_birth_range_start(&mut self, start: u8) {
-		self.birth_range = start..=*self.birth_range.end();
-	}
-
-	#[wasm_bindgen(getter)]
-	pub fn birth_range_end(&self) -> u8 {
-		*self.birth_range.end()
-	}
-
-	#[wasm_bindgen(setter)]
-	pub fn set_birth_range_end(&mut self, end: u8) {
-		self.birth_range = *self.birth_range.start()..=end;
 	}
 
 	pub fn is_alive(&self, x: i32, y: i32) -> bool {
@@ -126,7 +81,7 @@ impl GameOfLife {
 		let cells_len = self.cells.len();
 		let cells = replace(&mut self.cells, HashMap::with_capacity(cells_len));
 		for ((x, y), cell) in cells {
-			if cell.becomes_alive(self) {
+			if cell.becomes_alive() {
 				self.birth_cell(x, y);
 				alive += 1;
 			}
@@ -174,11 +129,11 @@ impl Cell {
 		}
 	}
 
-	pub fn becomes_alive(&self, game: &GameOfLife) -> bool {
-		if self.is_alive() {
-			game.alive_range.contains(&self.neighbors())
-		} else {
-			game.birth_range.contains(&self.neighbors())
+	pub fn becomes_alive(&self) -> bool {
+		match self.neighbors() {
+			2 => self.is_alive(),
+			3 => true,
+			_ => false,
 		}
 	}
 

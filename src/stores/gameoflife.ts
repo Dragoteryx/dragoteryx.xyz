@@ -1,13 +1,8 @@
 import { useControls, useFibonacci } from "@/composables/misc";
 import { useLocalStorage } from "@vueuse/core";
-import { reactive, ref, watchEffect } from "vue";
+import { reactive, ref } from "vue";
 import { GameOfLife } from "@/wasm/pkg/wasm";
 import { defineStore } from "pinia";
-
-export interface Range {
-	start: number;
-	end: number;
-}
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	let lastTime = 0;
@@ -36,21 +31,6 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	const zoom = useLocalStorage("game-of-life-zoom", 10);
 	const size = useFibonacci(() => zoom.value + 1);
 	const pos = reactive({ x: 0, y: 0 });
-
-	const aliveRange: Range = reactive({
-		start: useLocalStorage("game-of-life-alive-range-start", 2),
-		end: useLocalStorage("game-of-life-alive-range-end", 3),
-	});
-
-	const birthRange: Range = reactive({
-		start: useLocalStorage("game-of-life-birth-range-start", 3),
-		end: useLocalStorage("game-of-life-birth-range-end", 3),
-	});
-
-	watchEffect(() => game.alive_range_start = aliveRange.start);
-	watchEffect(() => game.alive_range_end = aliveRange.end);
-	watchEffect(() => game.birth_range_start = birthRange.start);
-	watchEffect(() => game.birth_range_end = birthRange.end);
 
 	function toGameCoordinates(mouseX: number, mouseY: number) {
 		return {
@@ -102,7 +82,5 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		birthCell, killCell,
 		toggleCell, clear,
 		zoomIn, zoomOut,
-		aliveRange,
-		birthRange,
 	};
 });
