@@ -22,7 +22,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 
 		if (ctx.value) {
 			ctx.value.clearRect(0, 0, ctx.value.canvas.width, ctx.value.canvas.height);
-			game.draw(ctx.value, getComputedStyle(ctx.value.canvas).getPropertyValue("--text"), pos.x, pos.y, size.value);
+			game.draw(ctx.value, getComputedStyle(ctx.value.canvas).getPropertyValue("--text"), Math.floor(pos.x), Math.floor(pos.y), size.value);
 		}
 	});
 
@@ -54,8 +54,8 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 
 	function toGameCoordinates(mouseX: number, mouseY: number) {
 		return {
-			x: Math.floor((mouseX + pos.x) / size.value),
-			y: Math.floor((mouseY + pos.y) / size.value),
+			x: (mouseX + pos.x) / size.value,
+			y: (mouseY + pos.y) / size.value,
 		};
 	}
 
