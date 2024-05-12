@@ -22,7 +22,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 
 		if (ctx.value) {
 			ctx.value.clearRect(0, 0, ctx.value.canvas.width, ctx.value.canvas.height);
-			game.draw(ctx.value, getComputedStyle(ctx.value.canvas).getPropertyValue("--text"));
+			game.draw(ctx.value, getComputedStyle(ctx.value.canvas).getPropertyValue("--text"), pos.x, pos.y, size.value);
 		}
 	});
 
@@ -47,50 +47,48 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		end: useLocalStorage("game-of-life-birth-range-end", 3),
 	});
 
-	watchEffect(() => game.pos_x = pos.x);
-	watchEffect(() => game.pos_y = pos.y);
-	watchEffect(() => game.size = size.value);
 	watchEffect(() => game.alive_range_start = aliveRange.start);
 	watchEffect(() => game.alive_range_end = aliveRange.end);
 	watchEffect(() => game.birth_range_start = birthRange.start);
 	watchEffect(() => game.birth_range_end = birthRange.end);
 
-	function toGameCoordinates(x: number, y: number) {
+	function toGameCoordinates(mouseX: number, mouseY: number) {
 		return {
-			x: Math.floor((x + pos.x) / size.value),
-			y: Math.floor((y + pos.y) / size.value),
+			x: Math.floor((mouseX + pos.x) / size.value),
+			y: Math.floor((mouseY + pos.y) / size.value),
 		};
 	}
 
-	function toggleCell(x: number, y: number) {
-		const coords = toGameCoordinates(x, y);
-		if (game.toggle_cell(coords.x, coords.y)) {
-			aliveCells.value++;
-		} else {
-			aliveCells.value--;
-		}
+	function toggleCell(mouseX: number, mouseY: number) {
+		const { x, y } = toGameCoordinates(mouseX, mouseY);
+		if (game.toggle_cell(x, y)) aliveCells.value++;
+		else aliveCells.value--;
 	}
 
-	function birthCell(x: number, y: number) {
-		const coords = toGameCoordinates(x, y);
-		if (game.birth_cell(coords.x, coords.y)) {
-			aliveCells.value++;
-		}
+	function birthCell(mouseX: number, mouseY: number) {
+		const { x, y } = toGameCoordinates(mouseX, mouseY);
+		if (game.birth_cell(x, y)) aliveCells.value++;
 	}
 
-	function killCell(x: number, y: number) {
-		const coords = toGameCoordinates(x, y);
-		if (game.kill_cell(coords.x, coords.y)) {
-			aliveCells.value--;
-		}
+	function killCell(mouseX: number, mouseY: number) {
+		const { x, y } = toGameCoordinates(mouseX, mouseY);
+		if (game.kill_cell(x, y)) aliveCells.value--;
 	}
 
-	function zoomIn(x: number, y: number) {
+	function zoomIn(mouseX: number, mouseY: number) {
+		const before = toGameCoordinates(mouseX, mouseY);
 		zoom.value = Math.min(10, zoom.value + 1);
+		const after = toGameCoordinates(mouseX, mouseY);
+		pos.x += (before.x - after.x) * size.value;
+		pos.y += (before.y - after.y) * size.value;
 	}
 
-	function zoomOut(x: number, y: number) {
+	function zoomOut(mouseX: number, mouseY: number) {
+		const before = toGameCoordinates(mouseX, mouseY);
 		zoom.value = Math.max(1, zoom.value - 1);
+		const after = toGameCoordinates(mouseX, mouseY);
+		pos.x += (before.x - after.x) * size.value;
+		pos.y += (before.y - after.y) * size.value;
 	}
 
 	function clear() {

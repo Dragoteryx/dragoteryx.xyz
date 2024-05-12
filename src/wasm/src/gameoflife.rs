@@ -6,14 +6,11 @@ use wasm_bindgen::prelude::*;
 use web_sys::CanvasRenderingContext2d;
 
 #[wasm_bindgen]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GameOfLife {
 	cells: HashMap<(i32, i32), Cell>,
 	alive_range: RangeInclusive<u8>,
 	birth_range: RangeInclusive<u8>,
-	pos_x: f64,
-	pos_y: f64,
-	size: f64,
 }
 
 #[wasm_bindgen]
@@ -24,9 +21,6 @@ impl GameOfLife {
 			cells: HashMap::new(),
 			alive_range: 2..=3,
 			birth_range: 3..=3,
-			pos_x: 0.0,
-			pos_y: 0.0,
-			size: 0.0,
 		}
 	}
 
@@ -68,36 +62,6 @@ impl GameOfLife {
 	#[wasm_bindgen(setter)]
 	pub fn set_birth_range_end(&mut self, end: u8) {
 		self.birth_range = *self.birth_range.start()..=end;
-	}
-
-	#[wasm_bindgen(getter)]
-	pub fn pos_x(&self) -> f64 {
-		self.pos_x
-	}
-
-	#[wasm_bindgen(setter)]
-	pub fn set_pos_x(&mut self, pos_x: f64) {
-		self.pos_x = pos_x;
-	}
-
-	#[wasm_bindgen(getter)]
-	pub fn pos_y(&self) -> f64 {
-		self.pos_y
-	}
-
-	#[wasm_bindgen(setter)]
-	pub fn set_pos_y(&mut self, pos_y: f64) {
-		self.pos_y = pos_y;
-	}
-
-	#[wasm_bindgen(getter)]
-	pub fn size(&self) -> f64 {
-		self.size
-	}
-
-	#[wasm_bindgen(setter)]
-	pub fn set_size(&mut self, size: f64) {
-		self.size = size;
 	}
 
 	pub fn is_alive(&self, x: i32, y: i32) -> bool {
@@ -171,14 +135,14 @@ impl GameOfLife {
 		alive
 	}
 
-	pub fn draw(&self, ctx: CanvasRenderingContext2d, color: &str) {
+	pub fn draw(&self, ctx: &CanvasRenderingContext2d, color: &str, pos_x: f64, pos_y: f64, size: f64) {
 		ctx.set_fill_style(&JsValue::from_str(color));
 		for (&(x, y), cell) in &self.cells {
 			if cell.is_alive() {
 				ctx.fill_rect(
-					(x as f64 * self.size) - self.pos_x,
-					(y as f64 * self.size) - self.pos_y,
-					self.size, self.size,
+					(x as f64 * size) - pos_x,
+					(y as f64 * size) - pos_y,
+					size, size,
 				);
 			}
 		}
