@@ -1,6 +1,6 @@
 <template>
 	<div id="game-of-life-menu" class="column spaced padded">
-		<PauseMenu v-model="gameOfLifeStore.controls.paused" @tick="gameOfLifeStore.controls.tick"/>
+		<ControlsMenu :controls="gameOfLifeStore.controls"/>
 		<hr>
 		<FormButton class="red" icon="pi-trash" @click="gameOfLifeStore.clear">Kill {{ gameOfLifeStore.aliveCells }} alive cells</FormButton>
 		<hr>
@@ -12,7 +12,7 @@
 <script setup lang="ts">
 	import FormButton from "@/components/form/FormButton.vue";
 	import FormRange from "@/components/form/FormRange.vue";
-	import PauseMenu from "@/components/PauseMenu.vue";
+	import ControlsMenu from "@/components/ControlsMenu.vue";
 	import { useGameOfLifeStore } from "@/stores/gameoflife";
 
 	const gameOfLifeStore = useGameOfLifeStore();

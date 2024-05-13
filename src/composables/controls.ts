@@ -1,4 +1,4 @@
-import { computed, toValue, reactive, ref, type ComputedRef, type MaybeRefOrGetter, type WritableComputedRef } from "vue";
+import { computed, reactive, ref, type WritableComputedRef } from "vue";
 import { useIntervalFn } from "@vueuse/core";
 
 export interface Controls {
@@ -19,28 +19,12 @@ export function useActive(update: () => void): WritableComputedRef<boolean> {
 }
 
 export function useControls(update: (paused: boolean) => void): Controls {
+	const active = useActive(() => update(paused.value));
 	const paused = ref(false);
 	return reactive({
 		tick: () => update(false),
-		active: useActive(() => update(paused.value)),
+		active,
 		paused,
 	});
 }
 
-export function useFibonacci(n: MaybeRefOrGetter<number>): ComputedRef<number> {
-	return computed(() => {
-		const m = toValue(n);
-		if (m < 2) {
-			return m;
-		} else {
-			let a = 0;
-			let b = 1;
-			for (let i = 1; i < m; ++i) {
-				let c = a + b;
-				a = b;
-				b = c;
-			}
-			return b;
-		}
-	});
-}

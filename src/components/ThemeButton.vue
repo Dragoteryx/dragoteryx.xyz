@@ -3,8 +3,8 @@
 </template>
 
 <script setup lang="ts">
-	import { useDark } from "@vueuse/core";
 	import FormButton from "./form/FormButton.vue";
+	import { useDark } from "@vueuse/core";
 	
 	const dark = useDark();
 </script>

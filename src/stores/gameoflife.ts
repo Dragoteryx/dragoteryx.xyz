@@ -1,4 +1,5 @@
-import { useControls, useFibonacci } from "@/composables/misc";
+import { useControls } from "@/composables/controls";
+import { useFibonacci } from "@/composables/math";
 import { useLocalStorage } from "@vueuse/core";
 import { reactive, ref } from "vue";
 import { GameOfLife } from "@/wasm/pkg/wasm";
