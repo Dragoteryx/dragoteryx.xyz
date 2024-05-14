@@ -40,19 +40,27 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		};
 	}
 
-	function toggleCell(mouseX: number, mouseY: number) {
+	function toGameCoordinatesFloored(mouseX: number, mouseY: number) {
 		const { x, y } = toGameCoordinates(mouseX, mouseY);
+		return {
+			x: Math.floor(x),
+			y: Math.floor(y),
+		};
+	}
+
+	function toggleCell(mouseX: number, mouseY: number) {
+		const { x, y } = toGameCoordinatesFloored(mouseX, mouseY);
 		if (game.toggle_cell(x, y)) aliveCells.value++;
 		else aliveCells.value--;
 	}
 
 	function birthCell(mouseX: number, mouseY: number) {
-		const { x, y } = toGameCoordinates(mouseX, mouseY);
+		const { x, y } = toGameCoordinatesFloored(mouseX, mouseY);
 		if (game.birth_cell(x, y)) aliveCells.value++;
 	}
 
 	function killCell(mouseX: number, mouseY: number) {
-		const { x, y } = toGameCoordinates(mouseX, mouseY);
+		const { x, y } = toGameCoordinatesFloored(mouseX, mouseY);
 		if (game.kill_cell(x, y)) aliveCells.value--;
 	}
 
