@@ -31,6 +31,11 @@ export default createRouter({
       component: () => import("@/views/GameOfLife.vue")
     },
     {
+      path: "/boids",
+      name: "boids",
+      component: () => import("@/views/Boids.vue")
+    },
+    {
       path: '/:pathMatch(.*)*',
       component: () => import("@/views/NotFound.md")
     }

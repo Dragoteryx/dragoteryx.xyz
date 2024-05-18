@@ -24,7 +24,8 @@
 		<nav class="column spaced large">
 			<NavButton icon="pi-home" to="/" highlight="exact">Home</NavButton>
 			<NavButton icon="pi-box" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
-			<NavButton icon="pi-heart" to="/game-of-life" highlight="partial">Game of Life (WIP)</NavButton>
+			<NavButton icon="pi-heart" to="/game-of-life" highlight="partial">Game of Life</NavButton>
+			<NavButton v-if="DEV" icon="pi-code" to="/boids" highlight="partial">Boids</NavButton>
 		</nav>
 		<hr>
 		<footer class="row">
@@ -44,6 +45,8 @@
 <script setup lang="ts">
 	import NavButton from "@/components/NavButton.vue";
 	import { vHover } from "@/directives/animations";
+
+	const { DEV } = import.meta.env;
 </script>
 
 <style scoped lang="scss">

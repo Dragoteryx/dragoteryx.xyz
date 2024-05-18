@@ -25,7 +25,7 @@
 		click: [x: number, y: number];
 		drag: [x: number, y: number];
 		scroll: [up: boolean, x: number, y: number];
-		resize: [width: number, height: number];
+		resize: [w: number, h: number];
 	}>();
 	
 	watchEffect(() => {
