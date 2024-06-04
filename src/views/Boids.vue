@@ -1,6 +1,6 @@
 <template>
-	<CanvasMenu :controls="boidsStore.controls" @ready="ready" @resize="resize" @click="">
-		<span>Test</span>
+	<CanvasMenu :controls="boidsStore.controls" @ready="ready" @click="click" @resize="resize">
+
 	</CanvasMenu>
 </template>
 
@@ -12,6 +12,10 @@
 
 	function ready(ctx: CanvasRenderingContext2D) {
 		boidsStore.ctx = ctx;
+	}
+
+	function click(x: number, y: number) {
+		
 	}
 
 	function resize(width: number, height: number) {

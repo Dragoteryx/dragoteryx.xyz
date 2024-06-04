@@ -1,5 +1,5 @@
 <template>
-	<CanvasMenu :controls="sandboxStore.controls" @ready="ready" @resize="resize" @click="sandboxStore.addCircle">
+	<CanvasMenu :controls="sandboxStore.controls" @ready="ready" @click="click" @resize="resize">
 		<NavButton icon="pi-box" to="/sandbox" highlight="exact">Spawn entities</NavButton>
 		<NavButton icon="pi-cog" to="/sandbox/settings" highlight="exact">Settings</NavButton>
 		<hr>
@@ -26,6 +26,10 @@
 
 	function ready(ctx: CanvasRenderingContext2D) {
 		sandboxStore.ctx = ctx;
+	}
+
+	function click(x: number, y: number) {
+		sandboxStore.addCircle(x, y);
 	}
 
 	function resize(w: number, h: number) {

@@ -13,6 +13,7 @@
 	import { useSandboxStore } from "@/stores/sandbox";
 
 	const sandboxStore = useSandboxStore();
+	
 	function clear() {
 		sandboxStore.clearEntities();
 	}

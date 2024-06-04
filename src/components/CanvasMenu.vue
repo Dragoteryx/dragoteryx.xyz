@@ -4,7 +4,7 @@
 			@ready="ctx => emit('ready', ctx)"
 			@click="(x, y) => emit('click', x, y)"
 			@drag="(x, y) => emit('drag', x, y)"
-			@scroll="(x, y, up) => emit('scroll',x, y, up)"
+			@scroll="(x, y, up) => emit('scroll', x, y, up)"
 			@resize="(w, h) => emit('resize', w, h)"
 		/>
 		<div class="column spaced padded menu">

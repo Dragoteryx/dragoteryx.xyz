@@ -6,7 +6,7 @@ export default createRouter({
     {
       path: "/",
       name: "home",
-      component: () => import("@/views/Home.md")
+      component: () => import("@/views/markdown/Home.md")
     },
     {
       path: "/sandbox",
@@ -36,8 +36,8 @@ export default createRouter({
       component: () => import("@/views/Boids.vue")
     },
     {
-      path: '/:pathMatch(.*)*',
-      component: () => import("@/views/NotFound.md")
+      path: "/:path(.*)*",
+      component: () => import("@/views/markdown/NotFound.md")
     }
   ]
 });
