@@ -23,19 +23,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set up Node
-        uses: actions/setup-node@v3
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
         with:
-          node-version: 18
-          cache: 'npm'
+          deno-version: v2.x
       - name: Install dependencies
-        run: npm install
+        run: deno install
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - name: Build WASM
-        run: npm run build-wasm
+        run: deno run build-wasm
       - name: Build
-        run: npm run build
+        run: deno run build
       - name: Create 404.html
         run: cp ./dist/index.html ./dist/404.html
       - name: Setup Pages
