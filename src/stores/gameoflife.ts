@@ -1,6 +1,6 @@
+import { useCssVar, useLocalStorage } from "@vueuse/core";
 import { useControls } from "@/composables/controls";
 import { useFibonacci } from "@/composables/math";
-import { useLocalStorage } from "@vueuse/core";
 import { reactive, ref } from "vue";
 import { GameOfLife } from "@/wasm/pkg/wasm";
 import { defineStore } from "pinia";
@@ -18,7 +18,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 
 		if (ctx.value) {
 			ctx.value.clearRect(0, 0, ctx.value.canvas.width, ctx.value.canvas.height);
-			game.draw(ctx.value, getComputedStyle(ctx.value.canvas).getPropertyValue("--text"), Math.floor(pos.x), Math.floor(pos.y), size.value);
+			game.draw(ctx.value, useCssVar("--text").value ?? "", Math.floor(pos.x), Math.floor(pos.y), size.value);
 		}
 	});
 
