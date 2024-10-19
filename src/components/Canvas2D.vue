@@ -13,24 +13,26 @@
 
 <script setup lang="ts">
 	import { useWindowScroll, useWindowSize } from "@vueuse/core";
-	import { ref, watchEffect } from "vue";
+	import { useTemplateRef, watchEffect } from "vue";
 
-	const parent = ref<HTMLDivElement>();
-	const canvas = ref<HTMLCanvasElement>();
+	const parent = useTemplateRef("parent")
+	const canvas = useTemplateRef("canvas");
 	const windowScroll = useWindowScroll();
 	const windowSize = useWindowSize();
 
+	const width = defineModel("width", {default: 0});
+	const height = defineModel("height", {default: 0});
+	const context = defineModel<CanvasRenderingContext2D>("context");
+
 	const emit = defineEmits<{
-		ready: [ctx: CanvasRenderingContext2D];
+		scroll: [x: number, y: number, up: boolean];
 		click: [x: number, y: number];
 		drag: [x: number, y: number];
-		scroll: [up: boolean, x: number, y: number];
-		resize: [w: number, h: number];
 	}>();
 	
 	watchEffect(() => {
 		const ctx = canvas.value?.getContext("2d");
-		if (ctx) emit("ready", ctx);
+		context.value = ctx ?? undefined;
 	});
 
 	watchEffect(() => {
@@ -41,7 +43,8 @@
 			canvas.value.height = 1;
 			canvas.value.width = parent.value.clientWidth;
 			canvas.value.height = parent.value.clientHeight;
-			emit("resize", canvas.value.width, canvas.value.height);
+			height.value = canvas.value.height;
+			width.value = canvas.value.width;
 		}
 	});
 
@@ -73,7 +76,7 @@
 	function wheel(event: WheelEvent) {
 		const x = event.x - (canvas.value?.offsetLeft ?? 0);
 		const y = event.y - (canvas.value?.offsetTop ?? 0);
-		emit("scroll", event.deltaY < 0, x, y);
+		emit("scroll", x, y, event.deltaY < 0);
 	}
 </script>
 

@@ -1,5 +1,11 @@
 <template>
-	<CanvasMenu :controls="sandboxStore.controls" @ready="ready" @click="click" @resize="resize">
+	<CanvasMenu
+		:controls="sandboxStore.controls"
+		v-model:width="sandboxStore.width"
+		v-model:height="sandboxStore.height"
+		v-model:context="sandboxStore.ctx"
+		@click="sandboxStore.addCircle"
+	>
 		<NavButton icon="pi-box" to="/sandbox" highlight="exact">Spawn entities</NavButton>
 		<NavButton icon="pi-cog" to="/sandbox/settings" highlight="exact">Settings</NavButton>
 		<hr>
@@ -23,17 +29,4 @@
 	import { RouterView } from "vue-router";
 
 	const sandboxStore = useSandboxStore();
-
-	function ready(ctx: CanvasRenderingContext2D) {
-		sandboxStore.ctx = ctx;
-	}
-
-	function click(x: number, y: number) {
-		sandboxStore.addCircle(x, y);
-	}
-
-	function resize(w: number, h: number) {
-		sandboxStore.width = w;
-		sandboxStore.height = h;
-	}
 </script>

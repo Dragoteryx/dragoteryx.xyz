@@ -1,5 +1,10 @@
 <template>
-	<CanvasMenu :controls="boidsStore.controls" @ready="ready" @click="click" @resize="resize">
+	<CanvasMenu
+		:controls="boidsStore.controls"
+		v-model:width="boidsStore.width"
+		v-model:height="boidsStore.height"
+		v-model:context="boidsStore.ctx"
+	>
 
 	</CanvasMenu>
 </template>
@@ -9,17 +14,4 @@
 	import { useBoidsStore } from "@/stores/boids";
 
 	const boidsStore = useBoidsStore();
-
-	function ready(ctx: CanvasRenderingContext2D) {
-		boidsStore.ctx = ctx;
-	}
-
-	function click(x: number, y: number) {
-		
-	}
-
-	function resize(width: number, height: number) {
-		boidsStore.width = width;
-		boidsStore.height = height;
-	}
 </script>

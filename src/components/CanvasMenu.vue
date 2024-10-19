@@ -1,11 +1,12 @@
 <template>
 	<div class="large row">
 		<Canvas2D class="large"
-			@ready="ctx => emit('ready', ctx)"
+			v-model:width="width"
+			v-model:height="height"
+			v-model:context="context"
+			@scroll="(x, y, up) => emit('scroll', x, y, up)"
 			@click="(x, y) => emit('click', x, y)"
 			@drag="(x, y) => emit('drag', x, y)"
-			@scroll="(x, y, up) => emit('scroll', x, y, up)"
-			@resize="(w, h) => emit('resize', w, h)"
 		/>
 		<div class="column spaced padded menu">
 			<ControlsMenu :controls="props.controls"/>
@@ -21,16 +22,18 @@
 	import type { Controls } from "@/composables/controls";
 	import { onMounted, onUnmounted } from "vue";
 
+	const width = defineModel("width", {default: 0});
+	const height = defineModel("height", {default: 0});
+	const context = defineModel<CanvasRenderingContext2D>("context");
+
 	const props = defineProps<{
 		controls: Controls;
 	}>();
 
 	const emit = defineEmits<{
-		ready: [ctx: CanvasRenderingContext2D];
+		scroll: [x: number, y: number, up: boolean];
 		click: [x: number, y: number];
 		drag: [x: number, y: number];
-		scroll: [up: boolean, x: number, y: number];
-		resize: [w: number, h: number];
 	}>();
 
 	onMounted(() => {
