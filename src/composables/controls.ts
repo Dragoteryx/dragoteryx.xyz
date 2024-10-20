@@ -8,13 +8,13 @@ export interface Controls {
 }
 
 export function useActive(update: () => void): WritableComputedRef<boolean> {
-	const controls = useIntervalFn(update, 1000/60);
+	const controls = useIntervalFn(update, 1000 / 60);
 	return computed({
 		get: () => controls.isActive.value,
 		set(value) {
 			if (value) controls.resume();
 			else controls.pause();
-		}
+		},
 	});
 }
 
@@ -27,4 +27,3 @@ export function useControls(update: (paused: boolean) => void): Controls {
 		paused,
 	});
 }
-

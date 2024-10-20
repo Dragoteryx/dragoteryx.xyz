@@ -1,7 +1,7 @@
 <template>
 	<label class="row spaced">
 		<span><slot></slot></span>
-		<input class="large" type="range" v-model="value" :min="min" :max="max" :dir="rightToLeft ? 'rtl' : 'ltr'">
+		<input class="large" type="range" v-model="value" :min="min" :max="max" :dir="dir">
 		<ResetButton v-if="reset != undefined" @click="value = reset ?? 0"/>
 	</label>
 </template>
@@ -9,9 +9,9 @@
 <script setup lang="ts">
 	import ResetButton from "./ResetButton.vue";
 
-	const value = defineModel<number>({ default: 0 });
+	const value = defineModel({default: 0});
 	defineProps<{
-		rightToLeft?: boolean,
+		dir?: 'ltr' | 'rtl',
 		reset?: number,
 		min: number,
 		max: number,

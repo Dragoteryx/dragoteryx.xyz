@@ -1,14 +1,14 @@
 @mixin colored {
-  &.red {
-    background: var(--red);
-  }
-  &.green {
-    background: var(--green);
-  }
-  &.blue {
-    background: var(--blue);
-  }
-  &.orange {
-    background: var(--orange);
-  }
+	&.red {
+		background: var(--red);
+	}
+	&.green {
+		background: var(--green);
+	}
+	&.blue {
+		background: var(--blue);
+	}
+	&.orange {
+		background: var(--orange);
+	}
 }

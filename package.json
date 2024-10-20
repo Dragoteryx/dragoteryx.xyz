@@ -1,37 +1,36 @@
 {
-  "name": "dragoteryx-github-io-v2",
-  "version": "0.0.0",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "dev": "vite",
-    "build": "run-p type-check build-only",
-    "preview": "vite preview",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
-    "build-wasm": "wasm-pack build src/wasm --target bundler"
-  },
-  "dependencies": {
-    "@vueuse/core": "^11.1.0",
-    "animate.css": "^4.1.1",
-    "pinia": "^2.1.7",
-    "primeicons": "^7.0.0",
-    "vue": "^3.4.18",
-    "vue-router": "^4.2.5"
-  },
-  "devDependencies": {
-    "@tsconfig/node18": "^18.2.2",
-    "@types/node": "^22.7.6",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "@vue/tsconfig": "^0.5.1",
-    "npm-run-all": "^4.1.5",
-    "sass": "^1.70.0",
-    "typescript": "~5.6.3",
-    "unplugin-vue-markdown": "^0.26.0",
-    "vite": "^5.1.1",
-    "vite-plugin-pwa": "^0.20.0",
-    "vite-plugin-top-level-await": "^1.4.1",
-    "vite-plugin-wasm": "^3.3.0",
-    "vue-tsc": "^2.1.6"
-  }
+	"name": "dragoteryx-xyz",
+	"version": "0.0.0",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "vite",
+		"build": "run-p type-check build-only",
+		"preview": "vite preview",
+		"build-only": "vite build",
+		"type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
+		"build-wasm": "wasm-pack build src/wasm --target bundler"
+	},
+	"dependencies": {
+		"@vueuse/core": "^11.1.0",
+		"animate.css": "^4.1.1",
+		"pinia": "^2.2.4",
+		"primeicons": "^7.0.0",
+		"vue": "^3.5.12",
+		"vue-router": "^4.4.5"
+	},
+	"devDependencies": {
+		"@tsconfig/node18": "^18.2.4",
+		"@types/node": "^22.7.7",
+		"@vitejs/plugin-vue": "^5.1.4",
+		"@vue/tsconfig": "^0.5.1",
+		"npm-run-all": "^4.1.5",
+		"sass": "^1.80.3",
+		"typescript": "^5.6.3",
+		"unplugin-vue-markdown": "^0.26.2",
+		"vite": "^5.4.9",
+		"vite-plugin-top-level-await": "^1.4.4",
+		"vite-plugin-wasm": "^3.3.0",
+		"vue-tsc": "^2.1.6"
+	}
 }

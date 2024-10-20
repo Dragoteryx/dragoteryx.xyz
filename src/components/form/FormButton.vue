@@ -1,6 +1,6 @@
 <template>
 	<button class="row" @click="emit('click')">
-		<span v-if="icon" :class="{ pi: true, [icon]: true }"></span>
+		<span v-if="icon" :class="{pi: true, [icon]: true}"></span>
 		<span class="large"><slot></slot></span>
 	</button>
 </template>

@@ -7,7 +7,7 @@ import { defineStore } from "pinia";
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	let lastTime = 0;
-	const controls = useControls(paused => {
+	const controls = useControls((paused) => {
 		if (!paused) {
 			const now = performance.now();
 			if (now - lastTime >= 1000 / speed.value) {
@@ -17,8 +17,19 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		}
 
 		if (ctx.value) {
-			ctx.value.clearRect(0, 0, ctx.value.canvas.width, ctx.value.canvas.height);
-			game.draw(ctx.value, useCssVar("--text").value ?? "", Math.floor(pos.x), Math.floor(pos.y), size.value);
+			ctx.value.clearRect(
+				0,
+				0,
+				ctx.value.canvas.width,
+				ctx.value.canvas.height,
+			);
+			game.draw(
+				ctx.value,
+				useCssVar("--text").value ?? "",
+				Math.floor(pos.x),
+				Math.floor(pos.y),
+				size.value,
+			);
 		}
 	});
 
@@ -27,7 +38,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	const ctx = ref<CanvasRenderingContext2D>();
 	const game = new GameOfLife();
 	const aliveCells = ref(0);
-	
+
 	const speed = useLocalStorage("game-of-life-speed", 10);
 	const zoom = useLocalStorage("game-of-life-zoom", 10);
 	const size = useFibonacci(() => zoom.value + 1);
@@ -86,10 +97,16 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	}
 
 	return {
-		controls, ctx,
-		pos, speed, aliveCells,
-		birthCell, killCell,
-		toggleCell, clear,
-		zoomIn, zoomOut,
+		controls,
+		ctx,
+		pos,
+		speed,
+		aliveCells,
+		birthCell,
+		killCell,
+		toggleCell,
+		clear,
+		zoomIn,
+		zoomOut,
 	};
 });

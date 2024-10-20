@@ -1,5 +1,5 @@
 <template>
-	<FormButton icon="pi-replay" @click="$emit('click')"/>
+	<FormButton icon="pi-replay" @click="emit('click')"/>
 </template>
 
 <script setup lang="ts">

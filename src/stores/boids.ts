@@ -3,8 +3,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useBoidsStore = defineStore("boids", () => {
-	const controls = useControls(paused => {
-		
+	const controls = useControls((paused) => {
 	});
 
 	const ctx = ref<CanvasRenderingContext2D>();
@@ -12,7 +11,9 @@ export const useBoidsStore = defineStore("boids", () => {
 	const width = ref(0);
 
 	return {
-		controls, ctx,
-		height, width,
+		controls,
+		ctx,
+		height,
+		width,
 	};
 });

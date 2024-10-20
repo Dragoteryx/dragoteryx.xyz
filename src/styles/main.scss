@@ -1,104 +1,104 @@
 @use "./mixins.scss";
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 :root {
-  color: var(--text);
-  font-family: "Segoe UI";
-  font-size: 16px;
+	color: var(--text);
+	font-family: "Segoe UI";
+	font-size: 16px;
 
-  --white: #eef;
-  --gray: #ccd;
-  --green: hsl(90, 50%, 50%);
-  --red: hsl(0, 50%, 50%);
-  --blue: hsl(210, 50%, 50%);
-  --orange: hsl(20, 50%, 50%);
-  --light: hsl(270, 20%, 25%);
-  --medium: hsl(270, 20%, 18%);
-  --dark: hsl(270, 20%, 11%);
+	--white: #eef;
+	--gray: #ccd;
+	--green: hsl(90, 50%, 50%);
+	--red: hsl(0, 50%, 50%);
+	--blue: hsl(210, 50%, 50%);
+	--orange: hsl(20, 50%, 50%);
+	--light: hsl(270, 20%, 25%);
+	--medium: hsl(270, 20%, 18%);
+	--dark: hsl(270, 20%, 11%);
 
-  --background-center: var(--white);
-  --background-edges: var(--gray);
-  --text: var(--dark);
-  
-  &.dark {
-    --background-center: var(--medium);
-    --background-edges: var(--dark);
-    --text: var(--white);
-  }
+	--background-center: var(--white);
+	--background-edges: var(--gray);
+	--text: var(--dark);
+
+	&.dark {
+		--background-center: var(--medium);
+		--background-edges: var(--dark);
+		--text: var(--white);
+	}
 }
 
 ul, ol {
-  list-style: inside;
+	list-style: inside;
 }
 
 ul > li::marker {
-  content: "ඞ ";
+	content: "ඞ ";
 }
 
 hr {
-  min-width: 2px;
-  min-height: 2px;
-  background: var(--dark);
-  border: none;
+	min-width: 2px;
+	min-height: 2px;
+	background: var(--dark);
+	border: none;
 }
 
 .padded {
-  padding: 10px 20px;
+	padding: 10px 20px;
 }
 
 .markdown-body {
-  @extend .column, .spaced, .padded;
+	@extend .column, .spaced, .padded;
 }
 
 .row {
-  display: flex;
+	display: flex;
 
-  > .large {
-    flex: 1;
-  }
+	> .large {
+		flex: 1;
+	}
 
-  &:not(.reversed) {
-    flex-direction: row;
+	&:not(.reversed) {
+		flex-direction: row;
 
-    &.spaced > :not(:last-child) {
-      margin-right: 10px;
-    }
-  }
+		&.spaced > :not(:last-child) {
+			margin-right: 10px;
+		}
+	}
 
-  &.reversed {
-    flex-direction: row-reverse;
+	&.reversed {
+		flex-direction: row-reverse;
 
-    &.spaced > :not(:first-child) {
-      margin-right: 10px;
-    }
-  }
+		&.spaced > :not(:first-child) {
+			margin-right: 10px;
+		}
+	}
 }
 
 .column {
-  display: flex;
+	display: flex;
 
-  > .large {
-    flex: 1;
-  }
+	> .large {
+		flex: 1;
+	}
 
-  &:not(.reversed) {
-    flex-direction: column;
+	&:not(.reversed) {
+		flex-direction: column;
 
-    &.spaced > :not(:last-child) {
-      margin-bottom: 10px;
-    }
-  }
+		&.spaced > :not(:last-child) {
+			margin-bottom: 10px;
+		}
+	}
 
-  &.reversed {
-    flex-direction: column-reverse;
+	&.reversed {
+		flex-direction: column-reverse;
 
-    &.spaced > :not(:first-child) {
-      margin-bottom: 10px;
-    }
-  }
+		&.spaced > :not(:first-child) {
+			margin-bottom: 10px;
+		}
+	}
 }

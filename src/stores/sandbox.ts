@@ -16,11 +16,12 @@ export interface Options {
 }
 
 export const useSandboxStore = defineStore("sandbox", () => {
-	const controls = useControls(paused => {
+	const controls = useControls((paused) => {
 		if (!paused) sandbox.tick();
 		if (ctx.value) {
-			if (options.clearCanvas)
+			if (options.clearCanvas) {
 				ctx.value.clearRect(0, 0, width.value, height.value);
+			}
 			sandbox.draw(ctx.value);
 		}
 	});
@@ -35,12 +36,12 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	const color: Color = reactive({
 		h: useLocalStorage("sandbox-color-h", 90),
 		s: useLocalStorage("sandbox-color-s", 50),
-		l: useLocalStorage("sandbox-color-l", 50)
+		l: useLocalStorage("sandbox-color-l", 50),
 	});
 
 	const gravity: Gravity = reactive({
 		strength: useLocalStorage("sandbox-gravity-strength", 981),
-		angle: useLocalStorage("sandbox-gravity-angle", 0)
+		angle: useLocalStorage("sandbox-gravity-angle", 0),
 	});
 
 	const options: Options = reactive({
@@ -68,12 +69,16 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	}
 
 	return {
-		controls, ctx,
-		color, radius,
-		height, width,
+		controls,
+		ctx,
+		color,
+		radius,
+		height,
+		width,
 		gravity,
 		options,
-		entities, addCircle,
-		clearEntities, 
+		entities,
+		addCircle,
+		clearEntities,
 	};
 });
