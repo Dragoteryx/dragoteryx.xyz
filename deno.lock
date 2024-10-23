@@ -1335,6 +1335,7 @@
         "npm:typescript@^5.6.3",
         "npm:unplugin-vue-markdown@~0.26.2",
         "npm:vite-plugin-top-level-await@^1.4.4",
+        "npm:vite-plugin-vue-devtools@^7.5.3",
         "npm:vite-plugin-wasm@^3.3.0",
         "npm:vite@^5.4.9",
         "npm:vue-router@^4.4.5",

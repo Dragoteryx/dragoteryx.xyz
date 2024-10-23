@@ -1,4 +1,4 @@
-import { type Color } from "@/components/form/FormColor.vue";
+import type { Color } from "@/components/form/FormColor.vue";
 import { useControls } from "@/composables/controls";
 import { useLocalStorage } from "@vueuse/core";
 import { reactive, ref, watchEffect } from "vue";
