@@ -16,8 +16,8 @@
 <style scoped lang="scss">
 	select {
 		border: 1px solid var(--dark);
-		background: var(--background-center);
-		color: var(--text);
+		background: var(--medium);
+		color: var(--white);
 		padding: 5px;
 		outline: none;
 	}
