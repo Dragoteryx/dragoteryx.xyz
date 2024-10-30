@@ -2,6 +2,7 @@
   "version": "4",
   "specifiers": {
     "npm:@tsconfig/node18@^18.2.4": "18.2.4",
+    "npm:@types/color-convert@^2.0.4": "2.0.4",
     "npm:@types/node@^22.7.7": "22.7.7",
     "npm:@vitejs/plugin-vue@^5.1.4": "5.1.4_vite@5.4.9__@types+node@22.7.7__sass@1.80.3_vue@3.5.12__typescript@5.6.3_@types+node@22.7.7_sass@1.80.3_typescript@5.6.3",
     "npm:@vue/tsconfig@~0.5.1": "0.5.1",
@@ -560,6 +561,15 @@
     },
     "@tsconfig/node18@18.2.4": {
       "integrity": "sha512-5xxU8vVs9/FNcvm3gE07fPbn9tl6tqGGWA9tSlwsUEkBxtRnTsNmwrV8gasZ9F/EobaSv9+nu8AxUKccw77JpQ=="
+    },
+    "@types/color-convert@2.0.4": {
+      "integrity": "sha512-Ub1MmDdyZ7mX//g25uBAoH/mWGd9swVbt8BseymnaE18SU4po/PjmCrHxqIIRjBo3hV/vh1KGr0eMxUhp+t+dQ==",
+      "dependencies": [
+        "@types/color-name"
+      ]
+    },
+    "@types/color-name@1.1.5": {
+      "integrity": "sha512-j2K5UJqGTxeesj6oQuGpMgifpT5k9HprgQd8D1Y0lOFqKHl3PJu5GMeS4Y5EgjS55AE6OQxf8mPED9uaGbf4Cg=="
     },
     "@types/estree@1.0.6": {
       "integrity": "sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw=="
@@ -2233,6 +2243,7 @@
     "packageJson": {
       "dependencies": [
         "npm:@tsconfig/node18@^18.2.4",
+        "npm:@types/color-convert@^2.0.4",
         "npm:@types/node@^22.7.7",
         "npm:@vitejs/plugin-vue@^5.1.4",
         "npm:@vue/tsconfig@~0.5.1",
