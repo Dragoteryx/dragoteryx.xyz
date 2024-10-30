@@ -1,8 +1,9 @@
 <template>
 	<div class="column spaced">
-		<FormRange v-model="color.h" :min="0" :max="360">H</FormRange>
-		<FormRange v-model="color.s" :min="0" :max="100">S</FormRange>
-		<FormRange v-model="color.l" :min="0" :max="100">L</FormRange>
+		<FormColorRgb v-if="mode == 'rgb'" v-model="color"/>
+		<FormColorHsl v-if="mode == 'hsl'" v-model="color"/>
+		<FormColorHsv v-if="mode == 'hsv'" v-model="color"/>
+		<FormColorHex disabled v-model="color"/>
 		<div class="row spaced">
 			<div ref="preview" class="preview large"></div>
 			<ResetButton v-if="reset != undefined" @click="resetColor"/>
@@ -11,36 +12,30 @@
 </template>
 
 <script setup lang="ts">
+	import FormColorHex from "./color/FormColorHex.vue";
+	import FormColorRgb from "./color/FormColorRgb.vue";
+	import FormColorHsl from "./color/FormColorHsl.vue";
+	import FormColorHsv from "./color/FormColorHsv.vue";
 	import ResetButton from "./ResetButton.vue";
-	import FormRange from "./FormRange.vue";
-	import { ref, watchEffect } from "vue";
+	import { useTemplateRef, watchEffect } from "vue";
+	import { Color, toHex } from "@/types/color";
 
-	export interface Color {
-		h: number;
-		s: number;
-		l: number;
-	}
-
-	const preview = ref<HTMLDivElement>();
+	const preview = useTemplateRef("preview");
+	const color = defineModel<Color>({required: true});
 	const props = defineProps<{
-		color: Color;
-		reset?: Color;
+		mode: "rgb" | "hsl" | "hsv",
+		reset?: Color
 	}>();
 
 	watchEffect(() => {
 		if (preview.value) {
-			const h = props.color.h;
-			const s = `${props.color.s}%`;
-			const l = `${props.color.l}%`;
-			preview.value.style.background = `hsl(${h}, ${s}, ${l})`;
+			preview.value.style.backgroundColor = toHex(color.value);
 		}
 	});
 
 	function resetColor() {
 		if (props.reset) {
-			props.color.h = props.reset.h;
-			props.color.s = props.reset.s;
-			props.color.l = props.reset.l;
+			color.value = Color.parse(props.reset);
 		}
 	}
 </script>

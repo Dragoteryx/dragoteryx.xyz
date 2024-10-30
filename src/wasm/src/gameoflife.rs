@@ -141,12 +141,18 @@ impl Cell {
 		self.data & 0b01111111
 	}
 
-	pub fn add_neighbor(&mut self) {
-		self.data += 1;
+	pub fn set_neighbors(&mut self, mut neighbors: u8) -> u8 {
+		neighbors = neighbors.clamp(0, 8);
+		self.data = (self.data & 0b10000000) | (neighbors & 0b01111111);
+		neighbors
 	}
 
-	pub fn remove_neighbor(&mut self) {
-		self.data -= 1;
+	pub fn add_neighbor(&mut self) -> u8 {
+		self.set_neighbors(self.neighbors() + 1)
+	}
+
+	pub fn remove_neighbor(&mut self) -> u8 {
+		self.set_neighbors(self.neighbors() - 1)
 	}
 }
 

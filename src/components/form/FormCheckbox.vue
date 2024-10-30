@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-  const value = defineModel<boolean>({ default: false });
+  const value = defineModel<boolean>({required: true});
 </script>
 
 <style scoped lang="scss">

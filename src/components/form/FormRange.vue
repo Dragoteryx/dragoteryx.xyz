@@ -1,21 +1,26 @@
 <template>
 	<label class="row spaced">
 		<span><slot></slot></span>
-		<input class="large" type="range" v-model="value" :min="min" :max="max" :dir="dir">
+		<input class="large" type="range" v-model="value" :min="min" :max="max" :dir="dir" :style="backg">
 		<ResetButton v-if="reset != undefined" @click="value = reset ?? 0"/>
 	</label>
 </template>
 
 <script setup lang="ts">
 	import ResetButton from "./ResetButton.vue";
+	import { computed } from "vue";
 
-	const value = defineModel({default: 0});
-	defineProps<{
+	const value = defineModel({required: true});
+	const props = defineProps<{
 		dir?: 'ltr' | 'rtl',
+		thin?: boolean,
 		reset?: number,
+		backg?: string,
 		min: number,
 		max: number,
 	}>();
+
+	const backg = computed(() => props.backg ? `background: ${props.backg};` : "");
 </script>
 
 <style scoped lang="scss">
@@ -35,7 +40,7 @@
 			appearance: none;
 
 			height: 20px;
-			width: 20px;
+			width: 10px;
 
 			background-color: var(--light);
 			border: 1px solid var(--dark);

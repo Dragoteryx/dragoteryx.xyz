@@ -1,5 +1,6 @@
-import type { Color } from "@/components/form/FormColor.vue";
+import { useLocalStorageColor } from "@/composables/color";
 import { useControls } from "@/composables/controls";
+import { Color, Hsl, toRgb } from "@/types/color";
 import { useLocalStorage } from "@vueuse/core";
 import { reactive, ref, watchEffect } from "vue";
 import { defineStore } from "pinia";
@@ -32,12 +33,9 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	const height = ref(0);
 	const width = ref(0);
 
+	const defaultColor = Color.parse({type: "hsl", value: Hsl.parse({h: 90, s: 50, l: 50})});
+	const color = useLocalStorageColor("sandbox-color", defaultColor);
 	const radius = useLocalStorage("sandbox-radius", 13);
-	const color: Color = reactive({
-		h: useLocalStorage("sandbox-color-h", 90),
-		s: useLocalStorage("sandbox-color-s", 50),
-		l: useLocalStorage("sandbox-color-l", 50),
-	});
 
 	const gravity: Gravity = reactive({
 		strength: useLocalStorage("sandbox-gravity-strength", 981),
@@ -54,9 +52,12 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	watchEffect(() => sandbox.world_width = width.value);
 	watchEffect(() => sandbox.gravity_strength = gravity.strength);
 	watchEffect(() => sandbox.gravity_angle = gravity.angle);
-	watchEffect(() => sandbox.color_h = color.h);
-	watchEffect(() => sandbox.color_s = color.s);
-	watchEffect(() => sandbox.color_l = color.l);
+	watchEffect(() => {
+		const {r, g, b} = toRgb(color.value);
+		sandbox.color_r = r;
+		sandbox.color_g = g;
+		sandbox.color_b = b;
+	});
 
 	function addCircle(x: number, y: number) {
 		sandbox.add_circle(x, y, radius.value);
@@ -71,6 +72,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	return {
 		controls,
 		ctx,
+		defaultColor,
 		color,
 		radius,
 		height,

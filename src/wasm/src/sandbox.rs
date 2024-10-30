@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 use web_sys::CanvasRenderingContext2d;
 
@@ -40,9 +41,9 @@ impl Sandbox {
 			gravity_strength: 981.0,
 			gravity_angle: 0.0,
 			color: Color {
-				h: 0,
-				s: 0,
-				l: 0
+				r: 0,
+				g: 0,
+				b: 0,
 			},
 		}
 	}
@@ -98,37 +99,37 @@ impl Sandbox {
 	}
 
 	#[wasm_bindgen(getter)]
-	pub fn color_h(&self) -> u16 {
-		self.color.h
+	pub fn color_r(&self) -> u8 {
+		self.color.r
 	}
 
 	#[wasm_bindgen(setter)]
-	pub fn set_color_h(&mut self, h: u16) {
-		self.color.h = h;
+	pub fn set_color_r(&mut self, r: u8) {
+		self.color.r = r;
 	}
 
 	#[wasm_bindgen(getter)]
-	pub fn color_s(&self) -> u8 {
-		self.color.s
+	pub fn color_g(&self) -> u8 {
+		self.color.g
 	}
 
 	#[wasm_bindgen(setter)]
-	pub fn set_color_s(&mut self, s: u8) {
-		self.color.s = s;
+	pub fn set_color_g(&mut self, g: u8) {
+		self.color.g = g;
 	}
 
 	#[wasm_bindgen(getter)]
-	pub fn color_l(&self) -> u8 {
-		self.color.l
+	pub fn color_b(&self) -> u8 {
+		self.color.b
 	}
 
 	#[wasm_bindgen(setter)]
-	pub fn set_color_l(&mut self, l: u8) {
-		self.color.l = l;
+	pub fn set_color_b(&mut self, b: u8) {
+		self.color.b = b;
 	}
 
 	pub fn add_circle(&mut self, x: f32, y: f32, radius: f32) {
-		self.entities.push(Entity::circle(Vector::new(x, y), radius, self.color));
+		self.entities.push(Entity::circle(Vector::new(x, y), radius, self.color.clone()));
 	}
 
 	pub fn clear_entities(&mut self) {
