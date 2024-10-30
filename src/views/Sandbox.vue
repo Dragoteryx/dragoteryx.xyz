@@ -16,7 +16,7 @@
 		<hr>
 		<FormRange v-model="sandboxStore.radius" :min="5" :max="45" :reset="15">Radius</FormRange>
 		<hr>
-		<FormColor mode="hsl"  v-model="sandboxStore.color" :reset="sandboxStore.defaultColor"/>
+		<FormColor v-model="sandboxStore.color" :mode="sandboxStore.options.colorPicker" :reset="sandboxStore.defaultColor"/>
 	</CanvasMenu>
 </template>
 

@@ -13,5 +13,6 @@
 		background: var(--background-center);
 		color: var(--text);
 		padding: 5px;
+		outline: none;
 	}
 </style>

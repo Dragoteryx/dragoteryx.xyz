@@ -12,6 +12,7 @@ export interface Gravity {
 }
 
 export interface Options {
+	colorPicker: Exclude<Color["type"], "hex">;
 	clearCanvas: boolean;
 	consoleLogs: boolean;
 }
@@ -43,6 +44,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	});
 
 	const options: Options = reactive({
+		colorPicker: useLocalStorage<Exclude<Color["type"], "hex">>("sandbox-color-picker", "hsl"),
 		clearCanvas: useLocalStorage("sandbox-clear-canvas", true),
 		consoleLogs: useLocalStorage("sandbox-console-logs", false),
 	});
