@@ -3,7 +3,7 @@
 		<FormColorRgb v-if="mode == 'rgb'" v-model="color"/>
 		<FormColorHsl v-if="mode == 'hsl'" v-model="color"/>
 		<FormColorHsv v-if="mode == 'hsv'" v-model="color"/>
-		<FormColorHex disabled v-model="color"/>
+		<FormColorHex v-model="color"/>
 		<div class="row spaced">
 			<div ref="preview" class="preview large"></div>
 			<ResetButton v-if="reset != undefined" @click="resetColor"/>
