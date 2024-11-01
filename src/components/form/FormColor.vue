@@ -4,7 +4,7 @@
 		<FormColorHsl v-if="mode == 'hsl'" v-model="color"/>
 		<FormColorHsv v-if="mode == 'hsv'" v-model="color"/>
 		<div class="row spaced">
-			<div ref="preview" :class="previewClasses">{{ hex.substring(1) }}</div>
+			<div ref="preview" :class="previewClasses">{{ hex }}</div>
 			<ResetButton v-if="reset != undefined" @click="resetColor"/>
 		</div>
 	</div>

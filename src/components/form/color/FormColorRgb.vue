@@ -1,8 +1,8 @@
 <template>
 	<div class="column spaced">
-		<FormRange v-model="r" :min="0" :max="255" backg="linear-gradient(to right, black, red)">R</FormRange>
-		<FormRange v-model="g" :min="0" :max="255" backg="linear-gradient(to right, black, green)">G</FormRange>
-		<FormRange v-model="b" :min="0" :max="255" backg="linear-gradient(to right, black, blue)">B</FormRange>
+		<FormRange v-model="r" :min="0" :max="255" :backg="rBackg">R</FormRange>
+		<FormRange v-model="g" :min="0" :max="255" :backg="gBackg">G</FormRange>
+		<FormRange v-model="b" :min="0" :max="255" :backg="bBackg">B</FormRange>
 	</div>
 </template>
 
@@ -35,4 +35,8 @@
 			rgb.value = Rgb.parse({r: r.value, g: g.value, b: Number(b)});
 		}
 	});
+
+	const rBackg = computed(() => `linear-gradient(to right, rgb(0, ${g.value}, ${b.value}), rgb(255, ${g.value}, ${b.value}))`);
+	const gBackg = computed(() => `linear-gradient(to right, rgb(${r.value}, 0, ${b.value}), rgb(${r.value}, 255, ${b.value}))`);
+	const bBackg = computed(() => `linear-gradient(to right, rgb(${r.value}, ${g.value}, 0), rgb(${r.value}, ${g.value}, 255))`);
 </script>

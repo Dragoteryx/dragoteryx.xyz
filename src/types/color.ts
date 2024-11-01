@@ -55,6 +55,18 @@ export const Color = z.union([
 	}),
 ]).readonly();
 
+export function toColor(color: Hex | Rgb | Hsl | Hsv): Color {
+	if (typeof color === "string") {
+		return {type: "hex", value: color};
+	} else if ("r" in color) {
+		return {type: "rgb", value: color};
+	} else if ("l" in color) {
+		return {type: "hsl", value: color};
+	} else {
+		return {type: "hsv", value: color};
+	}
+}
+
 export function toHex(color: Color): Hex {
 	switch (color.type) {
 		case "hex":
