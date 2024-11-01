@@ -21,5 +21,5 @@
 		{value: "rgb", description: "RGB"},
 		{value: "hsl", description: "HSL"},
 		{value: "hsv", description: "HSV"},
-	];
+	] as const;
 </script>
