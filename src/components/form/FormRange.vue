@@ -13,7 +13,6 @@
 	const value = defineModel({required: true});
 	const props = defineProps<{
 		dir?: 'ltr' | 'rtl',
-		thin?: boolean,
 		reset?: number,
 		backg?: string,
 		min: number,
@@ -26,6 +25,7 @@
 <style scoped lang="scss">
 	input[type=range] {
 		appearance: none;
+		outline: none;
 
 		height: 16px;
 		min-width: 100px;

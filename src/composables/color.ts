@@ -1,4 +1,5 @@
-import { Color, Hex, Rgb, Hsl, Hsv, toHex, toRgb, toHsl, toHsv } from "@/types/color";
+import { Color, toHex, toRgb, toHsl, toHsv, toHwb } from "@/types/color";
+import type { Hex, Rgb, Hsl, Hsv, Hwb } from "@/types/color";
 import type { Ref, WritableComputedRef } from "vue";
 import { useLocalStorage } from "@vueuse/core";
 import { computed } from "vue";
@@ -57,6 +58,18 @@ export function useHsv(color: Ref<Color>): WritableComputedRef<Hsv> {
 				type: "hsv",
 				value
 			});	
+		}
+	});
+}
+
+export function useHwb(color: Ref<Color>): WritableComputedRef<Hwb> {
+	return computed({
+		get: () => toHwb(color.value),
+		set(value) {
+			color.value = Color.parse({
+				type: "hwb",
+				value
+			});
 		}
 	});
 }

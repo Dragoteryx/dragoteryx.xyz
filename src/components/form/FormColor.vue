@@ -3,6 +3,7 @@
 		<FormColorRgb v-if="mode == 'rgb'" v-model="color"/>
 		<FormColorHsl v-if="mode == 'hsl'" v-model="color"/>
 		<FormColorHsv v-if="mode == 'hsv'" v-model="color"/>
+		<FormColorHwb v-if="mode == 'hwb'" v-model="color"/>
 		<div class="row spaced">
 			<div ref="preview" :class="previewClasses">{{ hex }}</div>
 			<ResetButton v-if="reset != undefined" @click="resetColor"/>
@@ -14,6 +15,7 @@
 	import FormColorRgb from "./color/FormColorRgb.vue";
 	import FormColorHsl from "./color/FormColorHsl.vue";
 	import FormColorHsv from "./color/FormColorHsv.vue";
+	import FormColorHwb from "./color/FormColorHwb.vue";
 	import ResetButton from "./ResetButton.vue";
 	import { computed, useTemplateRef, watchEffect } from "vue";
 	import { useHex, useHsl } from "@/composables/color";
