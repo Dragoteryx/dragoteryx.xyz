@@ -24,13 +24,13 @@
 	const hex = useHex(color);
 	const hsl = useHsl(color);
 	const props = defineProps<{
-		mode: "rgb" | "hsl" | "hsv",
+		mode: Exclude<Color["type"], "hex">,
 		reset?: Color
 	}>();
 
 	const previewClasses = computed(() => {
 		const classes = ["preview", "large"];
-		if (hsl.value.l < 50) classes.push("light");
+		if (hsl.value.l < 50) classes.push("dark");
 		return classes;
 	});
 
@@ -56,7 +56,7 @@
 		font-size: 16px;
 		font-weight: 550;
 
-		&.light {
+		&.dark {
 			color: var(--white);
 		}
 	}
