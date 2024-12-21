@@ -25,6 +25,7 @@
 
 		text-align: center;
 		text-decoration: none;
+		outline: none;
 
 		background: var(--medium);
 		border: 1px solid var(--dark);

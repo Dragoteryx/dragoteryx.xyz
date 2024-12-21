@@ -1,6 +1,6 @@
 import { useLocalStorageColor } from "@/composables/color";
 import { useControls } from "@/composables/controls";
-import { Color, Hsl, toRgb } from "@/types/color";
+import { type Color, Hsl, toColor, toRgb } from "@/types/color";
 import { useLocalStorage } from "@vueuse/core";
 import { reactive, ref, watchEffect } from "vue";
 import { defineStore } from "pinia";
@@ -34,7 +34,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	const height = ref(0);
 	const width = ref(0);
 
-	const defaultColor = Color.parse({type: "hsl", value: Hsl.parse({h: 90, s: 50, l: 50})});
+	const defaultColor = toColor(Hsl.parse({h: 90, s: 50, l: 50}));
 	const color = useLocalStorageColor("sandbox-color", defaultColor);
 	const radius = useLocalStorage("sandbox-radius", 13);
 

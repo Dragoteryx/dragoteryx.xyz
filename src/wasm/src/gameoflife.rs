@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use ahash::AHashMap;
 use std::fmt::{self, Debug};
 use std::mem::replace;
 use wasm_bindgen::prelude::*;
@@ -7,7 +7,7 @@ use web_sys::CanvasRenderingContext2d;
 #[wasm_bindgen]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GameOfLife {
-	cells: HashMap<(i32, i32), Cell>,
+	cells: AHashMap<(i32, i32), Cell>,
 }
 
 #[wasm_bindgen]
@@ -15,7 +15,7 @@ impl GameOfLife {
 	#[wasm_bindgen(constructor)]
 	pub fn new() -> Self {
 		Self {
-			cells: HashMap::new(),
+			cells: AHashMap::new(),
 		}
 	}
 
@@ -79,7 +79,7 @@ impl GameOfLife {
 	pub fn tick(&mut self) -> usize {
 		let mut alive = 0;
 		let cells_len = self.cells.len();
-		let cells = replace(&mut self.cells, HashMap::with_capacity(cells_len));
+		let cells = replace(&mut self.cells, AHashMap::with_capacity(cells_len));
 		for ((x, y), cell) in cells {
 			if cell.becomes_alive() {
 				self.birth_cell(x, y);
