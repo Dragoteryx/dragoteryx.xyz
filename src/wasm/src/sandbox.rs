@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::rc::Rc;
 use wasm_bindgen::prelude::*;
 use web_sys::CanvasRenderingContext2d;
 
@@ -129,7 +128,7 @@ impl Sandbox {
 	}
 
 	pub fn add_circle(&mut self, x: f32, y: f32, radius: f32) {
-		self.entities.push(Entity::circle(Vector::new(x, y), radius, self.color.clone()));
+		self.entities.push(Entity::circle(Vector::new(x, y), radius, self.color));
 	}
 
 	pub fn clear_entities(&mut self) {

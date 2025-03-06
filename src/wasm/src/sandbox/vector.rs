@@ -6,6 +6,7 @@ pub struct Vector {
 	pub y: f32,
 }
 
+#[allow(dead_code)]
 impl Vector {
 	pub const ORIGIN: Self = Self::new(0.0, 0.0);
 	pub const UP: Self = Self::new(0.0, -1.0);

@@ -20,7 +20,7 @@ impl GameOfLife {
 	}
 
 	pub fn is_alive(&self, x: i32, y: i32) -> bool {
-		self.cells.get(&(x, y)).map_or(false, |cell| cell.is_alive())
+		self.cells.get(&(x, y)).is_some_and(Cell::is_alive)
 	}
 
 	pub fn birth_cell(&mut self, x: i32, y: i32) -> bool {
