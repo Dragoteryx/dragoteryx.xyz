@@ -9,8 +9,8 @@
 <script setup lang="ts">
 	import FormRange from "../FormRange.vue";
 	import { useHwb } from "@/composables/color";
-	import { type Color, Hwb, Percent } from "@/types/color";
-	import { computed, watch } from "vue";
+	import { type Color, Hwb } from "@/types/color";
+	import { computed } from "vue";
 
 	const color = defineModel<Color>({required: true});
 	const hwb = useHwb(color);
