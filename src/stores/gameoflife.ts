@@ -17,15 +17,12 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		}
 
 		if (ctx.value) {
-			ctx.value.clearRect(
-				0,
-				0,
-				ctx.value.canvas.width,
-				ctx.value.canvas.height,
-			);
+			const style = window.getComputedStyle(document.body);
+			const textColor = style.getPropertyValue("--text");
+			ctx.value.clearRect(0, 0, ctx.value.canvas.width, ctx.value.canvas.height);
 			game.draw(
 				ctx.value,
-				useCssVar("--text").value ?? "",
+				textColor,
 				Math.floor(pos.x),
 				Math.floor(pos.y),
 				size.value,
