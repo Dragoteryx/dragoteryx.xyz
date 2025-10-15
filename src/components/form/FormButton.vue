@@ -11,7 +11,11 @@
 		icon?: string;
 	}
 
-	const emit = defineEmits<{ click: [] }>();
+	export interface Emits {
+		click: [];
+	}
+
+	const emit = defineEmits<Emits>();
 	const props = defineProps<Props>();
 </script>
 

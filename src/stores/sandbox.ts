@@ -21,9 +21,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	const controls = useControls(paused => {
 		if (!paused) sandbox.tick();
 		if (ctx.value) {
-			if (options.clearCanvas) {
-				ctx.value.clearRect(0, 0, width.value, height.value);
-			}
+			if (options.clearCanvas) ctx.value.clearRect(0, 0, width.value, height.value);
 			sandbox.draw(ctx.value);
 		}
 	});
