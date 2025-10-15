@@ -22,5 +22,5 @@
 		{ value: "hsl", description: "HSL" },
 		{ value: "hsv", description: "HSV" },
 		{ value: "hwb", description: "HWB" },
-	] as const;
+	];
 </script>

@@ -23,19 +23,21 @@
 	import type { Controls } from "@/composables/controls";
 	import { onMounted, onUnmounted } from "vue";
 
-	const width = defineModel("width", { default: 0 });
-	const height = defineModel("height", { default: 0 });
-	const context = defineModel<CanvasRenderingContext2D>("context");
-
-	const props = defineProps<{
+	export interface Props {
 		controls: Controls;
-	}>();
+	}
 
-	const emit = defineEmits<{
+	export interface Emits {
 		scroll: [x: number, y: number, up: boolean];
 		click: [x: number, y: number];
 		drag: [x: number, y: number];
-	}>();
+	}
+
+	const props = defineProps<Props>();
+	const emit = defineEmits<Emits>();
+	const width = defineModel("width", { default: 0 });
+	const height = defineModel("height", { default: 0 });
+	const context = defineModel<CanvasRenderingContext2D>("context");
 
 	onMounted(() => {
 		props.controls.active = true;

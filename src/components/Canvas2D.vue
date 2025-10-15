@@ -15,6 +15,13 @@
 	import { useWindowScroll, useWindowSize } from "@vueuse/core";
 	import { useTemplateRef, watchEffect } from "vue";
 
+	export interface Emits {
+		scroll: [x: number, y: number, up: boolean];
+		click: [x: number, y: number];
+		drag: [x: number, y: number];
+	}
+
+	const emit = defineEmits<Emits>();
 	const parent = useTemplateRef("parent");
 	const canvas = useTemplateRef("canvas");
 	const windowScroll = useWindowScroll();
@@ -23,12 +30,6 @@
 	const width = defineModel("width", { default: 0 });
 	const height = defineModel("height", { default: 0 });
 	const context = defineModel<CanvasRenderingContext2D>("context");
-
-	const emit = defineEmits<{
-		scroll: [x: number, y: number, up: boolean];
-		click: [x: number, y: number];
-		drag: [x: number, y: number];
-	}>();
 
 	watchEffect(() => {
 		const ctx = canvas.value?.getContext("2d");

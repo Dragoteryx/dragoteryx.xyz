@@ -6,8 +6,12 @@
 	import FormButton from "@/components/form/FormButton.vue";
 	import { useSandboxStore } from "@/stores/sandbox";
 
+	export interface Props {
+		amount: number;
+	}
+
+	const props = defineProps<Props>();
 	const sandboxStore = useSandboxStore();
-	const props = defineProps<{ amount: number }>();
 
 	function spawn() {
 		for (let i = 0; i < props.amount; i++) {

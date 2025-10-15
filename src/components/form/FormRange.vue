@@ -17,8 +17,7 @@
 	import ResetButton from "./ResetButton.vue";
 	import { computed } from "vue";
 
-	const value = defineModel<number>({ required: true });
-	const props = defineProps<{
+	export interface Props {
 		labelSize?: number;
 		rangeSize?: number;
 		dir?: "ltr" | "rtl";
@@ -26,16 +25,17 @@
 		backg?: string;
 		min: number;
 		max: number;
-	}>();
+	}
 
+	const props = defineProps<Props>();
+	const value = defineModel<number>({ required: true });
+	const backg = computed(() => (props.backg ? `background: ${props.backg};` : ""));
 	const rangeValue = computed({
 		get: () => value.value,
 		set(num) {
 			value.value = Number(num);
 		},
 	});
-
-	const backg = computed(() => (props.backg ? `background: ${props.backg};` : ""));
 </script>
 
 <style scoped lang="scss">

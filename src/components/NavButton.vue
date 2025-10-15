@@ -9,14 +9,15 @@
 	import { useRoute, useRouter } from "vue-router";
 	import { computed } from "vue";
 
-	const props = defineProps<{
+	export interface Props {
 		highlight?: "exact" | "partial";
 		icon?: string;
 		to: string;
-	}>();
+	}
 
 	const route = useRoute();
 	const router = useRouter();
+	const props = defineProps<Props>();
 	const shouldHighlight = computed(() => {
 		if (props.highlight == "exact") {
 			return route.path == props.to;

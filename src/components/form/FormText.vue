@@ -3,8 +3,12 @@
 </template>
 
 <script setup lang="ts">
+	export interface Props {
+		disabled?: boolean;
+	}
+
 	const text = defineModel<string>({ required: true });
-	defineProps<{ disabled?: boolean }>();
+	const props = defineProps<Props>();
 </script>
 
 <style scoped lang="scss">

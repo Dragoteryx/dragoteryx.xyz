@@ -5,7 +5,11 @@
 <script setup lang="ts">
 	import FormButton from "./FormButton.vue";
 
-	const emit = defineEmits<{ click: [] }>();
+	export interface Emits {
+		click: [];
+	}
+
+	const emit = defineEmits<Emits>();
 </script>
 
 <style scoped>

@@ -7,10 +7,17 @@
 </template>
 
 <script setup lang="ts" generic="T extends string">
+	export interface Props<T> {
+		options: Option<T>[];
+	}
+
+	export interface Option<T> {
+		value: T;
+		description: string;
+	}
+
 	const value = defineModel<T>({ required: true });
-	defineProps<{
-		options: readonly { value: NoInfer<T>; description: string }[];
-	}>();
+	const props = defineProps<Props<T>>();
 </script>
 
 <style scoped lang="scss">

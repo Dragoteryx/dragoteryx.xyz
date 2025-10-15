@@ -6,9 +6,9 @@
 		@scroll="scroll"
 		@drag="drag"
 	>
-		<FormButton class="red" icon="trash" @click="gameOfLifeStore.clear"
-			>Kill {{ gameOfLifeStore.aliveCells }} alive cells</FormButton
-		>
+		<FormButton class="red" icon="trash" @click="gameOfLifeStore.clear">
+			Kill {{ gameOfLifeStore.aliveCells }} alive cells
+		</FormButton>
 		<hr />
 		<FormRange :reset="10" :min="1" :max="60" v-model="gameOfLifeStore.speed">Speed</FormRange>
 	</CanvasMenu>

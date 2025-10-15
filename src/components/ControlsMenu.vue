@@ -10,12 +10,14 @@
 	import type { Controls } from "@/composables/controls";
 	import { computed } from "vue";
 
+	export interface Props {
+		controls: Controls;
+	}
+
+	const props = defineProps<Props>();
 	const text = computed(() => (props.controls.paused ? "Resume" : "Pause"));
 	const color = computed(() => (props.controls.paused ? "blue" : "orange"));
 	const icon = computed(() => (props.controls.paused ? "pi-play" : "pi-pause"));
-	const props = defineProps<{
-		controls: Controls;
-	}>();
 
 	function toggle() {
 		props.controls.paused = !props.controls.paused;

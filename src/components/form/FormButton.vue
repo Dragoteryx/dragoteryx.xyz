@@ -6,12 +6,13 @@
 </template>
 
 <script setup lang="ts">
-	const emit = defineEmits<{ click: [] }>();
-
-	defineProps<{
+	export interface Props {
 		text?: string;
 		icon?: string;
-	}>();
+	}
+
+	const emit = defineEmits<{ click: [] }>();
+	const props = defineProps<Props>();
 </script>
 
 <style scoped lang="scss">
