@@ -1,12 +1,12 @@
 <template>
 	<div class="column spaced">
-		<FormColorRgb v-if="mode == 'rgb'" v-model="color"/>
-		<FormColorHsl v-if="mode == 'hsl'" v-model="color"/>
-		<FormColorHsv v-if="mode == 'hsv'" v-model="color"/>
-		<FormColorHwb v-if="mode == 'hwb'" v-model="color"/>
+		<FormColorRgb v-if="mode == 'rgb'" v-model="color" />
+		<FormColorHsl v-if="mode == 'hsl'" v-model="color" />
+		<FormColorHsv v-if="mode == 'hsv'" v-model="color" />
+		<FormColorHwb v-if="mode == 'hwb'" v-model="color" />
 		<div class="row spaced">
 			<div ref="preview" :class="previewClasses">{{ color.hex }}</div>
-			<ResetButton v-if="reset != undefined" @click="resetColor"/>
+			<ResetButton v-if="reset != undefined" @click="resetColor" />
 		</div>
 	</div>
 </template>
@@ -26,7 +26,7 @@
 	}
 
 	const preview = useTemplateRef("preview");
-	const color = defineModel<Color>({required: true});
+	const color = defineModel<Color>({ required: true });
 	const props = defineProps<Props>();
 
 	const previewClasses = computed(() => {

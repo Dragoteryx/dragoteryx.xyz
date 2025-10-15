@@ -12,14 +12,14 @@
 	import { type Color, Hwb } from "@/types/color";
 	import { computed } from "vue";
 
-	const color = defineModel<Color>({required: true});
+	const color = defineModel<Color>({ required: true });
 	const hwb = useHwb(color);
 
 	const h = computed({
 		get: () => hwb.value.h,
 		set(h) {
 			hwb.value = new Hwb(h, w.value, b.value);
-		}
+		},
 	});
 
 	const w = computed({
@@ -30,7 +30,7 @@
 			} else {
 				hwb.value = new Hwb(h.value, w, b.value);
 			}
-		}
+		},
 	});
 
 	const b = computed({
@@ -41,10 +41,12 @@
 			} else {
 				hwb.value = new Hwb(h.value, w.value, b);
 			}
-		}
+		},
 	});
 
-	const hBackg = computed(() => `linear-gradient(in hwb longer hue to right, hwb(0 ${w.value}% ${b.value}%), hwb(0 ${w.value}% ${b.value}%))`);
+	const hBackg = computed(
+		() => `linear-gradient(in hwb longer hue to right, hwb(0 ${w.value}% ${b.value}%), hwb(0 ${w.value}% ${b.value}%))`,
+	);
 	const wBackg = computed(() => `linear-gradient(to right, hwb(${h.value} 0% ${b.value}%), hwb(${h.value} 100% 0%))`);
 	const bBackg = computed(() => `linear-gradient(to right, hwb(${h.value} ${w.value}% 0%), hwb(${h.value} 0% 100%))`);
 </script>

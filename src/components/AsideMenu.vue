@@ -1,14 +1,14 @@
 <template>
 	<aside class="column spaced padded">
 		<header class="row spaced">
-			<img src="@/assets/tako.png" alt="A Minecraft style Takodachi">
+			<img src="@/assets/tako.png" alt="A Minecraft style Takodachi" />
 			<div class="column spaced">
 				<span><b>Dragoteryx</b></span>
-				<hr>
+				<hr />
 				<span>Developer and Garry's Mod modder.</span>
 			</div>
 		</header>
-		<hr>
+		<hr />
 		<div class="column spaced">
 			<span>Fluent in French and English, currently learning Japanese.</span>
 			<div>
@@ -20,23 +20,23 @@
 				</ul>
 			</div>
 		</div>
-		<hr>
+		<hr />
 		<nav class="column spaced large">
 			<NavButton icon="pi-home" to="/" highlight="exact">Home</NavButton>
 			<NavButton icon="pi-box" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
 			<NavButton icon="pi-heart" to="/game-of-life" highlight="partial">Game of Life</NavButton>
 			<NavButton v-if="DEV" icon="pi-code" to="/boids" highlight="partial">Boids</NavButton>
 		</nav>
-		<hr>
+		<hr />
 		<footer class="row">
 			<a href="https://twitter.com/Dragoteryx" v-hover:pulse>
-				<img src="@/assets/twitter_icon.png" alt="Twitter icon">
+				<img src="@/assets/twitter_icon.png" alt="Twitter icon" />
 			</a>
 			<a href="https://github.com/Dragoteryx" v-hover:pulse>
-				<img src="@/assets/github_icon.png" alt="Github icon">
+				<img src="@/assets/github_icon.png" alt="Github icon" />
 			</a>
 			<a href="https://steamcommunity.com/id/dragoteryx/" v-hover:pulse>
-				<img src="@/assets/steam_icon.png" alt="Steam icon">
+				<img src="@/assets/steam_icon.png" alt="Steam icon" />
 			</a>
 		</footer>
 	</aside>
@@ -51,21 +51,21 @@
 
 <style scoped lang="scss">
 	aside {
-    width: 290px;
-  
-    color: var(--white);
-    background: var(--light);
+		width: 290px;
+
+		color: var(--white);
+		background: var(--light);
 		border-right: 1px solid var(--dark);
 
 		display: flex;
 
-    > header > img {
-      width: 125px;
+		> header > img {
+			width: 125px;
 
-      background: radial-gradient(circle, var(--background-center), var(--background-edges));
-      border: 1px solid var(--dark);
-      border-radius: 50%;
-    }
+			background: radial-gradient(circle, var(--background-center), var(--background-edges));
+			border: 1px solid var(--dark);
+			border-radius: 50%;
+		}
 
 		> footer > a {
 			text-align: center;
@@ -75,5 +75,5 @@
 				width: 60%;
 			}
 		}
-  }
+	}
 </style>

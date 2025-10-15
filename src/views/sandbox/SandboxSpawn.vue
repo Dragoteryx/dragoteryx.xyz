@@ -1,9 +1,9 @@
 <template>
-	<SandboxSpawnButton :amount="10"/>
-	<SandboxSpawnButton :amount="50"/>
-	<SandboxSpawnButton :amount="100"/>
-	<SandboxSpawnButton :amount="500"/>
-	<SandboxSpawnButton :amount="1000"/>
+	<SandboxSpawnButton :amount="10" />
+	<SandboxSpawnButton :amount="50" />
+	<SandboxSpawnButton :amount="100" />
+	<SandboxSpawnButton :amount="500" />
+	<SandboxSpawnButton :amount="1000" />
 	<FormButton icon="pi-trash" class="red" @click="clear">Clear</FormButton>
 </template>
 
@@ -13,7 +13,7 @@
 	import { useSandboxStore } from "@/stores/sandbox";
 
 	const sandboxStore = useSandboxStore();
-	
+
 	function clear() {
 		sandboxStore.clearEntities();
 	}

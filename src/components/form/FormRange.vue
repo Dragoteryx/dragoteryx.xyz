@@ -1,8 +1,15 @@
 <template>
 	<label class="row spaced">
 		<span :style="labelSize ? `flex: ${labelSize};` : ''"><slot></slot></span>
-		<input :style="[backg, rangeSize ? `flex: ${rangeSize};` : '']" type="range" v-model="rangeValue" :min="min" :max="max" :dir="dir">
-		<ResetButton v-if="reset != undefined" @click="value = reset ?? 0"/>
+		<input
+			:style="[backg, rangeSize ? `flex: ${rangeSize};` : '']"
+			type="range"
+			v-model="rangeValue"
+			:min="min"
+			:max="max"
+			:dir="dir"
+		/>
+		<ResetButton v-if="reset != undefined" @click="value = reset ?? 0" />
 	</label>
 </template>
 
@@ -10,29 +17,29 @@
 	import ResetButton from "./ResetButton.vue";
 	import { computed } from "vue";
 
-	const value = defineModel<number>({required: true});
+	const value = defineModel<number>({ required: true });
 	const props = defineProps<{
 		labelSize?: number;
 		rangeSize?: number;
-		dir?: 'ltr' | 'rtl',
-		reset?: number,
-		backg?: string,
-		min: number,
-		max: number,
+		dir?: "ltr" | "rtl";
+		reset?: number;
+		backg?: string;
+		min: number;
+		max: number;
 	}>();
 
 	const rangeValue = computed({
 		get: () => value.value,
 		set(num) {
 			value.value = Number(num);
-		}
+		},
 	});
 
-	const backg = computed(() => props.backg ? `background: ${props.backg};` : "");
+	const backg = computed(() => (props.backg ? `background: ${props.backg};` : ""));
 </script>
 
 <style scoped lang="scss">
-	input[type=range] {
+	input[type="range"] {
 		appearance: none;
 		outline: none;
 
@@ -41,7 +48,7 @@
 		position: relative;
 		top: 4px;
 
-		background-color: var(--medium);;
+		background-color: var(--medium);
 		border: 1px solid var(--dark);
 
 		@mixin slider-thumb {

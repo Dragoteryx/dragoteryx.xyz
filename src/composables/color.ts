@@ -50,29 +50,13 @@ export function useLocalStorageColor(name: string, defaultValue: Color): Writabl
 				const parsed: unknown = JSON.parse(local.value);
 				if (typeof parsed == "object" && parsed != null) {
 					if ("r" in parsed && "g" in parsed && "b" in parsed) {
-						return new Rgb(
-							Number(parsed["r"]),
-							Number(parsed["g"]),
-							Number(parsed["b"]),
-						);
+						return new Rgb(Number(parsed["r"]), Number(parsed["g"]), Number(parsed["b"]));
 					} else if ("h" in parsed && "s" in parsed && "l" in parsed) {
-						return new Hsl(
-							Number(parsed["h"]),
-							Number(parsed["s"]),
-							Number(parsed["l"]),
-						);
+						return new Hsl(Number(parsed["h"]), Number(parsed["s"]), Number(parsed["l"]));
 					} else if ("h" in parsed && "s" in parsed && "v" in parsed) {
-						return new Hsv(
-							Number(parsed["h"]),
-							Number(parsed["s"]),
-							Number(parsed["v"]),
-						);
+						return new Hsv(Number(parsed["h"]), Number(parsed["s"]), Number(parsed["v"]));
 					} else if ("h" in parsed && "w" in parsed && "b" in parsed) {
-						return new Hwb(
-							Number(parsed["h"]),
-							Number(parsed["w"]),
-							Number(parsed["b"]),
-						);
+						return new Hwb(Number(parsed["h"]), Number(parsed["w"]), Number(parsed["b"]));
 					}
 				}
 				return defaultValue;

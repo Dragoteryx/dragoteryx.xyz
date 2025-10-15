@@ -10,7 +10,7 @@ import wasm from "vite-plugin-wasm";
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
-		vue({include: [/\.vue$/, /\.md$/]}),
+		vue({ include: [/\.vue$/, /\.md$/] }),
 		vueDevTools(),
 		markdown({}),
 		// @ts-expect-error

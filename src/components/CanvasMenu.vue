@@ -1,6 +1,7 @@
 <template>
 	<div class="large row">
-		<Canvas2D class="large"
+		<Canvas2D
+			class="large"
 			v-model:width="width"
 			v-model:height="height"
 			v-model:context="context"
@@ -9,8 +10,8 @@
 			@drag="(x, y) => emit('drag', x, y)"
 		/>
 		<div class="column spaced padded menu">
-			<ControlsMenu :controls="props.controls"/>
-			<hr>
+			<ControlsMenu :controls="props.controls" />
+			<hr />
 			<slot></slot>
 		</div>
 	</div>
@@ -22,8 +23,8 @@
 	import type { Controls } from "@/composables/controls";
 	import { onMounted, onUnmounted } from "vue";
 
-	const width = defineModel("width", {default: 0});
-	const height = defineModel("height", {default: 0});
+	const width = defineModel("width", { default: 0 });
+	const height = defineModel("height", { default: 0 });
 	const context = defineModel<CanvasRenderingContext2D>("context");
 
 	const props = defineProps<{

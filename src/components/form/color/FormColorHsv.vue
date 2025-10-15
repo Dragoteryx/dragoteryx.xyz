@@ -12,28 +12,28 @@
 	import { type Color, Hsv } from "@/types/color";
 	import { computed } from "vue";
 
-	const color = defineModel<Color>({required: true});
+	const color = defineModel<Color>({ required: true });
 	const hsv = useHsv(color);
 
 	const h = computed({
 		get: () => hsv.value.h,
 		set(h) {
 			hsv.value = new Hsv(h, s.value, v.value);
-		}
+		},
 	});
 
 	const s = computed({
 		get: () => hsv.value.s,
 		set(s) {
 			hsv.value = new Hsv(h.value, s, v.value);
-		}
+		},
 	});
 
 	const v = computed({
 		get: () => hsv.value.v,
 		set(v) {
 			hsv.value = new Hsv(h.value, s.value, v);
-		}
+		},
 	});
 
 	const hsl = useHsl(color);
@@ -41,7 +41,10 @@
 	const sMax = computed(() => new Hsv(h.value, 100, v.value).hex);
 	const vMin = computed(() => new Hsv(h.value, s.value, 0).hex);
 	const vMax = computed(() => new Hsv(h.value, s.value, 100).hex);
-	const hBackg = computed(() => `linear-gradient(in hsl longer hue to right, hsl(0 ${hsl.value.s}% ${hsl.value.l}%), hsl(0 ${hsl.value.s}% ${hsl.value.l}%))`);
+	const hBackg = computed(
+		() =>
+			`linear-gradient(in hsl longer hue to right, hsl(0 ${hsl.value.s}% ${hsl.value.l}%), hsl(0 ${hsl.value.s}% ${hsl.value.l}%))`,
+	);
 	const sBackg = computed(() => `linear-gradient(to right, ${sMin.value}, ${sMax.value})`);
 	const vBackg = computed(() => `linear-gradient(to right, ${vMin.value}, ${vMax.value})`);
 </script>

@@ -1,20 +1,20 @@
 <template>
 	<button class="row" @click="emit('click')">
-		<span v-if="icon" :class="{pi: true, [icon]: true}"></span>
+		<span v-if="icon" :class="{ pi: true, [icon]: true }"></span>
 		<span class="large"><slot></slot></span>
 	</button>
 </template>
 
 <script setup lang="ts">
-	const emit = defineEmits<{click: []}>();
-	
+	const emit = defineEmits<{ click: [] }>();
+
 	defineProps<{
 		text?: string;
 		icon?: string;
 	}>();
 </script>
 
-<style scoped lang="scss">;
+<style scoped lang="scss">
 	@use "@/styles/mixins.scss";
 
 	button {

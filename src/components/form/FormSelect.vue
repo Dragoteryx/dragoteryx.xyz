@@ -7,9 +7,9 @@
 </template>
 
 <script setup lang="ts" generic="T extends string">
-	const value = defineModel<T>({required: true});
+	const value = defineModel<T>({ required: true });
 	defineProps<{
-		options: readonly {value: NoInfer<T>, description: string}[];
+		options: readonly { value: NoInfer<T>; description: string }[];
 	}>();
 </script>
 

@@ -26,7 +26,7 @@
 			return false;
 		}
 	});
-	
+
 	function click() {
 		router.push(props.to);
 	}

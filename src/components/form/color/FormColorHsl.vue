@@ -12,31 +12,38 @@
 	import { type Color, Hsl } from "@/types/color";
 	import { computed } from "vue";
 
-	const color = defineModel<Color>({required: true});
+	const color = defineModel<Color>({ required: true });
 	const hsl = useHsl(color);
 
 	const h = computed({
 		get: () => hsl.value.h,
 		set(h) {
 			hsl.value = new Hsl(h, s.value, l.value);
-		}
+		},
 	});
 
 	const s = computed({
 		get: () => hsl.value.s,
 		set(s) {
 			hsl.value = new Hsl(h.value, s, l.value);
-		}
+		},
 	});
 
 	const l = computed({
 		get: () => hsl.value.l,
 		set(l) {
 			hsl.value = new Hsl(h.value, s.value, l);
-		}
+		},
 	});
 
-	const hBackg = computed(() => `linear-gradient(in hsl longer hue to right, hsl(0 ${s.value}% ${l.value}%), hsl(0 ${s.value}% ${l.value}%))`);
-	const sBackg = computed(() => `linear-gradient(to right, hsl(${h.value} 0% ${l.value}%), hsl(${h.value} 100% ${l.value}%))`);
-	const lBackg = computed(() => `linear-gradient(to right, hsl(${h.value} ${s.value}% 0%), hsl(${h.value} ${s.value}% 50%), hsl(${h.value} ${s.value}% 100%))`);
+	const hBackg = computed(
+		() => `linear-gradient(in hsl longer hue to right, hsl(0 ${s.value}% ${l.value}%), hsl(0 ${s.value}% ${l.value}%))`,
+	);
+	const sBackg = computed(
+		() => `linear-gradient(to right, hsl(${h.value} 0% ${l.value}%), hsl(${h.value} 100% ${l.value}%))`,
+	);
+	const lBackg = computed(
+		() =>
+			`linear-gradient(to right, hsl(${h.value} ${s.value}% 0%), hsl(${h.value} ${s.value}% 50%), hsl(${h.value} ${s.value}% 100%))`,
+	);
 </script>

@@ -7,14 +7,11 @@
 	import { useSandboxStore } from "@/stores/sandbox";
 
 	const sandboxStore = useSandboxStore();
-	const props = defineProps<{amount: number}>();
+	const props = defineProps<{ amount: number }>();
 
 	function spawn() {
 		for (let i = 0; i < props.amount; i++) {
-			sandboxStore.addCircle(
-				Math.random() * sandboxStore.width,
-				Math.random() * sandboxStore.height,
-			);
+			sandboxStore.addCircle(Math.random() * sandboxStore.width, Math.random() * sandboxStore.height);
 		}
 	}
 </script>

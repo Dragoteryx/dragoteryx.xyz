@@ -18,7 +18,7 @@ export interface Options {
 }
 
 export const useSandboxStore = defineStore("sandbox", () => {
-	const controls = useControls((paused) => {
+	const controls = useControls(paused => {
 		if (!paused) sandbox.tick();
 		if (ctx.value) {
 			if (options.clearCanvas) {
@@ -49,11 +49,11 @@ export const useSandboxStore = defineStore("sandbox", () => {
 		consoleLogs: useLocalStorage("sandbox-console-logs", false),
 	});
 
-	watchEffect(() => sandbox.console_logs = options.consoleLogs);
-	watchEffect(() => sandbox.world_height = height.value);
-	watchEffect(() => sandbox.world_width = width.value);
-	watchEffect(() => sandbox.gravity_strength = gravity.strength);
-	watchEffect(() => sandbox.gravity_angle = gravity.angle);
+	watchEffect(() => (sandbox.console_logs = options.consoleLogs));
+	watchEffect(() => (sandbox.world_height = height.value));
+	watchEffect(() => (sandbox.world_width = width.value));
+	watchEffect(() => (sandbox.gravity_strength = gravity.strength));
+	watchEffect(() => (sandbox.gravity_angle = gravity.angle));
 	watchEffect(() => {
 		const { r, g, b } = color.value.rgb;
 		sandbox.color_r = r;

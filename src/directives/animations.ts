@@ -1,14 +1,8 @@
 import type { DirectiveBinding } from "vue";
 
 export function vHover(el: HTMLElement, binding: DirectiveBinding) {
-	el.addEventListener(
-		"mouseenter",
-		() => el.classList.add(`animate__${binding.arg}`),
-	);
-	el.addEventListener(
-		"mouseleave",
-		() => el.classList.remove(`animate__${binding.arg}`),
-	);
+	el.addEventListener("mouseenter", () => el.classList.add(`animate__${binding.arg}`));
+	el.addEventListener("mouseleave", () => el.classList.remove(`animate__${binding.arg}`));
 
 	el.classList.add("animate__animated");
 	if (binding.modifiers.repeat) {

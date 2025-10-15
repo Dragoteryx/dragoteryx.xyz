@@ -1,9 +1,4 @@
-import {
-	computed,
-	type ComputedRef,
-	type MaybeRefOrGetter,
-	toValue,
-} from "vue";
+import { computed, type ComputedRef, type MaybeRefOrGetter, toValue } from "vue";
 
 export function useFibonacci(n: MaybeRefOrGetter<number>): ComputedRef<number> {
 	return computed(() => {

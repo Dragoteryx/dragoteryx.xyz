@@ -5,7 +5,6 @@
 		v-model:height="boidsStore.height"
 		v-model:context="boidsStore.ctx"
 	>
-
 	</CanvasMenu>
 </template>
 

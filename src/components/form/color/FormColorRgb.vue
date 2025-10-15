@@ -12,31 +12,37 @@
 	import { type Color, Rgb } from "@/types/color";
 	import { computed } from "vue";
 
-	const color = defineModel<Color>({required: true});
+	const color = defineModel<Color>({ required: true });
 	const rgb = useRgb(color);
 
 	const r = computed({
 		get: () => rgb.value.r,
 		set(r) {
 			rgb.value = new Rgb(r, g.value, b.value);
-		}
+		},
 	});
 
 	const g = computed({
 		get: () => rgb.value.g,
 		set(g) {
 			rgb.value = new Rgb(r.value, g, b.value);
-		}
+		},
 	});
 
 	const b = computed({
 		get: () => rgb.value.b,
 		set(b) {
 			rgb.value = new Rgb(r.value, g.value, b);
-		}
+		},
 	});
 
-	const rBackg = computed(() => `linear-gradient(to right, rgb(0 ${g.value} ${b.value}), rgb(255 ${g.value} ${b.value}))`);
-	const gBackg = computed(() => `linear-gradient(to right, rgb(${r.value} 0 ${b.value}), rgb(${r.value} 255 ${b.value}))`);
-	const bBackg = computed(() => `linear-gradient(to right, rgb(${r.value} ${g.value} 0), rgb(${r.value} ${g.value} 255))`);
+	const rBackg = computed(
+		() => `linear-gradient(to right, rgb(0 ${g.value} ${b.value}), rgb(255 ${g.value} ${b.value}))`,
+	);
+	const gBackg = computed(
+		() => `linear-gradient(to right, rgb(${r.value} 0 ${b.value}), rgb(${r.value} 255 ${b.value}))`,
+	);
+	const bBackg = computed(
+		() => `linear-gradient(to right, rgb(${r.value} ${g.value} 0), rgb(${r.value} ${g.value} 255))`,
+	);
 </script>

@@ -15,13 +15,13 @@
 	import { useWindowScroll, useWindowSize } from "@vueuse/core";
 	import { useTemplateRef, watchEffect } from "vue";
 
-	const parent = useTemplateRef("parent")
+	const parent = useTemplateRef("parent");
 	const canvas = useTemplateRef("canvas");
 	const windowScroll = useWindowScroll();
 	const windowSize = useWindowSize();
 
-	const width = defineModel("width", {default: 0});
-	const height = defineModel("height", {default: 0});
+	const width = defineModel("width", { default: 0 });
+	const height = defineModel("height", { default: 0 });
 	const context = defineModel<CanvasRenderingContext2D>("context");
 
 	const emit = defineEmits<{
@@ -29,7 +29,7 @@
 		click: [x: number, y: number];
 		drag: [x: number, y: number];
 	}>();
-	
+
 	watchEffect(() => {
 		const ctx = canvas.value?.getContext("2d");
 		context.value = ctx ?? undefined;
@@ -52,7 +52,7 @@
 
 	let mouseState: "up" | "down" | "drag" = "up";
 
-	function mousedown(){
+	function mousedown() {
 		mouseState = "down";
 	}
 
@@ -62,7 +62,7 @@
 			const y = event.y - (canvas.value?.offsetTop ?? 0) + windowScroll.y.value;
 			emit("click", x, y);
 		}
-		
+
 		mouseState = "up";
 	}
 

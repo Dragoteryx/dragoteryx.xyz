@@ -1,18 +1,18 @@
 <template>
 	<label class="row spaced">
 		<span class="large"><slot></slot></span>
-		<input type="checkbox" class="green" v-model="value"/>
+		<input type="checkbox" class="green" v-model="value" />
 	</label>
 </template>
 
 <script setup lang="ts">
-  const value = defineModel<boolean>({required: true});
+	const value = defineModel<boolean>({ required: true });
 </script>
 
 <style scoped lang="scss">
 	@use "@/styles/mixins.scss";
 
-	input[type=checkbox] {
+	input[type="checkbox"] {
 		cursor: pointer;
 		appearance: none;
 
