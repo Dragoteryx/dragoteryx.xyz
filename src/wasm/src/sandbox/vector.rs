@@ -65,7 +65,7 @@ impl Vector {
 	}
 
 	pub fn dot(self, other: Vector) -> f32 {
-		self.length() * other.length() * (self.angle() - other.angle()).to_radians().cos()
+		self.x * other.x + self.y * other.y
 	}
 
 	pub fn angle(self) -> f32 {

@@ -175,22 +175,16 @@ impl Sandbox {
 
 		let mut possible_collisions = Vec::new();
 		for (&(x, y), entities) in &areas {
-			let entities = {
-				let right_area = areas.get(&(x + 1, y)).into_iter().flatten();
-				let down_area = areas.get(&(x, y + 1)).into_iter().flatten();
-				let down_right_area = areas.get(&(x + 1, y + 1)).into_iter().flatten();
-				let top_right_area = areas.get(&(x + 1, y - 1)).into_iter().flatten();
-				entities.iter()
-					.chain(right_area)
-					.chain(down_area)
-					.chain(down_right_area)
-					.chain(top_right_area)
-					.copied()
-					.collect::<Vec<_>>()
-			};
+			let neighbor_iters = [
+				areas.get(&(x, y)),
+				areas.get(&(x + 1, y)),
+				areas.get(&(x, y + 1)),
+				areas.get(&(x + 1, y + 1)),
+				areas.get(&(x + 1, y - 1)),
+			];
 
 			for (i, &ent1) in entities.iter().enumerate() {
-				for &ent2 in entities.iter().skip(i + 1) {
+				for &ent2 in neighbor_iters.iter().flatten().flat_map(|v| v.iter()).skip(i + 1) {
 					let distance = ent1.distance(ent2);
 					if distance < ent1.vel().length() || distance < ent2.vel().length() {
 						possible_collisions.push((ent1, ent2));
