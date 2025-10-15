@@ -22,19 +22,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up Deno
-        uses: denoland/setup-deno@v2
+        uses: actions/checkout@v5
+      - name: Set up Node
+        uses: actions/setup-node@v6
         with:
-          deno-version: v2.x
+          node-version: "24"
       - name: Install dependencies
-        run: deno install
+        run: npm install
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - name: Build WASM
-        run: deno run build-wasm
+        run: npm run build-wasm
       - name: Build
-        run: deno run build
+        run: npm run build
       - name: Create 404.html
         run: cp ./dist/index.html ./dist/404.html
       - name: Create CNAME
