@@ -18,21 +18,21 @@
 	const h = computed({
 		get: () => hsl.value.h,
 		set(h) {
-			hsl.value = Hsl.parse({h, s: s.value, l: l.value});
+			hsl.value = new Hsl(h, s.value, l.value);
 		}
 	});
 
 	const s = computed({
 		get: () => hsl.value.s,
 		set(s) {
-			hsl.value = Hsl.parse({h: h.value, s, l: l.value});
+			hsl.value = new Hsl(h.value, s, l.value);
 		}
 	});
 
 	const l = computed({
 		get: () => hsl.value.l,
 		set(l) {
-			hsl.value = Hsl.parse({h: h.value, s: s.value, l});
+			hsl.value = new Hsl(h.value, s.value, l);
 		}
 	});
 

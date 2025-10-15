@@ -18,7 +18,7 @@
 	const h = computed({
 		get: () => hwb.value.h,
 		set(h) {
-			hwb.value = Hwb.parse({h, w: w.value, b: b.value});
+			hwb.value = new Hwb(h, w.value, b.value);
 		}
 	});
 
@@ -26,9 +26,9 @@
 		get: () => hwb.value.w,
 		set(w) {
 			if (w + b.value > 100) {
-				hwb.value = Hwb.parse({h: h.value, w, b: 100 - w});
+				hwb.value = new Hwb(h.value, w, 100 - w);
 			} else {
-				hwb.value = Hwb.parse({h: h.value, w, b: b.value});
+				hwb.value = new Hwb(h.value, w, b.value);
 			}
 		}
 	});
@@ -37,9 +37,9 @@
 		get: () => hwb.value.b,
 		set(b) {
 			if (w.value + b > 100) {
-				hwb.value = Hwb.parse({h: h.value, w: 100 - b, b});
+				hwb.value = new Hwb(h.value, 100 - b, b);
 			} else {
-				hwb.value = Hwb.parse({h: h.value, w: w.value, b});
+				hwb.value = new Hwb(h.value, w.value, b);
 			}
 		}
 	});

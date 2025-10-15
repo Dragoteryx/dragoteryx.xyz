@@ -65,8 +65,8 @@ impl Entity {
 		if dist < radius1 + radius2 {
 			let delta = radius1 + radius2 - dist;
 			let normal = axis.normal_or_default();
-			self.cur_pos.set(self.pos() - normal * delta * 0.5);
-			other.cur_pos.set(other.pos() + normal * delta * 0.5);
+			self.cur_pos.set(self.pos() - normal * delta * 0.25);
+			other.cur_pos.set(other.pos() + normal * delta * 0.25);
 		}
 	}
 

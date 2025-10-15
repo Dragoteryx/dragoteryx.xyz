@@ -5,7 +5,7 @@
 		<FormColorHsv v-if="mode == 'hsv'" v-model="color"/>
 		<FormColorHwb v-if="mode == 'hwb'" v-model="color"/>
 		<div class="row spaced">
-			<div ref="preview" :class="previewClasses">{{ hex }}</div>
+			<div ref="preview" :class="previewClasses">{{ color.hex }}</div>
 			<ResetButton v-if="reset != undefined" @click="resetColor"/>
 		</div>
 	</div>
@@ -18,33 +18,32 @@
 	import FormColorHwb from "./color/FormColorHwb.vue";
 	import ResetButton from "./ResetButton.vue";
 	import { computed, useTemplateRef, watchEffect } from "vue";
-	import { useHex, useHsl } from "@/composables/color";
-	import { Color } from "@/types/color";
+	import { type Color } from "@/types/color";
+
+	export interface Props {
+		reset?: Color;
+		mode: string;
+	}
 
 	const preview = useTemplateRef("preview");
 	const color = defineModel<Color>({required: true});
-	const hex = useHex(color);
-	const hsl = useHsl(color);
-	const props = defineProps<{
-		mode: Exclude<Color["type"], "hex">,
-		reset?: Color
-	}>();
+	const props = defineProps<Props>();
 
 	const previewClasses = computed(() => {
 		const classes = ["preview", "large"];
-		if (hsl.value.l < 50) classes.push("dark");
+		if (color.value.hsl.l < 50) classes.push("dark");
 		return classes;
 	});
 
 	watchEffect(() => {
 		if (preview.value) {
-			preview.value.style.backgroundColor = hex.value;
+			preview.value.style.backgroundColor = color.value.hex;
 		}
 	});
 
 	function resetColor() {
 		if (props.reset) {
-			color.value = Color.parse(props.reset);
+			color.value = props.reset;
 		}
 	}
 </script>

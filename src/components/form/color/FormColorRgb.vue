@@ -18,21 +18,21 @@
 	const r = computed({
 		get: () => rgb.value.r,
 		set(r) {
-			rgb.value = Rgb.parse({r, g: g.value, b: b.value});
+			rgb.value = new Rgb(r, g.value, b.value);
 		}
 	});
 
 	const g = computed({
 		get: () => rgb.value.g,
 		set(g) {
-			rgb.value = Rgb.parse({r: r.value, g, b: b.value});
+			rgb.value = new Rgb(r.value, g, b.value);
 		}
 	});
 
 	const b = computed({
 		get: () => rgb.value.b,
 		set(b) {
-			rgb.value = Rgb.parse({r: r.value, g: g.value, b});
+			rgb.value = new Rgb(r.value, g.value, b);
 		}
 	});
 

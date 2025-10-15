@@ -21,8 +21,7 @@
     "npm:vite@^7.1.9": "7.1.9_@types+node@24.6.2_sass@1.93.2_picomatch@4.0.3",
     "npm:vue-router@^4.5.1": "4.5.1_vue@3.5.22__typescript@5.9.3_typescript@5.9.3",
     "npm:vue-tsc@^3.1.0": "3.1.0_typescript@5.9.3",
-    "npm:vue@^3.5.22": "3.5.22_typescript@5.9.3",
-    "npm:zod@^4.1.11": "4.1.11"
+    "npm:vue@^3.5.22": "3.5.22_typescript@5.9.3"
   },
   "npm": {
     "@babel/code-frame@7.27.1": {
@@ -2724,9 +2723,6 @@
     },
     "yoctocolors@2.1.2": {
       "integrity": "sha512-CzhO+pFNo8ajLM2d2IW/R93ipy99LWjtwblvC1RsoSUMZgyLbYFr221TnSNT7GjGdYui6P459mw9JH/g/zW2ug=="
-    },
-    "zod@4.1.11": {
-      "integrity": "sha512-WPsqwxITS2tzx1bzhIKsEs19ABD5vmCVa4xBo2tq/SrV4RNZtfws1EnCWQXM6yh8bD08a1idvkB5MZSBiZsjwg=="
     }
   },
   "workspace": {
@@ -2752,8 +2748,7 @@
         "npm:vite@^7.1.9",
         "npm:vue-router@^4.5.1",
         "npm:vue-tsc@^3.1.0",
-        "npm:vue@^3.5.22",
-        "npm:zod@^4.1.11"
+        "npm:vue@^3.5.22"
       ]
     }
   }

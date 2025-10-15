@@ -12,7 +12,7 @@ mod util;
 use util::*;
 
 pub const TICK_RATE: f32 = 1.0 / 60.0;
-pub const SUB_STEPS: usize = 8;
+pub const SUB_STEPS: usize = 16;
 
 pub fn delta_time() -> f32 {
 	TICK_RATE / SUB_STEPS as f32

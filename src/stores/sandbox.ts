@@ -1,8 +1,8 @@
 import { useLocalStorageColor } from "@/composables/color";
 import { useControls } from "@/composables/controls";
-import { type Color, Hsl, toColor, toRgb } from "@/types/color";
 import { useLocalStorage } from "@vueuse/core";
 import { Sandbox } from "@/wasm/pkg";
+import { Hsl } from "@/types/color";
 import { reactive, ref, watchEffect } from "vue";
 import { defineStore } from "pinia";
 
@@ -12,9 +12,9 @@ export interface Gravity {
 }
 
 export interface Options {
-	colorPicker: Exclude<Color["type"], "hex">;
 	clearCanvas: boolean;
 	consoleLogs: boolean;
+	colorPicker: string;
 }
 
 export const useSandboxStore = defineStore("sandbox", () => {
@@ -34,7 +34,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	const height = ref(0);
 	const width = ref(0);
 
-	const defaultColor = toColor(Hsl.parse({h: 90, s: 50, l: 50}));
+	const defaultColor = new Hsl(90, 50, 50);
 	const color = useLocalStorageColor("sandbox-color", defaultColor);
 	const radius = useLocalStorage("sandbox-radius", 13);
 
@@ -44,7 +44,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	});
 
 	const options: Options = reactive({
-		colorPicker: useLocalStorage<Exclude<Color["type"], "hex">>("sandbox-color-picker", "hsl"),
+		colorPicker: useLocalStorage("sandbox-color-picker", "hsl"),
 		clearCanvas: useLocalStorage("sandbox-clear-canvas", true),
 		consoleLogs: useLocalStorage("sandbox-console-logs", false),
 	});
@@ -55,7 +55,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	watchEffect(() => sandbox.gravity_strength = gravity.strength);
 	watchEffect(() => sandbox.gravity_angle = gravity.angle);
 	watchEffect(() => {
-		const {r, g, b} = toRgb(color.value);
+		const { r, g, b } = color.value.rgb;
 		sandbox.color_r = r;
 		sandbox.color_g = g;
 		sandbox.color_b = b;

@@ -1,177 +1,149 @@
 import convert from "color-convert";
-import z from "zod";
 
-export type Hue = z.infer<typeof Hue>;
-export type Percent = z.infer<typeof Percent>;
-export type Byte = z.infer<typeof Byte>;
+export interface Color {
+	readonly hex: string;
+	readonly rgb: Rgb;
+	readonly hsl: Hsl;
+	readonly hsv: Hsv;
+	readonly hwb: Hwb;
+}
 
-export type Color = z.infer<typeof Color>;
-export type Hex = z.infer<typeof Hex>;
-export type Rgb = z.infer<typeof Rgb>;
-export type Hsl = z.infer<typeof Hsl>;
-export type Hsv = z.infer<typeof Hsv>;
-export type Hwb = z.infer<typeof Hwb>;
+export class Rgb implements Color {
+	public readonly r: number;
+	public readonly g: number;
+	public readonly b: number;
 
-export const Hex = z.string().regex(/^#[0-9a-f]{6}$/i)
-	.or(z.string().regex(/^[0-9a-f]{6}$/i).transform(hex => `#${hex}`))
-	.brand("Hex");
+	public constructor(r: number, g: number, b: number) {
+		this.r = Math.min(255, Math.max(0, Math.floor(r)));
+		this.g = Math.min(255, Math.max(0, Math.floor(g)));
+		this.b = Math.min(255, Math.max(0, Math.floor(b)));
+	}
 
-export const Byte = z.number().int().min(0).max(255).brand("Byte");
-export const Hue = z.number().int().min(0).max(360).brand("Hue");
-export const Percent = z.number().int().min(0).max(100).brand("Percent");
+	public get hex() {
+		return `#${convert.rgb.hex(this.r, this.g, this.b)}`;
+	}
 
-export const Rgb = z.object({
-	r: Byte,
-	g: Byte,
-	b: Byte,
-}).readonly();
+	public get rgb() {
+		return this;
+	}
 
-export const Hsl = z.object({
-	h: Hue,
-	s: Percent,
-	l: Percent,
-}).readonly();
+	public get hsl() {
+		const [h, s, l] = convert.rgb.hsl(this.r, this.g, this.b);
+		return new Hsl(h, s, l);
+	}
 
-export const Hsv = z.object({
-	h: Hue,
-	s: Percent,
-	v: Percent,
-}).readonly();
+	public get hsv() {
+		const [h, s, v] = convert.rgb.hsv(this.r, this.g, this.b);
+		return new Hsv(h, s, v);
+	}
 
-export const Hwb = z.object({
-	h: Hue,
-	w: Percent,
-	b: Percent,
-}).readonly();
-
-export const Color = z.union([
-	z.object({
-		type: z.literal("hex"),
-		value: Hex,
-	}),
-	z.object({
-		type: z.literal("rgb"),
-		value: Rgb,
-	}),
-	z.object({
-		type: z.literal("hsl"),
-		value: Hsl,
-	}),
-	z.object({
-		type: z.literal("hsv"),
-		value: Hsv,
-	}),
-	z.object({
-		type: z.literal("hwb"),
-		value: Hwb,
-	}),
-]).readonly();
-
-export function toColor(color: Hex | Rgb | Hsl | Hsv | Hwb): Color {
-	if (typeof color === "string") {
-		return {type: "hex", value: color};
-	} else if ("r" in color) {
-		return {type: "rgb", value: color};
-	} else if ("l" in color) {
-		return {type: "hsl", value: color};
-	} else if ("v" in color) {
-		return {type: "hsv", value: color};
-	} else {
-		return {type: "hwb", value: color};
+	public get hwb() {
+		const [h, w, b] = convert.rgb.hwb(this.r, this.g, this.b);
+		return new Hwb(h, w, b);
 	}
 }
 
-export function toHex(color: Color): Hex {
-	switch (color.type) {
-		case "hex":
-			return color.value;
-		case "rgb":
-			return Hex.parse(convert.rgb.hex([color.value.r, color.value.g, color.value.b]));
-		case "hsl":
-			return Hex.parse(convert.hsl.hex([color.value.h, color.value.s, color.value.l]));
-		case "hsv":
-			return Hex.parse(convert.hsv.hex([color.value.h, color.value.s, color.value.v]));
-		case "hwb":
-			return Hex.parse(convert.hwb.hex([color.value.h, color.value.w, color.value.b]));
+export class Hsl implements Color {
+	public readonly h: number;
+	public readonly s: number;
+	public readonly l: number;
+
+	public constructor(h: number, s: number, l: number) {
+		this.s = Math.min(100, Math.max(0, Math.floor(s)));
+		this.l = Math.min(100, Math.max(0, Math.floor(l)));
+		this.h = Math.floor(h) % 360;
+	}
+
+	public get hex() {
+		return `#${convert.hsl.hex(this.h, this.s, this.l)}`;
+	}
+
+	public get rgb() {
+		const [r, g, b] = convert.hsl.rgb(this.h, this.s, this.l);
+		return new Rgb(r, g, b);
+	}
+
+	public get hsl() {
+		return this;
+	}
+
+	public get hsv() {
+		const [h, s, v] = convert.hsl.hsv(this.h, this.s, this.l);
+		return new Hsv(h, s, v);
+	}
+
+	public get hwb() {
+		const [h, w, b] = convert.hsl.hwb(this.h, this.s, this.l);
+		return new Hwb(h, w, b);
 	}
 }
 
-export function toRgb(color: Color): Rgb {
-	let [r, g, b] = [0, 0, 0];
-	switch (color.type) {
-		case "hex":
-			[r, g, b] = convert.hex.rgb(color.value);
-			return Rgb.parse({r, g, b});
-		case "rgb":
-			return color.value;
-		case "hsl":
-			[r, g, b] = convert.hsl.rgb([color.value.h, color.value.s, color.value.l]);
-			return Rgb.parse({r, g, b});
-		case "hsv":
-			[r, g, b] = convert.hsv.rgb([color.value.h, color.value.s, color.value.v]);
-			return Rgb.parse({r, g, b});
-		case "hwb":
-			[r, g, b] = convert.hwb.rgb([color.value.h, color.value.w, color.value.b]);
-			return Rgb.parse({r, g, b});
-	}	
-}
+export class Hsv implements Color {
+	public readonly h: number;
+	public readonly s: number;
+	public readonly v: number;
 
-export function toHsl(color: Color): Hsl {
-	let [h, s, l] = [0, 0, 0];
-	switch (color.type) {
-		case "hex":
-			[h, s, l] = convert.hex.hsl(color.value);
-			return Hsl.parse({h, s, l});
-		case "rgb":
-			[h, s, l] = convert.rgb.hsl([color.value.r, color.value.g, color.value.b]);
-			return Hsl.parse({h, s, l});
-		case "hsl":
-			return color.value;
-		case "hsv":
-			[h, s, l] = convert.hsv.hsl([color.value.h, color.value.s, color.value.v]);
-			return Hsl.parse({h, s, l});
-		case "hwb":
-			[h, s, l] = convert.hwb.hsl([color.value.h, color.value.w, color.value.b]);
-			return Hsl.parse({h, s, l});
+	public constructor(h: number, s: number, v: number) {
+		this.s = Math.min(100, Math.max(0, Math.floor(s)));
+		this.v = Math.min(100, Math.max(0, Math.floor(v)));
+		this.h = Math.floor(h) % 360;
+	}
+
+	public get hex() {
+		return `#${convert.hsv.hex(this.h, this.s, this.v)}`;
+	}
+
+	public get rgb() {
+		const [r, g, b] = convert.hsv.rgb(this.h, this.s, this.v);
+		return new Rgb(r, g, b);
+	}
+
+	public get hsl() {
+		const [h, s, l] = convert.hsv.hsl(this.h, this.s, this.v);
+		return new Hsl(h, s, l);
+	}
+
+	public get hsv() {
+		return this;
+	}
+
+	public get hwb() {
+		const [h, w, b] = convert.hsv.hwb(this.h, this.s, this.v);
+		return new Hwb(h, w, b);
 	}
 }
 
-export function toHsv(color: Color): Hsv {
-	let [h, s, v] = [0, 0, 0];
-	switch (color.type) {
-		case "hex":
-			[h, s, v] = convert.hex.hsv(color.value);
-			return Hsv.parse({h, s, v});
-		case "rgb":
-			[h, s, v] = convert.rgb.hsv([color.value.r, color.value.g, color.value.b]);
-			return Hsv.parse({h, s, v});
-		case "hsl":
-			[h, s, v] = convert.hsl.hsv([color.value.h, color.value.s, color.value.l]);
-			return Hsv.parse({h, s, v});
-		case "hsv":
-			return color.value;
-		case "hwb":
-			[h, s, v] = convert.hwb.hsv([color.value.h, color.value.w, color.value.b]);
-			return Hsv.parse({h, s, v});
-	}	
-}
+export class Hwb implements Color {
+	public readonly h: number;
+	public readonly w: number;
+	public readonly b: number;
 
-export function toHwb(color: Color): Hwb {
-	let [h, w, b] = [0, 0, 0];
-	switch (color.type) {
-		case "hex":
-			[h, w, b] = convert.hex.hwb(color.value);
-			return Hwb.parse({h, w, b});
-		case "rgb":
-			[h, w, b] = convert.rgb.hwb([color.value.r, color.value.g, color.value.b]);
-			return Hwb.parse({h, w, b});
-		case "hsl":
-			[h, w, b] = convert.hsl.hwb([color.value.h, color.value.s, color.value.l]);
-			return Hwb.parse({h, w, b});
-		case "hsv":
-			[h, w, b] = convert.hsv.hwb([color.value.h, color.value.s, color.value.v]);
-			return Hwb.parse({h, w, b});
-		case "hwb":
-			return color.value;
-	}	
+	public constructor(h: number, w: number, b: number) {
+		this.w = Math.min(100, Math.max(0, Math.floor(w)));
+		this.b = Math.min(100, Math.max(0, Math.floor(b)));
+		this.h = Math.floor(h) % 360;
+	}
+
+	public get hex() {
+		return `#${convert.hwb.hex(this.h, this.w, this.b)}`;
+	}
+
+	public get rgb() {
+		const [r, g, b] = convert.hwb.rgb(this.h, this.w, this.b);
+		return new Rgb(r, g, b);
+	}
+
+	public get hsl() {
+		const [h, s, l] = convert.hwb.hsl(this.h, this.w, this.b);
+		return new Hsl(h, s, l);
+	}
+
+	public get hsv() {
+		const [h, s, v] = convert.hwb.hsv(this.h, this.w, this.b);
+		return new Hsv(h, s, v);
+	}
+
+	public get hwb() {
+		return this;
+	}
 }
