@@ -4,6 +4,8 @@
 	<SandboxSpawnButton :amount="100" />
 	<SandboxSpawnButton :amount="500" />
 	<SandboxSpawnButton :amount="1000" />
+	<SandboxSpawnButton :amount="5000" />
+	<SandboxSpawnButton :amount="10000" />
 	<FormButton icon="pi-trash" class="red" @click="clear">Clear</FormButton>
 </template>
 

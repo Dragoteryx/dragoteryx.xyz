@@ -62,8 +62,10 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	});
 
 	function addCircle(x: number, y: number) {
+		if (entities.value >= 15000) return false;
 		sandbox.add_circle(x, y, radius.value);
 		entities.value++;
+		return true;
 	}
 
 	function clearEntities() {

@@ -44,9 +44,20 @@
 		},
 	});
 
-	const hBackg = computed(
-		() => `linear-gradient(in hwb longer hue to right, hwb(0 ${w.value}% ${b.value}%), hwb(0 ${w.value}% ${b.value}%))`,
-	);
-	const wBackg = computed(() => `linear-gradient(to right, hwb(${h.value} 0% ${b.value}%), hwb(${h.value} 100% 0%))`);
-	const bBackg = computed(() => `linear-gradient(to right, hwb(${h.value} ${w.value}% 0%), hwb(${h.value} 0% 100%))`);
+	const hBackg = computed(() => {
+		const value = `hwb(360 ${w.value}% ${b.value}%)`;
+		return `linear-gradient(in hwb longer hue to right, ${value}, ${value})`;
+	});
+
+	const wBackg = computed(() => {
+		const from = `hwb(${h.value} 0% ${b.value}%)`;
+		const to = `hwb(${h.value} 100% 0%)`;
+		return `linear-gradient(to right, ${from}, ${to})`;
+	});
+
+	const bBackg = computed(() => {
+		const from = `hwb(${h.value} ${w.value}% 0%)`;
+		const to = `hwb(${h.value} 0% 100%)`;
+		return `linear-gradient(to right, ${from}, ${to})`;
+	});
 </script>

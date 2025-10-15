@@ -36,13 +36,21 @@
 		},
 	});
 
-	const rBackg = computed(
-		() => `linear-gradient(to right, rgb(0 ${g.value} ${b.value}), rgb(255 ${g.value} ${b.value}))`,
-	);
-	const gBackg = computed(
-		() => `linear-gradient(to right, rgb(${r.value} 0 ${b.value}), rgb(${r.value} 255 ${b.value}))`,
-	);
-	const bBackg = computed(
-		() => `linear-gradient(to right, rgb(${r.value} ${g.value} 0), rgb(${r.value} ${g.value} 255))`,
-	);
+	const rBackg = computed(() => {
+		const from = `rgb(0 ${g.value} ${b.value})`;
+		const to = `rgb(255 ${g.value} ${b.value})`;
+		return `linear-gradient(to right, ${from}, ${to})`;
+	});
+
+	const gBackg = computed(() => {
+		const from = `rgb(${r.value} 0 ${b.value})`;
+		const to = `rgb(${r.value} 255 ${b.value})`;
+		return `linear-gradient(to right, ${from}, ${to})`;
+	});
+
+	const bBackg = computed(() => {
+		const from = `rgb(${r.value} ${g.value} 0)`;
+		const to = `rgb(${r.value} ${g.value} 255)`;
+		return `linear-gradient(to right, ${from}, ${to})`;
+	});
 </script>

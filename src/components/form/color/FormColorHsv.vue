@@ -37,14 +37,15 @@
 	});
 
 	const hsl = useHsl(color);
+	const hBackg = computed(() => {
+		const value = `hsl(0 ${hsl.value.s}% ${hsl.value.l}%)`;
+		return `linear-gradient(in hsl longer hue to right, ${value}, ${value})`;
+	});
+
 	const sMin = computed(() => new Hsv(h.value, 0, v.value).hex);
 	const sMax = computed(() => new Hsv(h.value, 100, v.value).hex);
 	const vMin = computed(() => new Hsv(h.value, s.value, 0).hex);
 	const vMax = computed(() => new Hsv(h.value, s.value, 100).hex);
-	const hBackg = computed(
-		() =>
-			`linear-gradient(in hsl longer hue to right, hsl(0 ${hsl.value.s}% ${hsl.value.l}%), hsl(0 ${hsl.value.s}% ${hsl.value.l}%))`,
-	);
 	const sBackg = computed(() => `linear-gradient(to right, ${sMin.value}, ${sMax.value})`);
 	const vBackg = computed(() => `linear-gradient(to right, ${vMin.value}, ${vMax.value})`);
 </script>

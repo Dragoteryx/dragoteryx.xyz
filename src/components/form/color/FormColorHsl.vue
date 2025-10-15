@@ -36,14 +36,21 @@
 		},
 	});
 
-	const hBackg = computed(
-		() => `linear-gradient(in hsl longer hue to right, hsl(0 ${s.value}% ${l.value}%), hsl(0 ${s.value}% ${l.value}%))`,
-	);
-	const sBackg = computed(
-		() => `linear-gradient(to right, hsl(${h.value} 0% ${l.value}%), hsl(${h.value} 100% ${l.value}%))`,
-	);
-	const lBackg = computed(
-		() =>
-			`linear-gradient(to right, hsl(${h.value} ${s.value}% 0%), hsl(${h.value} ${s.value}% 50%), hsl(${h.value} ${s.value}% 100%))`,
-	);
+	const hBackg = computed(() => {
+		const value = `hsl(0 ${s.value}% ${l.value}%)`;
+		return `linear-gradient(in hsl longer hue to right, ${value}, ${value})`;
+	});
+
+	const sBackg = computed(() => {
+		const from = `hsl(${h.value} 0% ${l.value}%)`;
+		const to = `hsl(${h.value} 100% ${l.value}%)`;
+		return `linear-gradient(to right, ${from}, ${to})`;
+	});
+
+	const lBackg = computed(() => {
+		const from = `hsl(${h.value} ${s.value}% 0%)`;
+		const mid = `hsl(${h.value} ${s.value}% 50%)`;
+		const to = `hsl(${h.value} ${s.value}% 100%)`;
+		return `linear-gradient(to right, ${from}, ${mid}, ${to})`;
+	});
 </script>
