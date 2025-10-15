@@ -6,7 +6,7 @@
 		@scroll="scroll"
 		@drag="drag"
 	>
-		<FormButton class="red" icon="pi-trash" @click="gameOfLifeStore.clear"
+		<FormButton class="red" icon="trash" @click="gameOfLifeStore.clear"
 			>Kill {{ gameOfLifeStore.aliveCells }} alive cells</FormButton
 		>
 		<hr />

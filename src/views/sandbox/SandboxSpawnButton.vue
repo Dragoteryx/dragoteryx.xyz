@@ -1,5 +1,5 @@
 <template>
-	<FormButton icon="pi-plus" class="green" @click="spawn">Spawn {{ amount }}</FormButton>
+	<FormButton icon="plus" class="green" @click="spawn">Spawn {{ amount }}</FormButton>
 </template>
 
 <script setup lang="ts">

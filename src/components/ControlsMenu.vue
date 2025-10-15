@@ -1,7 +1,7 @@
 <template>
 	<div class="row spaced">
 		<FormButton class="large" :class="color" :icon="icon" @click="toggle">{{ text }}</FormButton>
-		<FormButton class="large" icon="pi-forward" @click="tick">Step</FormButton>
+		<FormButton class="large" icon="forward" @click="tick">Step</FormButton>
 	</div>
 </template>
 

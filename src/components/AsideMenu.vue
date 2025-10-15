@@ -22,10 +22,10 @@
 		</div>
 		<hr />
 		<nav class="column spaced large">
-			<NavButton icon="pi-home" to="/" highlight="exact">Home</NavButton>
-			<NavButton icon="pi-box" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
-			<NavButton icon="pi-heart" to="/game-of-life" highlight="partial">Game of Life</NavButton>
-			<NavButton v-if="DEV" icon="pi-code" to="/boids" highlight="partial">Boids</NavButton>
+			<NavButton icon="home" to="/" highlight="exact">Home</NavButton>
+			<NavButton icon="box" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
+			<NavButton icon="heart" to="/game-of-life" highlight="partial">Game of Life</NavButton>
+			<NavButton v-if="DEV" icon="code" to="/boids" highlight="partial">Boids</NavButton>
 		</nav>
 		<hr />
 		<footer class="row">

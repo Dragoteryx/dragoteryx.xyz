@@ -1,12 +1,14 @@
 <template>
-	<FormButton aria-label="Toggle dark mode" :icon="dark ? 'pi-moon' : 'pi-sun'" @click="dark = !dark" />
+	<FormButton aria-label="Toggle dark mode" :icon="icon" @click="dark = !dark" />
 </template>
 
 <script setup lang="ts">
 	import FormButton from "./form/FormButton.vue";
 	import { useDark } from "@vueuse/core";
+	import { computed } from "vue";
 
 	const dark = useDark();
+	const icon = computed(() => (dark.value ? "moon" : "sun"));
 </script>
 
 <style scoped lang="scss">

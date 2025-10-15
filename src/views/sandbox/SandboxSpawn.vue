@@ -6,7 +6,7 @@
 	<SandboxSpawnButton :amount="1000" />
 	<SandboxSpawnButton :amount="5000" />
 	<SandboxSpawnButton :amount="10000" />
-	<FormButton icon="pi-trash" class="red" @click="clear">Clear</FormButton>
+	<FormButton icon="trash" class="red" @click="clear">Clear</FormButton>
 </template>
 
 <script setup lang="ts">

@@ -6,8 +6,8 @@
 		v-model:context="sandboxStore.ctx"
 		@click="sandboxStore.addCircle"
 	>
-		<NavButton icon="pi-box" to="/sandbox" highlight="exact">Spawn entities</NavButton>
-		<NavButton icon="pi-cog" to="/sandbox/settings" highlight="exact">Settings</NavButton>
+		<NavButton icon="box" to="/sandbox" highlight="exact">Spawn entities</NavButton>
+		<NavButton icon="cog" to="/sandbox/settings" highlight="exact">Settings</NavButton>
 		<hr />
 		<div class="column spaced large">
 			<RouterView />
