@@ -1,7 +1,0 @@
-{
-	"useTabs": true,
-	"printWidth": 120,
-	"arrowParens": "avoid",
-	"vueIndentScriptAndStyle": true,
-	"endOfLine": "auto"
-}

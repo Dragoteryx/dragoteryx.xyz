@@ -12,6 +12,13 @@
 		"build-wasm": "wasm-pack build src/wasm --target bundler",
 		"format": "prettier --write ."
 	},
+	"prettier": {
+		"useTabs": true,
+		"printWidth": 120,
+		"endOfLine": "auto",
+		"arrowParens": "avoid",
+		"vueIndentScriptAndStyle": true
+	},
 	"dependencies": {
 		"@vueuse/core": "^13.9.0",
 		"animate.css": "^4.1.1",
