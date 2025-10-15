@@ -2,9 +2,9 @@ import { useLocalStorageColor } from "@/composables/color";
 import { useControls } from "@/composables/controls";
 import { type Color, Hsl, toColor, toRgb } from "@/types/color";
 import { useLocalStorage } from "@vueuse/core";
+import { Sandbox } from "@/wasm/pkg";
 import { reactive, ref, watchEffect } from "vue";
 import { defineStore } from "pinia";
-import { Sandbox } from "@/wasm/pkg";
 
 export interface Gravity {
 	strength: number;

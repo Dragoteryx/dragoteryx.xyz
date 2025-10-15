@@ -1,8 +1,8 @@
-import { useCssVar, useLocalStorage } from "@vueuse/core";
+import { useLocalStorage } from "@vueuse/core";
 import { useControls } from "@/composables/controls";
 import { useFibonacci } from "@/composables/math";
-import { reactive, ref } from "vue";
 import { GameOfLife } from "@/wasm/pkg/wasm";
+import { reactive, ref } from "vue";
 import { defineStore } from "pinia";
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
