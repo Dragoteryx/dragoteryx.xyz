@@ -18,9 +18,9 @@ impl Shape {
 	}
 
 	#[allow(unused_must_use)]
-	pub fn draw(&self, ctx: &CanvasRenderingContext2d, pos: Vector, color: Color) {
+	pub fn draw(&self, ctx: &CanvasRenderingContext2d, pos: Vec2, color: Color) {
 		let Self::Circle { radius } = *self;
-		let Vector { x, y } = pos;
+		let Vec2 { x, y } = pos;
 		let Color { r, g, b } = color;
 		ctx.set_fill_style(&format!("rgb({r}, {g}, {b})").into());
 		ctx.set_stroke_style(&"black".into());
@@ -32,9 +32,9 @@ impl Shape {
 		ctx.set_global_alpha(1.0);
 	}
 
-	pub fn bounds(&self) -> (Vector, Vector) {
+	pub fn bounds(&self) -> (Vec2, Vec2) {
 		let Self::Circle { radius } = *self;
-		let radius = Vector::splat(radius);
+		let radius = Vec2::splat(radius);
 		(-radius, radius)
 	}
 }

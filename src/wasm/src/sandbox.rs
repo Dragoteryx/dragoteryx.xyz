@@ -1,12 +1,10 @@
 use std::collections::HashMap;
 use wasm_bindgen::prelude::*;
 use web_sys::CanvasRenderingContext2d;
+use glam::Vec2;
 
 mod entity;
 use entity::*;
-
-mod vector;
-use vector::*;
 
 mod util;
 use util::*;
@@ -23,7 +21,7 @@ pub fn delta_time() -> f32 {
 pub struct Sandbox {
 	entities: Vec<Entity>,
 	console_logs: bool,
-	world_size: Vector,
+	world_size: Vec2,
 	gravity_strength: f32,
 	gravity_angle: f32,
 	color: Color,
@@ -36,7 +34,7 @@ impl Sandbox {
 		Self {
 			entities: Vec::new(),
 			console_logs: false,
-			world_size: Vector::ORIGIN,
+			world_size: Vec2::ZERO,
 			gravity_strength: 981.0,
 			gravity_angle: 0.0,
 			color: Color {
@@ -128,7 +126,7 @@ impl Sandbox {
 	}
 
 	pub fn add_circle(&mut self, x: f32, y: f32, radius: f32) {
-		self.entities.push(Entity::circle(Vector::new(x, y), radius, self.color));
+		self.entities.push(Entity::circle(Vec2::new(x, y), radius, self.color));
 	}
 
 	pub fn clear_entities(&mut self) {
@@ -164,7 +162,7 @@ impl Sandbox {
 
 		let mut areas: HashMap<_, Vec<_>> = HashMap::new();
 		for ent in &self.entities {
-			let area = ent.pos().calc_area(area_size);
+			let area = ent.calc_area(area_size);
 			areas.entry(area).or_default().push(ent);
 		}
 
@@ -197,7 +195,8 @@ impl Sandbox {
 			console_log!("Possible collisions: {}", possible_collisions.len());
 		}
 
-		let gravity = Vector::DOWN.rotate(self.gravity_angle) * self.gravity_strength;
+		let angle = (self.gravity_angle + 90.0).to_radians();
+		let gravity = Vec2::from_angle(angle) * self.gravity_strength;
 		for _ in 0..SUB_STEPS {
 			for &(ent1, ent2) in &possible_collisions {
 				ent1.handle_collisions(ent2);
