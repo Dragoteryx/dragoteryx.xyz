@@ -1,5 +1,4 @@
 import "animate.css/animate.min.css";
-import "primeicons/primeicons.css";
 import "./styles/main.scss";
 
 import { createApp } from "vue";

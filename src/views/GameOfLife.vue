@@ -6,7 +6,7 @@
 		@scroll="scroll"
 		@drag="drag"
 	>
-		<FormButton class="red" icon="trash" @click="gameOfLifeStore.clear">
+		<FormButton class="red" :icon="Skull" @click="gameOfLifeStore.clear">
 			Kill {{ gameOfLifeStore.aliveCells }} alive cells
 		</FormButton>
 		<hr />
@@ -19,6 +19,7 @@
 	import FormButton from "@/components/form/FormButton.vue";
 	import FormRange from "@/components/form/FormRange.vue";
 	import { useGameOfLifeStore } from "@/stores/gameoflife";
+	import { Skull } from "lucide-vue-next";
 
 	const gameOfLifeStore = useGameOfLifeStore();
 

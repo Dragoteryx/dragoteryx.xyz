@@ -1,8 +1,9 @@
 <template>
-	<FormButton icon="replay" @click="emit('click')" />
+	<FormButton :icon="RotateCcw" :icon-size="12" @click="emit('click')" />
 </template>
 
 <script setup lang="ts">
+	import { RotateCcw } from "lucide-vue-next";
 	import FormButton from "./FormButton.vue";
 
 	export interface Emits {
@@ -11,10 +12,3 @@
 
 	const emit = defineEmits<Emits>();
 </script>
-
-<style scoped>
-	button {
-		font-size: 12px;
-		height: 24px;
-	}
-</style>

@@ -22,10 +22,10 @@
 		</div>
 		<hr />
 		<nav class="column spaced large">
-			<NavButton icon="home" to="/" highlight="exact">Home</NavButton>
-			<NavButton icon="box" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
-			<NavButton icon="heart" to="/game-of-life" highlight="partial">Game of Life</NavButton>
-			<NavButton v-if="DEV" icon="code" to="/boids" highlight="partial">Boids</NavButton>
+			<NavButton :icon="House" to="/" highlight="exact">Home</NavButton>
+			<NavButton :icon="Box" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
+			<NavButton :icon="Heart" to="/game-of-life" highlight="partial">Game of Life</NavButton>
+			<NavButton v-if="DEV" :icon="FishSymbol" to="/boids" highlight="partial">Boids</NavButton>
 		</nav>
 		<hr />
 		<footer class="row">
@@ -43,6 +43,7 @@
 </template>
 
 <script setup lang="ts">
+	import { House, Box, Heart, FishSymbol } from "lucide-vue-next";
 	import NavButton from "@/components/NavButton.vue";
 	import { vHover } from "@/directives/animations";
 

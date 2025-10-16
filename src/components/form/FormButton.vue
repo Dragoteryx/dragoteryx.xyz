@@ -1,14 +1,17 @@
 <template>
 	<button class="row" @click="emit('click')">
-		<span v-if="icon" :class="{ pi: true, [`pi-${icon}`]: true }"></span>
+		<component v-if="icon" :is="icon" :size="iconSize ?? 18" absolute-stroke-width />
 		<span class="large"><slot></slot></span>
 	</button>
 </template>
 
 <script setup lang="ts">
+	import type { LucideProps } from "lucide-vue-next";
+	import type { FunctionalComponent } from "vue";
+
 	export interface Props {
-		text?: string;
-		icon?: string;
+		icon?: FunctionalComponent<LucideProps, {}, any, {}>;
+		iconSize?: number;
 	}
 
 	export interface Emits {

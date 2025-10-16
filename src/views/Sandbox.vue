@@ -6,8 +6,8 @@
 		v-model:context="sandboxStore.ctx"
 		@click="sandboxStore.addCircle"
 	>
-		<NavButton icon="box" to="/sandbox" highlight="exact">Spawn entities</NavButton>
-		<NavButton icon="cog" to="/sandbox/settings" highlight="exact">Settings</NavButton>
+		<NavButton :icon="Box" to="/sandbox" highlight="exact">Spawn entities</NavButton>
+		<NavButton :icon="Cog" to="/sandbox/settings" highlight="exact">Settings</NavButton>
 		<hr />
 		<div class="column spaced large">
 			<RouterView />
@@ -30,6 +30,7 @@
 	import FormRange from "@/components/form/FormRange.vue";
 	import NavButton from "@/components/NavButton.vue";
 	import { useSandboxStore } from "@/stores/sandbox";
+	import { Box, Cog } from "lucide-vue-next";
 	import { RouterView } from "vue-router";
 
 	const sandboxStore = useSandboxStore();

@@ -1,17 +1,16 @@
 <template>
-	<FormButton :icon="icon" :class="{ highlight: shouldHighlight }" @click="click">
+	<FormButton v-bind="props" :class="{ highlight: shouldHighlight }" @click="click">
 		<slot></slot>
 	</FormButton>
 </template>
 
 <script setup lang="ts">
-	import FormButton from "./form/FormButton.vue";
+	import FormButton, { type Props as BtnProps } from "./form/FormButton.vue";
 	import { useRoute, useRouter } from "vue-router";
 	import { computed } from "vue";
 
-	export interface Props {
+	export interface Props extends BtnProps {
 		highlight?: "exact" | "partial";
-		icon?: string;
 		to: string;
 	}
 
