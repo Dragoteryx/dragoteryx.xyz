@@ -1,14 +1,14 @@
 <template>
 	<div class="row spaced">
 		<FormButton class="large" :class="color" :icon="icon" @click="toggle">{{ text }}</FormButton>
-		<FormButton class="large" :icon="Forward" @click="tick">Step</FormButton>
+		<FormButton class="large" :icon="StepForward" @click="tick">Step</FormButton>
 	</div>
 </template>
 
 <script setup lang="ts">
 	import FormButton from "@/components/form/FormButton.vue";
 	import type { Controls } from "@/composables/controls";
-	import { Play, Pause, Forward } from "lucide-vue-next";
+	import { Play, Pause, StepForward } from "lucide-vue-next";
 	import { computed } from "vue";
 
 	export interface Props {
