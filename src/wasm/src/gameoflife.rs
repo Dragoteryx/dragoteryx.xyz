@@ -28,16 +28,6 @@ impl GameOfLife {
 		}
 	}
 
-	#[wasm_bindgen(getter)]
-	pub fn next_state_callback(&self) -> NextStateCallback {
-		self.callback.clone().unchecked_into()
-	}
-
-	#[wasm_bindgen(setter)]
-	pub fn set_next_state_callback(&mut self, callback: NextStateCallback) {
-		self.callback = callback.unchecked_into();
-	}
-
 	pub fn is_alive(&self, x: i32, y: i32) -> bool {
 		self.cells.get(&(x, y)).is_some_and(Cell::is_alive)
 	}
@@ -95,21 +85,23 @@ impl GameOfLife {
 		self.cells.clear();
 	}
 
+	pub fn should_live(&self, alive: bool, neighbors: u8) -> bool {
+		let is_alive = JsValue::from_bool(alive);
+		let neighbors = JsValue::from_f64(neighbors as f64);
+		let res = self.callback.call2(&JsValue::NULL, &is_alive, &neighbors);
+		res.unwrap_or(JsValue::FALSE).is_truthy()
+	}
+
 	pub fn tick(&mut self) -> usize {
 		let mut alive = 0;
 		let cells_len = self.cells.len();
-		let mut cached = AHashMap::with_capacity(16);
+		let mut cache = AHashMap::with_capacity(16);
 		let cells = replace(&mut self.cells, AHashMap::with_capacity(cells_len));
 		for ((x, y), cell) in cells {
 			let is_alive = cell.is_alive();
 			let neighbors = cell.neighbors();
-			let should_live = cached.entry((is_alive, neighbors)).or_insert_with(|| {
-				let is_alive = JsValue::from_bool(is_alive);
-				let neighbors = JsValue::from_f64(neighbors as f64);
-				let res = self.callback.call2(&JsValue::NULL, &is_alive, &neighbors);
-				res.unwrap_or(JsValue::FALSE).is_truthy()
-			});
-
+			let should_live = cache.entry((is_alive, neighbors))
+				.or_insert_with(|| self.should_live(is_alive, neighbors));
 			if *should_live {
 				self.birth_cell(x, y);
 				alive += 1;
