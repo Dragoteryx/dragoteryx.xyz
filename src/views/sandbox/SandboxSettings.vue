@@ -22,5 +22,6 @@
 		{ value: "hsl", description: "HSL" },
 		{ value: "hsv", description: "HSV" },
 		{ value: "hwb", description: "HWB" },
+		{ value: "cmyk", description: "CMYK" },
 	];
 </script>

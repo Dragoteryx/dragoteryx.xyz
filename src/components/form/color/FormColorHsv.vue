@@ -42,10 +42,15 @@
 		return `linear-gradient(in hsl longer hue to right, ${value}, ${value})`;
 	});
 
-	const sMin = computed(() => new Hsv(h.value, 0, v.value).hex);
-	const sMax = computed(() => new Hsv(h.value, 100, v.value).hex);
-	const vMin = computed(() => new Hsv(h.value, s.value, 0).hex);
-	const vMax = computed(() => new Hsv(h.value, s.value, 100).hex);
-	const sBackg = computed(() => `linear-gradient(to right, ${sMin.value}, ${sMax.value})`);
-	const vBackg = computed(() => `linear-gradient(to right, ${vMin.value}, ${vMax.value})`);
+	const sBackg = computed(() => {
+		const from = new Hsv(h.value, 0, v.value).hex;
+		const to = new Hsv(h.value, 100, v.value).hex;
+		return `linear-gradient(to right, ${from}, ${to})`;
+	});
+
+	const vBackg = computed(() => {
+		const from = new Hsv(h.value, s.value, 0).hex;
+		const to = new Hsv(h.value, s.value, 100).hex;
+		return `linear-gradient(to right, ${from}, ${to})`;
+	});
 </script>

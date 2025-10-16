@@ -6,6 +6,7 @@ export interface Color {
 	readonly hsl: Hsl;
 	readonly hsv: Hsv;
 	readonly hwb: Hwb;
+	readonly cmyk: Cmyk;
 }
 
 export class Rgb implements Color {
@@ -40,6 +41,11 @@ export class Rgb implements Color {
 	public get hwb() {
 		const [h, w, b] = convert.rgb.hwb(this.r, this.g, this.b);
 		return new Hwb(h, w, b);
+	}
+
+	public get cmyk() {
+		const [c, m, y, k] = convert.rgb.cmyk(this.r, this.g, this.b);
+		return new Cmyk(c, m, y, k);
 	}
 }
 
@@ -76,6 +82,11 @@ export class Hsl implements Color {
 		const [h, w, b] = convert.hsl.hwb(this.h, this.s, this.l);
 		return new Hwb(h, w, b);
 	}
+
+	public get cmyk() {
+		const [c, m, y, k] = convert.hsl.cmyk(this.h, this.s, this.l);
+		return new Cmyk(c, m, y, k);
+	}
 }
 
 export class Hsv implements Color {
@@ -111,6 +122,11 @@ export class Hsv implements Color {
 		const [h, w, b] = convert.hsv.hwb(this.h, this.s, this.v);
 		return new Hwb(h, w, b);
 	}
+
+	public get cmyk() {
+		const [c, m, y, k] = convert.hsv.cmyk(this.h, this.s, this.v);
+		return new Cmyk(c, m, y, k);
+	}
 }
 
 export class Hwb implements Color {
@@ -144,6 +160,53 @@ export class Hwb implements Color {
 	}
 
 	public get hwb() {
+		return this;
+	}
+
+	public get cmyk() {
+		const [c, m, y, k] = convert.hwb.cmyk(this.h, this.w, this.b);
+		return new Cmyk(c, m, y, k);
+	}
+}
+
+export class Cmyk implements Color {
+	public readonly c: number;
+	public readonly m: number;
+	public readonly y: number;
+	public readonly k: number;
+
+	public constructor(c: number, m: number, y: number, k: number) {
+		this.c = Math.min(100, Math.max(0, Math.floor(c)));
+		this.m = Math.min(100, Math.max(0, Math.floor(m)));
+		this.y = Math.min(100, Math.max(0, Math.floor(y)));
+		this.k = Math.min(100, Math.max(0, Math.floor(k)));
+	}
+
+	public get hex() {
+		return `#${convert.cmyk.hex(this.c, this.m, this.y, this.k)}`;
+	}
+
+	public get rgb() {
+		const [r, g, b] = convert.cmyk.rgb(this.c, this.m, this.y, this.k);
+		return new Rgb(r, g, b);
+	}
+
+	public get hsl() {
+		const [h, s, l] = convert.cmyk.hsl(this.c, this.m, this.y, this.k);
+		return new Hsl(h, s, l);
+	}
+
+	public get hsv() {
+		const [h, s, v] = convert.cmyk.hsv(this.c, this.m, this.y, this.k);
+		return new Hsv(h, s, v);
+	}
+
+	public get hwb() {
+		const [h, w, b] = convert.cmyk.hwb(this.c, this.m, this.y, this.k);
+		return new Hwb(h, w, b);
+	}
+
+	public get cmyk() {
 		return this;
 	}
 }

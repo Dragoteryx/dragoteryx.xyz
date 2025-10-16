@@ -1,4 +1,4 @@
-import { type Color, Hsl, Hsv, Hwb, Rgb } from "@/types/color";
+import { type Color, Hsl, Hsv, Hwb, Rgb, Cmyk } from "@/types/color";
 import type { WritableComputedRef } from "vue";
 import { useLocalStorage } from "@vueuse/core";
 import { computed, type Ref } from "vue";
@@ -39,6 +39,15 @@ export function useHwb(color: Ref<Color>): WritableComputedRef<Hwb> {
 	});
 }
 
+export function useCmyk(color: Ref<Color>): WritableComputedRef<Cmyk> {
+	return computed({
+		get: () => color.value.cmyk,
+		set(value) {
+			color.value = value;
+		},
+	});
+}
+
 export function useLocalStorageColor(name: string, defaultValue: Color): WritableComputedRef<Color> {
 	const local = useLocalStorage(name, JSON.stringify(defaultValue));
 	return computed({
@@ -57,6 +66,8 @@ export function useLocalStorageColor(name: string, defaultValue: Color): Writabl
 						return new Hsv(Number(parsed["h"]), Number(parsed["s"]), Number(parsed["v"]));
 					} else if ("h" in parsed && "w" in parsed && "b" in parsed) {
 						return new Hwb(Number(parsed["h"]), Number(parsed["w"]), Number(parsed["b"]));
+					} else if ("c" in parsed && "m" in parsed && "y" in parsed && "k" in parsed) {
+						return new Cmyk(Number(parsed["c"]), Number(parsed["m"]), Number(parsed["y"]), Number(parsed["k"]));
 					}
 				}
 				return defaultValue;
