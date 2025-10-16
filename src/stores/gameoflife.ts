@@ -27,9 +27,11 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	controls.paused = true;
 
 	const ctx = ref<CanvasRenderingContext2D>();
-	const game = new GameOfLife();
-	const aliveCells = ref(0);
+	const game = new GameOfLife((alive, neighbors) => {
+		return alive ? neighbors == 2 || neighbors == 3 : neighbors == 3;
+	});
 
+	const aliveCells = ref(0);
 	const speed = useLocalStorage("game-of-life-speed", 10);
 	const zoom = useLocalStorage("game-of-life-zoom", 10);
 	const size = useFibonacci(() => zoom.value + 1);

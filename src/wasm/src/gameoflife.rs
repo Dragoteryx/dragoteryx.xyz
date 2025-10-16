@@ -1,22 +1,41 @@
 use ahash::AHashMap;
+use js_sys::Function;
 use std::fmt::{self, Debug};
 use std::mem::replace;
 use wasm_bindgen::prelude::*;
 use web_sys::CanvasRenderingContext2d;
 
 #[wasm_bindgen]
+extern {
+	#[wasm_bindgen(typescript_type = "(alive: boolean, neighbors: number) => boolean")]
+	pub type NextStateCallback;
+}
+
+#[wasm_bindgen]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GameOfLife {
 	cells: AHashMap<(i32, i32), Cell>,
+	callback: Function,
 }
 
 #[wasm_bindgen]
 impl GameOfLife {
 	#[wasm_bindgen(constructor)]
-	pub fn new() -> Self {
+	pub fn new(callback: NextStateCallback) -> Self {
 		Self {
 			cells: AHashMap::new(),
+			callback: callback.unchecked_into(),
 		}
+	}
+
+	#[wasm_bindgen(getter)]
+	pub fn next_state_callback(&self) -> NextStateCallback {
+		self.callback.clone().unchecked_into()
+	}
+
+	#[wasm_bindgen(setter)]
+	pub fn set_next_state_callback(&mut self, callback: NextStateCallback) {
+		self.callback = callback.unchecked_into();
 	}
 
 	pub fn is_alive(&self, x: i32, y: i32) -> bool {
@@ -24,17 +43,17 @@ impl GameOfLife {
 	}
 
 	pub fn birth_cell(&mut self, x: i32, y: i32) -> bool {
-		let cell = self.cells.entry((x, y)).or_insert_with(Cell::new);
+		let cell = self.cells.entry((x, y)).or_default();
 		if !cell.is_alive() {
 			cell.set_alive(true);
-			self.cells.entry((x - 1, y - 1)).or_insert_with(Cell::new).add_neighbor();
-			self.cells.entry((x - 1, y)).or_insert_with(Cell::new).add_neighbor();
-			self.cells.entry((x - 1, y + 1)).or_insert_with(Cell::new).add_neighbor();
-			self.cells.entry((x, y - 1)).or_insert_with(Cell::new).add_neighbor();
-			self.cells.entry((x, y + 1)).or_insert_with(Cell::new).add_neighbor();
-			self.cells.entry((x + 1, y - 1)).or_insert_with(Cell::new).add_neighbor();
-			self.cells.entry((x + 1, y)).or_insert_with(Cell::new).add_neighbor();
-			self.cells.entry((x + 1, y + 1)).or_insert_with(Cell::new).add_neighbor();
+			self.cells.entry((x - 1, y - 1)).or_default().add_neighbor();
+			self.cells.entry((x - 1, y)).or_default().add_neighbor();
+			self.cells.entry((x - 1, y + 1)).or_default().add_neighbor();
+			self.cells.entry((x, y - 1)).or_default().add_neighbor();
+			self.cells.entry((x, y + 1)).or_default().add_neighbor();
+			self.cells.entry((x + 1, y - 1)).or_default().add_neighbor();
+			self.cells.entry((x + 1, y)).or_default().add_neighbor();
+			self.cells.entry((x + 1, y + 1)).or_default().add_neighbor();
 			true
 		} else {
 			false
@@ -45,14 +64,14 @@ impl GameOfLife {
 		if let Some(cell) = self.cells.get_mut(&(x, y)) {
 			if cell.is_alive() {
 				cell.set_alive(false);
-				self.cells.entry((x - 1, y - 1)).or_insert_with(Cell::new).remove_neighbor();
-				self.cells.entry((x - 1, y)).or_insert_with(Cell::new).remove_neighbor();
-				self.cells.entry((x - 1, y + 1)).or_insert_with(Cell::new).remove_neighbor();
-				self.cells.entry((x, y - 1)).or_insert_with(Cell::new).remove_neighbor();
-				self.cells.entry((x, y + 1)).or_insert_with(Cell::new).remove_neighbor();
-				self.cells.entry((x + 1, y - 1)).or_insert_with(Cell::new).remove_neighbor();
-				self.cells.entry((x + 1, y)).or_insert_with(Cell::new).remove_neighbor();
-				self.cells.entry((x + 1, y + 1)).or_insert_with(Cell::new).remove_neighbor();
+				self.cells.entry((x - 1, y - 1)).or_default().remove_neighbor();
+				self.cells.entry((x - 1, y)).or_default().remove_neighbor();
+				self.cells.entry((x - 1, y + 1)).or_default().remove_neighbor();
+				self.cells.entry((x, y - 1)).or_default().remove_neighbor();
+				self.cells.entry((x, y + 1)).or_default().remove_neighbor();
+				self.cells.entry((x + 1, y - 1)).or_default().remove_neighbor();
+				self.cells.entry((x + 1, y)).or_default().remove_neighbor();
+				self.cells.entry((x + 1, y + 1)).or_default().remove_neighbor();
 				true
 			} else {
 				false
@@ -79,9 +98,19 @@ impl GameOfLife {
 	pub fn tick(&mut self) -> usize {
 		let mut alive = 0;
 		let cells_len = self.cells.len();
+		let mut cached = AHashMap::with_capacity(16);
 		let cells = replace(&mut self.cells, AHashMap::with_capacity(cells_len));
 		for ((x, y), cell) in cells {
-			if cell.becomes_alive() {
+			let is_alive = cell.is_alive();
+			let neighbors = cell.neighbors();
+			let should_live = cached.entry((is_alive, neighbors)).or_insert_with(|| {
+				let is_alive = JsValue::from_bool(is_alive);
+				let neighbors = JsValue::from_f64(neighbors as f64);
+				let res = self.callback.call2(&JsValue::NULL, &is_alive, &neighbors);
+				res.unwrap_or(JsValue::FALSE).is_truthy()
+			});
+
+			if *should_live {
 				self.birth_cell(x, y);
 				alive += 1;
 			}
@@ -105,54 +134,42 @@ impl GameOfLife {
 }
 
 #[repr(transparent)]
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Cell {
 	data: u8,
 }
 
 impl Cell {
-	pub fn new() -> Self {
-		Self {
-			data: 0,
-		}
-	}
-
 	pub fn is_alive(&self) -> bool {
-		self.data & 0b10000000 != 0
+		self.state() > 0
 	}
 
 	pub fn set_alive(&mut self, alive: bool) {
-		if alive {
-			self.data |= 0b10000000;
-		} else {
-			self.data &= 0b01111111;
-		}
+		self.set_state(alive as _);
 	}
 
-	pub fn becomes_alive(&self) -> bool {
-		match self.neighbors() {
-			2 => self.is_alive(),
-			3 => true,
-			_ => false,
-		}
+	pub fn state(&self) -> u8 {
+		self.data >> 4
+	}
+
+	pub fn set_state(&mut self, state: u8) {
+		self.data = (state << 4) | self.neighbors();
 	}
 
 	pub fn neighbors(&self) -> u8 {
-		self.data & 0b01111111
+		self.data & 0b00001111
 	}
 
-	pub fn set_neighbors(&mut self, mut neighbors: u8) -> u8 {
-		neighbors = neighbors.clamp(0, 8);
-		self.data = (self.data & 0b10000000) | (neighbors & 0b01111111);
-		neighbors
+	pub fn set_neighbors(&mut self, neighbors: u8) {
+		self.data = (self.state() << 4) | neighbors.clamp(0, 8);
 	}
 
-	pub fn add_neighbor(&mut self) -> u8 {
-		self.set_neighbors(self.neighbors() + 1)
+	pub fn add_neighbor(&mut self) {
+		self.set_neighbors(self.neighbors() + 1);
 	}
 
-	pub fn remove_neighbor(&mut self) -> u8 {
-		self.set_neighbors(self.neighbors() - 1)
+	pub fn remove_neighbor(&mut self) {
+		self.set_neighbors(self.neighbors() - 1);
 	}
 }
 
