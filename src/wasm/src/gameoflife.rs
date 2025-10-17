@@ -7,24 +7,29 @@ use web_sys::CanvasRenderingContext2d;
 
 #[wasm_bindgen]
 extern {
-	#[wasm_bindgen(typescript_type = "(alive: boolean, neighbors: number) => boolean")]
-	pub type NextStateCallback;
+	#[wasm_bindgen(typescript_type = "Rule")]
+	pub type Rule;
 }
+
+#[wasm_bindgen(typescript_custom_section)]
+const _: &'static str = "export interface Rule {
+	(alive: boolean, neighbors: number): boolean
+}";
 
 #[wasm_bindgen]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GameOfLife {
 	cells: AHashMap<(i32, i32), Cell>,
-	callback: Function,
+	rule: Function,
 }
 
 #[wasm_bindgen]
 impl GameOfLife {
 	#[wasm_bindgen(constructor)]
-	pub fn new(callback: NextStateCallback) -> Self {
+	pub fn new(rule: Rule) -> Self {
 		Self {
 			cells: AHashMap::new(),
-			callback: callback.unchecked_into(),
+			rule: rule.unchecked_into(),
 		}
 	}
 
@@ -88,7 +93,7 @@ impl GameOfLife {
 	pub fn should_live(&self, alive: bool, neighbors: u8) -> bool {
 		let is_alive = JsValue::from_bool(alive);
 		let neighbors = JsValue::from_f64(neighbors as f64);
-		let res = self.callback.call2(&JsValue::NULL, &is_alive, &neighbors);
+		let res = self.rule.call2(&JsValue::NULL, &is_alive, &neighbors);
 		res.unwrap_or(JsValue::FALSE).is_truthy()
 	}
 

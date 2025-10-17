@@ -1,9 +1,26 @@
+import type { Option } from "@/components/form/FormSelect.vue";
+import { GameOfLife, type Rule } from "@/wasm/pkg/wasm";
 import { useLocalStorage } from "@vueuse/core";
 import { useControls } from "@/composables/controls";
 import { useFibonacci } from "@/composables/math";
-import { GameOfLife } from "@/wasm/pkg/wasm";
 import { reactive, ref } from "vue";
 import { defineStore } from "pinia";
+
+export function conwaysRule(alive: boolean, neighbors: number): boolean {
+	return alive ? neighbors == 2 || neighbors == 3 : neighbors == 3;
+}
+
+export function highlifeRule(alive: boolean, neighbors: number): boolean {
+	return alive ? neighbors == 2 || neighbors == 3 : neighbors == 3 || neighbors == 6;
+}
+
+export function seedsRule(alive: boolean, neighbors: number): boolean {
+	return !alive && neighbors == 2;
+}
+
+export function lifeWithoutDeathRule(alive: boolean, neighbors: number): boolean {
+	return alive || neighbors == 3;
+}
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	let lastTime = 0;
@@ -28,14 +45,21 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 
 	const ctx = ref<CanvasRenderingContext2D>();
 	const game = new GameOfLife((alive, neighbors) => {
-		return alive ? neighbors == 2 || neighbors == 3 : neighbors == 3;
+		return rules[rule.value]?.value(alive, neighbors) ?? alive;
 	});
 
 	const aliveCells = ref(0);
+	const rule = useLocalStorage("game-of-life-rule", "conways");
 	const speed = useLocalStorage("game-of-life-speed", 10);
 	const zoom = useLocalStorage("game-of-life-zoom", 10);
 	const size = useFibonacci(() => zoom.value + 1);
 	const pos = reactive({ x: 0, y: 0 });
+	const rules = reactive<Record<string, Option<Rule>>>({
+		conways: { description: "Conway's Game of Life", value: conwaysRule },
+		lifeWithoutDeath: { description: "Life without death", value: lifeWithoutDeathRule },
+		highlife: { description: "Highlife", value: highlifeRule },
+		seeds: { description: "Seeds", value: seedsRule },
+	});
 
 	function toGameCoordinates(mouseX: number, mouseY: number) {
 		return {
@@ -94,6 +118,8 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		ctx,
 		pos,
 		speed,
+		rule,
+		rules,
 		aliveCells,
 		birthCell,
 		killCell,
