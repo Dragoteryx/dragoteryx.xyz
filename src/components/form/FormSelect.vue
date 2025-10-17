@@ -6,14 +6,14 @@
 	</select>
 </template>
 
-<script setup lang="ts" generic="T extends string">
+<script setup lang="ts" generic="T">
 	export interface Props<T> {
 		options: Option<T>[];
 	}
 
 	export interface Option<T> {
-		value: T;
 		description: string;
+		value: T;
 	}
 
 	const value = defineModel<T>({ required: true });
