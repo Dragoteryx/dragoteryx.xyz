@@ -22,6 +22,10 @@ export function lifeWithoutDeathRule(alive: boolean, neighbors: number): boolean
 	return alive || neighbors == 3;
 }
 
+export function randomRule(alive: boolean, neighbors: number): boolean {
+	return Math.random() < 0.5;
+}
+
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	let lastTime = 0;
 	const controls = useControls(paused => {
@@ -59,6 +63,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		lifeWithoutDeath: { description: "Life without death", value: lifeWithoutDeathRule },
 		highlife: { description: "Highlife", value: highlifeRule },
 		seeds: { description: "Seeds", value: seedsRule },
+		random: { description: "Random", value: randomRule },
 	});
 
 	function toGameCoordinates(mouseX: number, mouseY: number) {
