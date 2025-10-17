@@ -33,8 +33,6 @@ jobs:
           version: 10
       - name: Install dependencies
         run: pnpm install
-      - name: Install wasm-pack
-        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - name: Build WASM
         run: pnpm run build-wasm
       - name: Build
