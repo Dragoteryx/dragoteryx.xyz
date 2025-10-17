@@ -20,7 +20,7 @@
 	import FormColorCmyk from "./color/FormColorCmyk.vue";
 	import ResetButton from "./ResetButton.vue";
 	import { computed, useTemplateRef, watchEffect } from "vue";
-	import { type Color } from "@/types/color";
+	import type { Color } from "@/types/color";
 
 	export interface Props {
 		reset?: Color;
