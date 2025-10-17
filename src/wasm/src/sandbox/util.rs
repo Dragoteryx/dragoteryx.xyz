@@ -17,7 +17,7 @@ impl Shape {
 		Self::Circle { radius }
 	}
 
-	#[allow(unused_must_use)]
+	#[allow(deprecated)]
 	pub fn draw(&self, ctx: &CanvasRenderingContext2d, pos: Vec2, color: Color) {
 		let Self::Circle { radius } = *self;
 		let Vec2 { x, y } = pos;
@@ -25,7 +25,7 @@ impl Shape {
 		ctx.set_fill_style(&format!("rgb({r}, {g}, {b})").into());
 		ctx.set_stroke_style(&"black".into());
 		ctx.begin_path();
-		ctx.arc(x as f64, y as f64, radius as f64, 0.0, 2.0 * std::f64::consts::PI);
+		let _ = ctx.arc(x as f64, y as f64, radius as f64, 0.0, 2.0 * std::f64::consts::PI);
 		ctx.fill();
 		ctx.set_global_alpha(0.25);
 		ctx.stroke();

@@ -116,6 +116,7 @@ impl GameOfLife {
 		alive
 	}
 
+	#[allow(deprecated)]
 	pub fn draw(&self, ctx: &CanvasRenderingContext2d, color: &str, pos_x: f64, pos_y: f64, size: f64) {
 		ctx.set_fill_style(&JsValue::from_str(color));
 		for (&(x, y), cell) in &self.cells {
