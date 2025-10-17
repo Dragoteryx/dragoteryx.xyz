@@ -1,4 +1,5 @@
 onlyBuiltDependencies:
-  - '@parcel/watcher'
-  - '@swc/core'
+  - "@parcel/watcher"
+  - "@swc/core"
   - wasm-pack
+  - esbuild
