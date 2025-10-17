@@ -5,22 +5,22 @@ edition = "2024"
 publish = false
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["cdylib"]
 
 [dependencies]
 glam = "0.30.8"
-js-sys = "0.3.77"
-wasm-bindgen = "0.2.100"
+js-sys = "0.3.81"
+wasm-bindgen = "0.2.104"
 
 [dependencies.ahash]
-version = "0.8.11"
+version = "0.8.12"
 default-features = false
 features = [
 	"std", "compile-time-rng"
 ]
 
 [dependencies.web-sys]
-version = "0.3.69"
+version = "0.3.81"
 features = [
 	"CanvasRenderingContext2d",
 	"console"

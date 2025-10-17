@@ -7,17 +7,9 @@ import markdown from "unplugin-vue-markdown/vite";
 import topLevelAwait from "vite-plugin-top-level-await";
 import wasm from "vite-plugin-wasm";
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
-	plugins: [
-		vue({ include: [/\.vue$/, /\.md$/] }),
-		vueDevTools(),
-		markdown({}),
-		// @ts-expect-error
-		topLevelAwait(),
-		// @ts-expect-error
-		wasm(),
-	],
+	plugins: [vue({ include: [/\.vue$/, /\.md$/] }), vueDevTools(), markdown({}), topLevelAwait(), wasm()],
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),
