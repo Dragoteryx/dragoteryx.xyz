@@ -59,29 +59,29 @@ hr {
 .row {
 	display: flex;
 
+	&.spaced {
+		gap: 10px;
+	}
+
 	> .large {
 		flex: 1;
 	}
 
 	&:not(.reversed) {
 		flex-direction: row;
-
-		&.spaced > :not(:last-child) {
-			margin-right: 10px;
-		}
 	}
 
 	&.reversed {
 		flex-direction: row-reverse;
-
-		&.spaced > :not(:first-child) {
-			margin-right: 10px;
-		}
 	}
 }
 
 .column {
 	display: flex;
+
+	&.spaced {
+		gap: 10px;
+	}
 
 	> .large {
 		flex: 1;
@@ -89,17 +89,9 @@ hr {
 
 	&:not(.reversed) {
 		flex-direction: column;
-
-		&.spaced > :not(:last-child) {
-			margin-bottom: 10px;
-		}
 	}
 
 	&.reversed {
 		flex-direction: column-reverse;
-
-		&.spaced > :not(:first-child) {
-			margin-bottom: 10px;
-		}
 	}
 }
