@@ -1,5 +1,7 @@
 <template>
 	<CanvasMenu
+		v-model:mouse-x="mouseX"
+		v-model:mouse-y="mouseY"
 		:controls="gameOfLifeStore.controls"
 		v-model:context="gameOfLifeStore.ctx"
 		@click="gameOfLifeStore.toggleCell"
@@ -12,10 +14,15 @@
 		<hr />
 		<FormRange :reset="10" :min="1" :max="60" v-model="gameOfLifeStore.speed">Speed</FormRange>
 		<hr />
-		<label class="column spaced">
-			<span class="large">Rule</span>
-			<FormSelect v-model="gameOfLifeStore.rule" :options="options" />
-		</label>
+		<div class="column spaced large">
+			<label class="column spaced">
+				<span class="large">Rule</span>
+				<FormSelect v-model="gameOfLifeStore.rule" :options="options" />
+			</label>
+		</div>
+		<hr />
+		<span v-if="pos">Cursor position: ({{ pos.x }}, {{ pos.y }})</span>
+		<span v-else>Cursor position: (-, -)</span>
 	</CanvasMenu>
 </template>
 
@@ -38,9 +45,17 @@
 		return options;
 	});
 
+	const mouseX = defineModel<number>("mouseX");
+	const mouseY = defineModel<number>("mouseY");
+	const pos = computed(() => {
+		if (mouseX.value !== undefined && mouseY.value !== undefined) {
+			return gameOfLifeStore.toGameCoordinatesFloored(mouseX.value, mouseY.value);
+		}
+	});
+
 	function drag(x: number, y: number) {
-		gameOfLifeStore.pos.x += x;
-		gameOfLifeStore.pos.y += y;
+		gameOfLifeStore.canvasPos.x += x;
+		gameOfLifeStore.canvasPos.y += y;
 	}
 
 	function scroll(x: number, y: number, up: boolean) {

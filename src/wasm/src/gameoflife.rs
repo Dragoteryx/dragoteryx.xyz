@@ -117,13 +117,13 @@ impl GameOfLife {
 	}
 
 	#[allow(deprecated)]
-	pub fn draw(&self, ctx: &CanvasRenderingContext2d, color: &str, pos_x: f64, pos_y: f64, size: f64) {
+	pub fn draw(&self, ctx: &CanvasRenderingContext2d, canvas_x: f64, canvas_y: f64, size: f64, color: &str) {
 		ctx.set_fill_style(&JsValue::from_str(color));
 		for (&(x, y), cell) in &self.cells {
 			if cell.is_alive() {
 				ctx.fill_rect(
-					(x as f64 * size) - pos_x,
-					(y as f64 * size) - pos_y,
+					(x as f64 * size) - canvas_x,
+					(y as f64 * size) - canvas_y,
 					size, size,
 				);
 			}

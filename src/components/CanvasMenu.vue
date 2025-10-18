@@ -2,6 +2,8 @@
 	<div class="large row">
 		<Canvas2D
 			class="large"
+			v-model:mouse-x="mouseX"
+			v-model:mouse-y="mouseY"
 			v-model:width="width"
 			v-model:height="height"
 			v-model:context="context"
@@ -18,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-	import Canvas2D from "./Canvas2D.vue";
+	import Canvas2D, { type Emits } from "./Canvas2D.vue";
 	import ControlsMenu from "./ControlsMenu.vue";
 	import type { Controls } from "@/composables/controls";
 	import { onMounted, onUnmounted } from "vue";
@@ -27,14 +29,10 @@
 		controls: Controls;
 	}
 
-	export interface Emits {
-		scroll: [x: number, y: number, up: boolean];
-		click: [x: number, y: number];
-		drag: [x: number, y: number];
-	}
-
 	const props = defineProps<Props>();
 	const emit = defineEmits<Emits>();
+	const mouseX = defineModel<number>("mouseX");
+	const mouseY = defineModel<number>("mouseY");
 	const width = defineModel("width", { default: 0 });
 	const height = defineModel("height", { default: 0 });
 	const context = defineModel<CanvasRenderingContext2D>("context");

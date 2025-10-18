@@ -3,7 +3,7 @@ import { GameOfLife, type Rule } from "@/wasm/pkg/wasm";
 import { useLocalStorage } from "@vueuse/core";
 import { useControls } from "@/composables/controls";
 import { useFibonacci } from "@/composables/math";
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { defineStore } from "pinia";
 
 export function conwaysRule(alive: boolean, neighbors: number): boolean {
@@ -41,7 +41,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 			const style = window.getComputedStyle(document.body);
 			const textColor = style.getPropertyValue("--text");
 			ctx.value.clearRect(0, 0, ctx.value.canvas.width, ctx.value.canvas.height);
-			game.draw(ctx.value, textColor, Math.floor(pos.x), Math.floor(pos.y), size.value);
+			game.draw(ctx.value, Math.floor(canvasPos.x), Math.floor(canvasPos.y), size.value, textColor);
 		}
 	});
 
@@ -53,11 +53,11 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	});
 
 	const aliveCells = ref(0);
-	const rule = useLocalStorage("game-of-life-rule", "conways");
-	const speed = useLocalStorage("game-of-life-speed", 10);
-	const zoom = useLocalStorage("game-of-life-zoom", 10);
+	const canvasPos = reactive({ x: 0, y: 0 });
 	const size = useFibonacci(() => zoom.value + 1);
-	const pos = reactive({ x: 0, y: 0 });
+	const zoom = useLocalStorage("game-of-life-zoom", 10);
+	const speed = useLocalStorage("game-of-life-speed", 10);
+	const rule = useLocalStorage("game-of-life-rule", "conways");
 	const rules = reactive<Record<string, Option<Rule>>>({
 		conways: { description: "Conway's Game of Life", value: conwaysRule },
 		lifeWithoutDeath: { description: "Life without death", value: lifeWithoutDeathRule },
@@ -66,51 +66,51 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		random: { description: "Random", value: randomRule },
 	});
 
-	function toGameCoordinates(mouseX: number, mouseY: number) {
+	function toGameCoordinates(canvasX: number, canvasY: number) {
 		return {
-			x: (mouseX + pos.x) / size.value,
-			y: (mouseY + pos.y) / size.value,
+			x: (canvasX + canvasPos.x) / size.value,
+			y: (canvasY + canvasPos.y) / size.value,
 		};
 	}
 
-	function toGameCoordinatesFloored(mouseX: number, mouseY: number) {
-		const { x, y } = toGameCoordinates(mouseX, mouseY);
+	function toGameCoordinatesFloored(canvasX: number, canvasY: number) {
+		const { x, y } = toGameCoordinates(canvasX, canvasY);
 		return {
 			x: Math.floor(x),
 			y: Math.floor(y),
 		};
 	}
 
-	function toggleCell(mouseX: number, mouseY: number) {
-		const { x, y } = toGameCoordinatesFloored(mouseX, mouseY);
+	function toggleCell(canvasX: number, canvasY: number) {
+		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
 		if (game.toggle_cell(x, y)) aliveCells.value++;
 		else aliveCells.value--;
 	}
 
-	function birthCell(mouseX: number, mouseY: number) {
-		const { x, y } = toGameCoordinatesFloored(mouseX, mouseY);
+	function birthCell(canvasX: number, canvasY: number) {
+		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
 		if (game.birth_cell(x, y)) aliveCells.value++;
 	}
 
-	function killCell(mouseX: number, mouseY: number) {
-		const { x, y } = toGameCoordinatesFloored(mouseX, mouseY);
+	function killCell(canvasX: number, canvasY: number) {
+		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
 		if (game.kill_cell(x, y)) aliveCells.value--;
 	}
 
-	function zoomIn(mouseX: number, mouseY: number) {
-		const before = toGameCoordinates(mouseX, mouseY);
+	function zoomIn(canvasX: number, canvasY: number) {
+		const before = toGameCoordinates(canvasX, canvasY);
 		zoom.value = Math.min(10, zoom.value + 1);
-		const after = toGameCoordinates(mouseX, mouseY);
-		pos.x += (before.x - after.x) * size.value;
-		pos.y += (before.y - after.y) * size.value;
+		const after = toGameCoordinates(canvasX, canvasY);
+		canvasPos.x += (before.x - after.x) * size.value;
+		canvasPos.y += (before.y - after.y) * size.value;
 	}
 
-	function zoomOut(mouseX: number, mouseY: number) {
-		const before = toGameCoordinates(mouseX, mouseY);
+	function zoomOut(canvasX: number, canvasY: number) {
+		const before = toGameCoordinates(canvasX, canvasY);
 		zoom.value = Math.max(1, zoom.value - 1);
-		const after = toGameCoordinates(mouseX, mouseY);
-		pos.x += (before.x - after.x) * size.value;
-		pos.y += (before.y - after.y) * size.value;
+		const after = toGameCoordinates(canvasX, canvasY);
+		canvasPos.x += (before.x - after.x) * size.value;
+		canvasPos.y += (before.y - after.y) * size.value;
 	}
 
 	function clear() {
@@ -121,7 +121,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	return {
 		controls,
 		ctx,
-		pos,
+		canvasPos,
 		speed,
 		rule,
 		rules,
@@ -132,5 +132,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		clear,
 		zoomIn,
 		zoomOut,
+		toGameCoordinates,
+		toGameCoordinatesFloored,
 	};
 });

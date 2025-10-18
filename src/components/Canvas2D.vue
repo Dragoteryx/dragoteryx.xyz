@@ -3,8 +3,9 @@
 		<canvas
 			ref="canvas"
 			@mouseup="mouseup"
-			@mouseleave="mouseup"
 			@mousedown="mousedown"
+			@mouseenter="mouseenter"
+			@mouseleave="mouseleave"
 			@mousemove="mousemove"
 			@wheel.passive="wheel"
 		></canvas>
@@ -27,6 +28,8 @@
 	const windowScroll = useWindowScroll();
 	const windowSize = useWindowSize();
 
+	const mouseX = defineModel<number>("mouseX");
+	const mouseY = defineModel<number>("mouseY");
 	const width = defineModel("width", { default: 0 });
 	const height = defineModel("height", { default: 0 });
 	const context = defineModel<CanvasRenderingContext2D>("context");
@@ -51,27 +54,48 @@
 
 	// mouse stuff
 
-	let mouseState: "up" | "down" | "drag" = "up";
-
-	function mousedown() {
-		mouseState = "down";
+	const enum MouseState {
+		None,
+		Up,
+		Down,
+		Drag,
 	}
 
+	let mouseState = MouseState.None;
+
 	function mouseup(event: MouseEvent) {
-		if (mouseState == "down") {
+		if (mouseState == MouseState.Down) {
 			const x = event.x - (canvas.value?.offsetLeft ?? 0) + windowScroll.x.value;
 			const y = event.y - (canvas.value?.offsetTop ?? 0) + windowScroll.y.value;
 			emit("click", x, y);
 		}
 
-		mouseState = "up";
+		mouseState = MouseState.Up;
+	}
+
+	function mousedown() {
+		mouseState = MouseState.Down;
+	}
+
+	function mouseenter(event: MouseEvent) {
+		mouseX.value = event.x - (canvas.value?.offsetLeft ?? 0);
+		mouseY.value = event.y - (canvas.value?.offsetTop ?? 0);
+		mouseState = MouseState.Up;
 	}
 
 	function mousemove(event: MouseEvent) {
-		if (mouseState == "down" || mouseState == "drag") {
+		mouseX.value = event.x - (canvas.value?.offsetLeft ?? 0);
+		mouseY.value = event.y - (canvas.value?.offsetTop ?? 0);
+		if (mouseState == MouseState.Down || mouseState == MouseState.Drag) {
 			emit("drag", -event.movementX, -event.movementY);
-			mouseState = "drag";
+			mouseState = MouseState.Drag;
 		}
+	}
+
+	function mouseleave(event: MouseEvent) {
+		mouseState = MouseState.None;
+		mouseX.value = undefined;
+		mouseY.value = undefined;
 	}
 
 	function wheel(event: WheelEvent) {
