@@ -29,6 +29,18 @@ export default createRouter({
 			path: "/game-of-life",
 			name: "game-of-life",
 			component: () => import("@/views/GameOfLife.vue"),
+			children: [
+				{
+					path: "",
+					name: "game-of-life-snapshots",
+					component: () => import("@/views/gameoflife/GameOfLifeSnapshots.vue"),
+				},
+				{
+					path: "settings",
+					name: "game-of-life-settings",
+					component: () => import("@/views/gameoflife/GameOfLifeSettings.vue"),
+				},
+			],
 		},
 		{
 			path: "/boids",

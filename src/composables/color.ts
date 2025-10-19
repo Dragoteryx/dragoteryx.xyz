@@ -48,32 +48,27 @@ export function useCmyk(color: Ref<Color>): WritableComputedRef<Cmyk> {
 	});
 }
 
-export function useLocalStorageColor(name: string, defaultValue: Color): WritableComputedRef<Color> {
-	const local = useLocalStorage(name, JSON.stringify(defaultValue));
+export function useColorLocalStorage(name: string, value: Color): WritableComputedRef<Color> {
+	const local = useLocalStorage<object>(name, value);
 	return computed({
-		set(color) {
-			local.value = JSON.stringify(color);
+		set(value) {
+			local.value = value;
 		},
-		get() {
-			try {
-				const parsed: unknown = JSON.parse(local.value);
-				if (typeof parsed == "object" && parsed != null) {
-					if ("r" in parsed && "g" in parsed && "b" in parsed) {
-						return new Rgb(Number(parsed["r"]), Number(parsed["g"]), Number(parsed["b"]));
-					} else if ("h" in parsed && "s" in parsed && "l" in parsed) {
-						return new Hsl(Number(parsed["h"]), Number(parsed["s"]), Number(parsed["l"]));
-					} else if ("h" in parsed && "s" in parsed && "v" in parsed) {
-						return new Hsv(Number(parsed["h"]), Number(parsed["s"]), Number(parsed["v"]));
-					} else if ("h" in parsed && "w" in parsed && "b" in parsed) {
-						return new Hwb(Number(parsed["h"]), Number(parsed["w"]), Number(parsed["b"]));
-					} else if ("c" in parsed && "m" in parsed && "y" in parsed && "k" in parsed) {
-						return new Cmyk(Number(parsed["c"]), Number(parsed["m"]), Number(parsed["y"]), Number(parsed["k"]));
-					}
-				}
-				return defaultValue;
-			} catch {
-				return defaultValue;
+		get: () => {
+			const arg = local.value;
+			if ("r" in arg && "g" in arg && "b" in arg) {
+				return new Rgb(Number(arg["r"]), Number(arg["g"]), Number(arg["b"]));
+			} else if ("h" in arg && "s" in arg && "l" in arg) {
+				return new Hsl(Number(arg["h"]), Number(arg["s"]), Number(arg["l"]));
+			} else if ("h" in arg && "s" in arg && "v" in arg) {
+				return new Hsv(Number(arg["h"]), Number(arg["s"]), Number(arg["v"]));
+			} else if ("h" in arg && "w" in arg && "b" in arg) {
+				return new Hwb(Number(arg["h"]), Number(arg["w"]), Number(arg["b"]));
+			} else if ("c" in arg && "m" in arg && "y" in arg && "k" in arg) {
+				return new Cmyk(Number(arg["c"]), Number(arg["m"]), Number(arg["y"]), Number(arg["k"]));
 			}
+
+			return value;
 		},
 	});
 }

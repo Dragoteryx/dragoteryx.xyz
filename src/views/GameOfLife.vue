@@ -8,17 +8,16 @@
 		@scroll="scroll"
 		@drag="drag"
 	>
+		<NavButton :icon="Dna" to="/game-of-life" highlight="exact">Snapshots</NavButton>
+		<NavButton :icon="Settings" to="/game-of-life/settings" highlight="exact">Settings</NavButton>
+		<hr />
 		<FormButton class="red" :icon="Skull" @click="gameOfLifeStore.clear">
 			Kill {{ gameOfLifeStore.aliveCells }} alive cells
 		</FormButton>
-		<hr />
-		<FormRange :reset="10" :min="1" :max="60" v-model="gameOfLifeStore.speed">Speed</FormRange>
+		<FormSelect v-model="gameOfLifeStore.rule" :options="options" />
 		<hr />
 		<div class="column spaced large">
-			<label class="column spaced">
-				<span class="large">Rule</span>
-				<FormSelect v-model="gameOfLifeStore.rule" :options="options" />
-			</label>
+			<RouterView />
 		</div>
 		<hr />
 		<span v-if="pos">Cursor position: ({{ pos.x }}, {{ pos.y }})</span>
@@ -27,19 +26,20 @@
 </template>
 
 <script setup lang="ts">
-	import { useGameOfLifeStore } from "@/stores/gameoflife";
 	import FormSelect, { type Option } from "@/components/form/FormSelect.vue";
-	import CanvasMenu from "@/components/CanvasMenu.vue";
 	import FormButton from "@/components/form/FormButton.vue";
-	import FormRange from "@/components/form/FormRange.vue";
-	import { Skull } from "lucide-vue-next";
+	import { useGameOfLifeStore } from "@/stores/gameoflife";
+	import { Dna, Settings, Skull } from "lucide-vue-next";
+	import CanvasMenu from "@/components/CanvasMenu.vue";
+	import NavButton from "@/components/NavButton.vue";
+	import { RouterView } from "vue-router";
 	import { computed } from "vue";
 
 	const gameOfLifeStore = useGameOfLifeStore();
 	const options = computed(() => {
 		const options: Option<string>[] = [];
 		for (const [key, value] of Object.entries(gameOfLifeStore.rules)) {
-			options.push({ description: value.description, value: key });
+			options.push({ description: value[0], value: key });
 		}
 
 		return options;

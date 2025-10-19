@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-	import SandboxSpawnButton from "./SandboxSpawnButton.vue";
+	import SandboxSpawnButton from "@/components/sandbox/SandboxSpawnButton.vue";
 	import FormButton from "@/components/form/FormButton.vue";
 	import { useSandboxStore } from "@/stores/sandbox";
 	import { Trash2 } from "lucide-vue-next";

@@ -21,6 +21,7 @@ const _: &'static str = "export interface Rule {
 pub struct GameOfLife {
 	cells: AHashMap<(i32, i32), Cell>,
 	rule: Function,
+	debug: bool,
 }
 
 #[wasm_bindgen]
@@ -30,6 +31,41 @@ impl GameOfLife {
 		Self {
 			cells: AHashMap::new(),
 			rule: rule.unchecked_into(),
+			debug: false,
+		}
+	}
+
+	#[wasm_bindgen(getter)]
+	pub fn debug(&self) -> bool {
+		self.debug
+	}
+
+	#[wasm_bindgen(setter)]
+	pub fn set_debug(&mut self, debug: bool) {
+		self.debug = debug;
+	}
+
+	#[wasm_bindgen(getter)]
+	pub fn json(&self) -> String {
+		let mut cells = Vec::new();
+		for (&(x, y), cell) in &self.cells {
+			if cell.is_alive() {
+				cells.push([x, y]);
+			}
+		}
+	
+		serde_json::to_string(&cells)
+			.unwrap_or_default()
+	}
+
+	#[wasm_bindgen(setter)]
+	pub fn set_json(&mut self, cells: &str) {
+		let cells = serde_json::from_str::<Vec<[i32; 2]>>(cells);
+		if let Ok(cells) = cells {
+			self.cells.clear();
+			for [x, y] in cells {
+				self.birth_cell(x, y);
+			}
 		}
 	}
 
@@ -118,14 +154,37 @@ impl GameOfLife {
 
 	#[allow(deprecated)]
 	pub fn draw(&self, ctx: &CanvasRenderingContext2d, canvas_x: f64, canvas_y: f64, size: f64, color: &str) {
-		ctx.set_fill_style(&JsValue::from_str(color));
-		for (&(x, y), cell) in &self.cells {
-			if cell.is_alive() {
+		if self.debug {
+			let mut cache = AHashMap::with_capacity(16);
+			for (&(x, y), cell) in &self.cells {
+				let is_alive = cell.is_alive();
+				let neighbors = cell.neighbors();
+				let should_live = cache.entry((is_alive, neighbors))
+					.or_insert_with(|| self.should_live(is_alive, neighbors));
+				let color = match (is_alive, *should_live) {
+					(true, true) => &JsValue::from_str("hsl(210, 50%, 50%)"),
+					(true, false) => &JsValue::from_str("hsl(0, 50%, 50%)"),
+					(false, true) => &JsValue::from_str("hsl(90, 50%, 50%)"),
+					(false, false) => continue,
+				};
+				
+				ctx.set_fill_style(color);
 				ctx.fill_rect(
 					(x as f64 * size) - canvas_x,
 					(y as f64 * size) - canvas_y,
 					size, size,
 				);
+			}
+		} else {
+			ctx.set_fill_style(&JsValue::from_str(color));
+			for (&(x, y), cell) in &self.cells {
+				if cell.is_alive() {
+					ctx.fill_rect(
+						(x as f64 * size) - canvas_x,
+						(y as f64 * size) - canvas_y,
+						size, size,
+					);
+				}
 			}
 		}
 	}

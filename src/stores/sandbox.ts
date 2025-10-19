@@ -1,4 +1,4 @@
-import { useLocalStorageColor } from "@/composables/color";
+import { useColorLocalStorage } from "@/composables/color";
 import { useControls } from "@/composables/controls";
 import { useLocalStorage } from "@vueuse/core";
 import { Sandbox } from "@/wasm/pkg";
@@ -33,7 +33,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	const width = ref(0);
 
 	const defaultColor = new Hsl(90, 50, 50);
-	const color = useLocalStorageColor("sandbox-color", defaultColor);
+	const color = useColorLocalStorage("sandbox-color", defaultColor);
 	const radius = useLocalStorage("sandbox-radius", 13);
 
 	const gravity: Gravity = reactive({

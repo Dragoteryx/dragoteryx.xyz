@@ -1,9 +1,8 @@
-import type { Option } from "@/components/form/FormSelect.vue";
+import { reactive, ref, watchEffect, readonly } from "vue";
 import { GameOfLife, type Rule } from "@/wasm/pkg/wasm";
 import { useLocalStorage } from "@vueuse/core";
 import { useControls } from "@/composables/controls";
 import { useFibonacci } from "@/composables/math";
-import { computed, reactive, ref } from "vue";
 import { defineStore } from "pinia";
 
 export function conwaysRule(alive: boolean, neighbors: number): boolean {
@@ -20,10 +19,6 @@ export function seedsRule(alive: boolean, neighbors: number): boolean {
 
 export function lifeWithoutDeathRule(alive: boolean, neighbors: number): boolean {
 	return alive || neighbors == 3;
-}
-
-export function randomRule(alive: boolean, neighbors: number): boolean {
-	return Math.random() < 0.5;
 }
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
@@ -49,22 +44,41 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 
 	const ctx = ref<CanvasRenderingContext2D>();
 	const game = new GameOfLife((alive, neighbors) => {
-		return rules[rule.value]?.value(alive, neighbors) ?? alive;
+		return rules[rule.value]?.[1](alive, neighbors) ?? alive;
 	});
 
 	const aliveCells = ref(0);
+	const snapshots = reactive<string[]>([]);
 	const canvasPos = reactive({ x: 0, y: 0 });
 	const size = useFibonacci(() => zoom.value + 1);
 	const zoom = useLocalStorage("game-of-life-zoom", 10);
 	const speed = useLocalStorage("game-of-life-speed", 10);
+	const debug = useLocalStorage("game-of-life-debug", false);
 	const rule = useLocalStorage("game-of-life-rule", "conways");
-	const rules = reactive<Record<string, Option<Rule>>>({
-		conways: { description: "Conway's Game of Life", value: conwaysRule },
-		lifeWithoutDeath: { description: "Life without death", value: lifeWithoutDeathRule },
-		highlife: { description: "Highlife", value: highlifeRule },
-		seeds: { description: "Seeds", value: seedsRule },
-		random: { description: "Random", value: randomRule },
+	const rules = reactive<Record<string, [string, Rule]>>({
+		conways: ["Conway's Game of Life", conwaysRule],
+		lifeWithoutDeath: ["Life without death", lifeWithoutDeathRule],
+		highlife: ["Highlife", highlifeRule],
+		seeds: ["Seeds", seedsRule],
 	});
+
+	watchEffect(() => (game.debug = debug.value));
+
+	function createSnapshot() {
+		snapshots.push(game.json);
+	}
+
+	function loadSnapshot(index: number) {
+		game.json = snapshots[index] ?? "[]";
+	}
+
+	function removeSnapshot(index: number) {
+		snapshots.splice(index, 1);
+	}
+
+	function clearSnapshots() {
+		snapshots.length = 0;
+	}
 
 	function toGameCoordinates(canvasX: number, canvasY: number) {
 		return {
@@ -125,6 +139,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		speed,
 		rule,
 		rules,
+		debug,
 		aliveCells,
 		birthCell,
 		killCell,
@@ -134,5 +149,10 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		zoomOut,
 		toGameCoordinates,
 		toGameCoordinatesFloored,
+		snapshots: readonly(snapshots),
+		createSnapshot,
+		loadSnapshot,
+		removeSnapshot,
+		clearSnapshots,
 	};
 });
