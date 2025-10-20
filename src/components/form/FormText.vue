@@ -1,14 +1,20 @@
 <template>
-	<input type="text" v-model="text" :disabled="disabled" />
+	<input type="text" v-model="text" v-bind="props" @keydown.enter="emit('submit', text)" />
 </template>
 
 <script setup lang="ts">
 	export interface Props {
+		placeholder?: string;
 		disabled?: boolean;
 	}
 
-	const text = defineModel<string>({ required: true });
+	export interface Emits {
+		submit: [value: string];
+	}
+
 	const props = defineProps<Props>();
+	const emit = defineEmits<Emits>();
+	const text = defineModel<string>({ required: true });
 </script>
 
 <style scoped lang="scss">
@@ -18,5 +24,10 @@
 		color: var(--text);
 		padding: 5px;
 		outline: none;
+		height: 30px;
+
+		&::placeholder {
+			color: var(--dark);
+		}
 	}
 </style>

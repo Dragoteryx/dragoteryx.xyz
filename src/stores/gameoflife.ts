@@ -48,13 +48,13 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	});
 
 	const aliveCells = ref(0);
-	const snapshots = reactive<string[]>([]);
 	const canvasPos = reactive({ x: 0, y: 0 });
 	const size = useFibonacci(() => zoom.value + 1);
 	const zoom = useLocalStorage("game-of-life-zoom", 10);
 	const speed = useLocalStorage("game-of-life-speed", 10);
 	const debug = useLocalStorage("game-of-life-debug", false);
 	const rule = useLocalStorage("game-of-life-rule", "conways");
+	const snapshots = reactive<Map<string, string>>(new Map());
 	const rules = reactive<Record<string, [string, Rule]>>({
 		conways: ["Conway's Game of Life", conwaysRule],
 		lifeWithoutDeath: ["Life without death", lifeWithoutDeathRule],
@@ -64,20 +64,20 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 
 	watchEffect(() => (game.debug = debug.value));
 
-	function createSnapshot() {
-		snapshots.push(game.json);
+	function createSnapshot(name: string) {
+		snapshots.set(name, game.json);
 	}
 
-	function loadSnapshot(index: number) {
-		game.json = snapshots[index] ?? "[]";
+	function loadSnapshot(name: string) {
+		game.json = snapshots.get(name) ?? "[]";
 	}
 
-	function removeSnapshot(index: number) {
-		snapshots.splice(index, 1);
+	function removeSnapshot(name: string) {
+		snapshots.delete(name);
 	}
 
 	function clearSnapshots() {
-		snapshots.length = 0;
+		snapshots.clear();
 	}
 
 	function toGameCoordinates(canvasX: number, canvasY: number) {

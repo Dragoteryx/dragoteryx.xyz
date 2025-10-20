@@ -38,8 +38,8 @@
 		background: var(--medium);
 		border: 1px solid var(--dark);
 
-		transition-property: background-color;
-		transition-duration: 0.2s;
+		transition-property: background-color, color;
+		transition-duration: 0.2s, 0.2s;
 
 		&:disabled {
 			color: var(--dark);
