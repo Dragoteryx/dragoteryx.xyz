@@ -10,12 +10,11 @@ export default createRouter({
 		},
 		{
 			path: "/sandbox",
-			name: "sandbox",
 			component: () => import("@/views/Sandbox.vue"),
 			children: [
 				{
 					path: "",
-					name: "sandbox-spawn",
+					name: "sandbox",
 					component: () => import("@/views/sandbox/SandboxSpawn.vue"),
 				},
 				{
@@ -27,12 +26,11 @@ export default createRouter({
 		},
 		{
 			path: "/game-of-life",
-			name: "game-of-life",
 			component: () => import("@/views/GameOfLife.vue"),
 			children: [
 				{
 					path: "",
-					name: "game-of-life-snapshots",
+					name: "game-of-life",
 					component: () => import("@/views/gameoflife/GameOfLifeSnapshots.vue"),
 				},
 				{
