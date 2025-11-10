@@ -13,7 +13,7 @@ extern {
 
 #[wasm_bindgen(typescript_custom_section)]
 const _: &'static str = "export interface Rule {
-	(alive: boolean, neighbors: number): boolean
+	(alive: boolean, neighbors: number): boolean;
 }";
 
 #[wasm_bindgen]
