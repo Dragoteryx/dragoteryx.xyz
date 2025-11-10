@@ -1,12 +1,12 @@
 <template>
 	<div class="large row">
-		<Canvas2D
+		<ResizableCanvas
 			class="large"
 			v-model:mouse-x="mouseX"
 			v-model:mouse-y="mouseY"
 			v-model:width="width"
 			v-model:height="height"
-			v-model:context="context"
+			v-model:context2d="context2d"
 			@scroll="(x, y, up) => emit('scroll', x, y, up)"
 			@click="(x, y) => emit('click', x, y)"
 			@drag="(x, y) => emit('drag', x, y)"
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-	import Canvas2D, { type Emits } from "./Canvas2D.vue";
+	import ResizableCanvas, { type Emits } from "./ResizableCanvas.vue";
 	import ControlsMenu from "./ControlsMenu.vue";
 	import type { Controls } from "@/composables/controls";
 	import { onMounted, onUnmounted } from "vue";
@@ -35,7 +35,7 @@
 	const mouseY = defineModel<number>("mouseY");
 	const width = defineModel("width", { default: 0 });
 	const height = defineModel("height", { default: 0 });
-	const context = defineModel<CanvasRenderingContext2D>("context");
+	const context2d = defineModel<CanvasRenderingContext2D>("context2d");
 
 	onMounted(() => {
 		props.controls.active = true;

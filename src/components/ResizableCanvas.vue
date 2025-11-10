@@ -32,11 +32,11 @@
 	const mouseY = defineModel<number>("mouseY");
 	const width = defineModel("width", { default: 0 });
 	const height = defineModel("height", { default: 0 });
-	const context = defineModel<CanvasRenderingContext2D>("context");
+	const context2d = defineModel<CanvasRenderingContext2D>("context2d");
 
 	watchEffect(() => {
 		const ctx = canvas.value?.getContext("2d");
-		context.value = ctx ?? undefined;
+		context2d.value = ctx ?? undefined;
 	});
 
 	watchEffect(() => {

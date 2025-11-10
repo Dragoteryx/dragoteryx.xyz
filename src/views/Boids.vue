@@ -3,7 +3,7 @@
 		:controls="boidsStore.controls"
 		v-model:width="boidsStore.width"
 		v-model:height="boidsStore.height"
-		v-model:context="boidsStore.ctx"
+		v-model:context2d="boidsStore.ctx"
 	>
 	</CanvasMenu>
 </template>

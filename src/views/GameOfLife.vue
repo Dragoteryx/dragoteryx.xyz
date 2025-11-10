@@ -3,7 +3,7 @@
 		v-model:mouse-x="mouseX"
 		v-model:mouse-y="mouseY"
 		:controls="gameOfLifeStore.controls"
-		v-model:context="gameOfLifeStore.ctx"
+		v-model:context2d="gameOfLifeStore.ctx"
 		@click="gameOfLifeStore.toggleCell"
 		@scroll="scroll"
 		@drag="drag"
