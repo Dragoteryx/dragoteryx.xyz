@@ -162,7 +162,7 @@ impl GameOfLife {
 				let should_live = cache.entry((is_alive, neighbors))
 					.or_insert_with(|| self.should_live(is_alive, neighbors));
 				let color = match (is_alive, *should_live) {
-					(true, true) => &JsValue::from_str("hsl(210, 50%, 50%)"),
+					(true, true) => &JsValue::from_str("hsl(20, 50%, 50%)"),
 					(true, false) => &JsValue::from_str("hsl(0, 50%, 50%)"),
 					(false, true) => &JsValue::from_str("hsl(90, 50%, 50%)"),
 					(false, false) => continue,
