@@ -1,7 +1,6 @@
 import { type Color, Hsl, Hsv, Hwb, Rgb, Cmyk } from "@/types/color";
-import type { WritableComputedRef } from "vue";
+import { computed, type Ref, type WritableComputedRef } from "vue";
 import { useLocalStorage } from "@vueuse/core";
-import { computed, type Ref } from "vue";
 
 export function useRgb(color: Ref<Color>): WritableComputedRef<Rgb> {
 	return computed({

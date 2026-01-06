@@ -9,7 +9,13 @@ import wasm from "vite-plugin-wasm";
 
 // https://vite.dev/config/
 export default defineConfig({
-	plugins: [vue({ include: [/\.vue$/, /\.md$/] }), vueDevTools(), markdown({}), topLevelAwait(), wasm()],
+	plugins: [
+		vue({ include: [/\.vue$/, /\.md$/] }),
+		vueDevTools(),
+		markdown({}),
+		topLevelAwait(),
+		wasm()
+	],
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),

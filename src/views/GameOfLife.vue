@@ -33,7 +33,7 @@
 	import CanvasMenu from "@/components/CanvasMenu.vue";
 	import NavButton from "@/components/NavButton.vue";
 	import { RouterView } from "vue-router";
-	import { computed } from "vue";
+	import { computed, ref } from "vue";
 
 	const gameOfLifeStore = useGameOfLifeStore();
 	const options = computed(() => {
@@ -45,8 +45,8 @@
 		return options;
 	});
 
-	const mouseX = defineModel<number>("mouseX");
-	const mouseY = defineModel<number>("mouseY");
+	const mouseX = ref(0);
+	const mouseY = ref(0);
 	const pos = computed(() => {
 		if (mouseX.value !== undefined && mouseY.value !== undefined) {
 			return gameOfLifeStore.toGameCoordinatesFloored(mouseX.value, mouseY.value);

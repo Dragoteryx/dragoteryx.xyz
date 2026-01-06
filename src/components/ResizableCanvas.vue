@@ -30,8 +30,8 @@
 
 	const mouseX = defineModel<number>("mouseX");
 	const mouseY = defineModel<number>("mouseY");
-	const width = defineModel("width", { default: 0 });
-	const height = defineModel("height", { default: 0 });
+	const width = defineModel<number>("width");
+	const height = defineModel<number>("height");
 	const context2d = defineModel<CanvasRenderingContext2D>("context2d");
 
 	watchEffect(() => {
