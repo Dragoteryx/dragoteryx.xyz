@@ -2,11 +2,11 @@
 	<div ref="parent">
 		<canvas
 			ref="canvas"
-			@mouseup="mouseup"
-			@mousedown="mousedown"
-			@mouseenter="mouseenter"
-			@mouseleave="mouseleave"
-			@mousemove="mousemove"
+			@mouseup="mouseUp"
+			@mousedown="mouseDown"
+			@mouseenter="mouseEnter"
+			@mouseleave="mouseLeave"
+			@mousemove="mouseMove"
 			@wheel.passive="wheel"
 		></canvas>
 	</div>
@@ -14,12 +14,18 @@
 
 <script setup lang="ts">
 	import { useWindowScroll, useWindowSize } from "@vueuse/core";
-	import { useTemplateRef, watchEffect } from "vue";
+	import { ref, useTemplateRef, watchEffect } from "vue";
 
 	export interface Emits {
 		scroll: [x: number, y: number, up: boolean];
 		click: [x: number, y: number];
 		drag: [x: number, y: number];
+	}
+
+	const enum MouseState {
+		Up,
+		Down,
+		Drag,
 	}
 
 	const emit = defineEmits<Emits>();
@@ -28,6 +34,7 @@
 	const windowScroll = useWindowScroll();
 	const windowSize = useWindowSize();
 
+	const mouseState = ref(MouseState.Up);
 	const mouseX = defineModel<number>("mouseX");
 	const mouseY = defineModel<number>("mouseY");
 	const width = defineModel<number>("width");
@@ -52,48 +59,37 @@
 		}
 	});
 
-	// mouse stuff
-
-	const enum MouseState {
-		None,
-		Up,
-		Down,
-		Drag,
-	}
-
-	let mouseState = MouseState.None;
-
-	function mouseup(event: MouseEvent) {
-		if (mouseState == MouseState.Down) {
+	function mouseUp(event: MouseEvent) {
+		if (mouseState.value == MouseState.Down) {
 			const x = event.x - (canvas.value?.offsetLeft ?? 0) + windowScroll.x.value;
 			const y = event.y - (canvas.value?.offsetTop ?? 0) + windowScroll.y.value;
 			emit("click", x, y);
 		}
 
-		mouseState = MouseState.Up;
+		mouseState.value = MouseState.Up;
 	}
 
-	function mousedown() {
-		mouseState = MouseState.Down;
+	function mouseDown() {
+		mouseState.value = MouseState.Down;
 	}
 
-	function mouseenter(event: MouseEvent) {
+	function mouseEnter(event: MouseEvent) {
 		mouseX.value = event.x - (canvas.value?.offsetLeft ?? 0);
 		mouseY.value = event.y - (canvas.value?.offsetTop ?? 0);
-		mouseState = MouseState.Up;
+		mouseState.value = MouseState.Up;
 	}
 
-	function mousemove(event: MouseEvent) {
+	function mouseMove(event: MouseEvent) {
 		mouseX.value = event.x - (canvas.value?.offsetLeft ?? 0);
 		mouseY.value = event.y - (canvas.value?.offsetTop ?? 0);
-		if (mouseState == MouseState.Down || mouseState == MouseState.Drag) {
+		if (mouseState.value != MouseState.Up) {
 			emit("drag", -event.movementX, -event.movementY);
-			mouseState = MouseState.Drag;
+			mouseState.value = MouseState.Drag;
 		}
 	}
 
-	function mouseleave(event: MouseEvent) {
-		mouseState = MouseState.None;
+	function mouseLeave(event: MouseEvent) {
+		mouseState.value = MouseState.Up;
 		mouseX.value = undefined;
 		mouseY.value = undefined;
 	}
