@@ -56,17 +56,14 @@ hr {
 
 .row {
 	display: flex;
-
-	&.spaced {
-		gap: 10px;
-	}
+	flex-direction: row;
 
 	> .large {
 		flex: 1;
 	}
 
-	&:not(.reversed) {
-		flex-direction: row;
+	&.spaced {
+		gap: 10px;
 	}
 
 	&.reversed {
@@ -76,17 +73,14 @@ hr {
 
 .column {
 	display: flex;
-
-	&.spaced {
-		gap: 10px;
-	}
+	flex-direction: column;
 
 	> .large {
 		flex: 1;
 	}
 
-	&:not(.reversed) {
-		flex-direction: column;
+	&.spaced {
+		gap: 10px;
 	}
 
 	&.reversed {

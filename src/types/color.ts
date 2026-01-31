@@ -15,9 +15,9 @@ export class Rgb implements Color {
 	public readonly b: number;
 
 	public constructor(r: number, g: number, b: number) {
-		this.r = Math.min(255, Math.max(0, Math.floor(r)));
-		this.g = Math.min(255, Math.max(0, Math.floor(g)));
-		this.b = Math.min(255, Math.max(0, Math.floor(b)));
+		this.r = Math.min(Math.max(Math.floor(r), 0), 255);
+		this.g = Math.min(Math.max(Math.floor(g), 0), 255);
+		this.b = Math.min(Math.max(Math.floor(b), 0), 255);
 	}
 
 	public get hex() {
@@ -55,8 +55,8 @@ export class Hsl implements Color {
 	public readonly l: number;
 
 	public constructor(h: number, s: number, l: number) {
-		this.s = Math.min(100, Math.max(0, Math.floor(s)));
-		this.l = Math.min(100, Math.max(0, Math.floor(l)));
+		this.s = Math.min(Math.max(Math.floor(s), 0), 100);
+		this.l = Math.min(Math.max(Math.floor(l), 0), 100);
 		this.h = Math.floor(h) % 360;
 	}
 
@@ -95,8 +95,8 @@ export class Hsv implements Color {
 	public readonly v: number;
 
 	public constructor(h: number, s: number, v: number) {
-		this.s = Math.min(100, Math.max(0, Math.floor(s)));
-		this.v = Math.min(100, Math.max(0, Math.floor(v)));
+		this.s = Math.min(Math.max(Math.floor(s), 0), 100);
+		this.v = Math.min(Math.max(Math.floor(v), 0), 100);
 		this.h = Math.floor(h) % 360;
 	}
 
@@ -135,8 +135,8 @@ export class Hwb implements Color {
 	public readonly b: number;
 
 	public constructor(h: number, w: number, b: number) {
-		this.w = Math.min(100, Math.max(0, Math.floor(w)));
-		this.b = Math.min(100, Math.max(0, Math.floor(b)));
+		this.w = Math.min(Math.max(Math.floor(w), 0), 100);
+		this.b = Math.min(Math.max(Math.floor(b), 0), 100);
 		this.h = Math.floor(h) % 360;
 	}
 
@@ -176,10 +176,10 @@ export class Cmyk implements Color {
 	public readonly k: number;
 
 	public constructor(c: number, m: number, y: number, k: number) {
-		this.c = Math.min(100, Math.max(0, Math.floor(c)));
-		this.m = Math.min(100, Math.max(0, Math.floor(m)));
-		this.y = Math.min(100, Math.max(0, Math.floor(y)));
-		this.k = Math.min(100, Math.max(0, Math.floor(k)));
+		this.c = Math.min(Math.max(Math.floor(c), 0), 100);
+		this.m = Math.min(Math.max(Math.floor(m), 0), 100);
+		this.y = Math.min(Math.max(Math.floor(y), 0), 100);
+		this.k = Math.min(Math.max(Math.floor(k), 0), 100);
 	}
 
 	public get hex() {
