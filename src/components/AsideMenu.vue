@@ -25,7 +25,7 @@
 			<NavButton :icon="House" to="/" highlight="exact">Home</NavButton>
 			<NavButton :icon="Shapes" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
 			<NavButton :icon="Dna" to="/game-of-life" highlight="partial">Game of Life</NavButton>
-			<NavButton v-if="DEV" :icon="FishSymbol" to="/boids" highlight="partial">Boids</NavButton>
+			<NavButton v-if="DEV" :icon="Fish" to="/boids" highlight="partial">Boids</NavButton>
 		</nav>
 		<hr />
 		<footer class="row">
@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-	import { House, Shapes, Dna, FishSymbol } from "lucide-vue-next";
+	import { House, Shapes, Dna, Fish } from "lucide-vue-next";
 	import NavButton from "@/components/NavButton.vue";
 	import { vHover } from "@/directives/animations";
 

@@ -83,7 +83,7 @@
 		mouseX.value = event.x - (canvas.value?.offsetLeft ?? 0);
 		mouseY.value = event.y - (canvas.value?.offsetTop ?? 0);
 		if (mouseState.value != MouseState.Up) {
-			emit("drag", -event.movementX, -event.movementY);
+			emit("drag", event.movementX, event.movementY);
 			mouseState.value = MouseState.Drag;
 		}
 	}

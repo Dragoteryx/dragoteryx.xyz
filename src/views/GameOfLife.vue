@@ -54,8 +54,8 @@
 	});
 
 	function drag(x: number, y: number) {
-		gameOfLifeStore.canvasPos.x += x;
-		gameOfLifeStore.canvasPos.y += y;
+		gameOfLifeStore.canvasPos.x -= x;
+		gameOfLifeStore.canvasPos.y -= y;
 	}
 
 	function scroll(x: number, y: number, up: boolean) {
