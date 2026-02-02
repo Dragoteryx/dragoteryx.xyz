@@ -4,6 +4,7 @@
 		v-model:mouse-y="mouseY"
 		:controls="gameOfLifeStore.controls"
 		v-model:context2d="gameOfLifeStore.ctx"
+		@size-change="gameOfLifeStore.draw"
 		@click="gameOfLifeStore.toggleCell"
 		@scroll="scroll"
 		@drag="drag"

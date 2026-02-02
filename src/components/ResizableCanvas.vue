@@ -13,10 +13,11 @@
 </template>
 
 <script setup lang="ts">
-	import { useWindowScroll, useWindowSize } from "@vueuse/core";
 	import { ref, useTemplateRef, watchEffect } from "vue";
+	import { useWindowSize } from "@vueuse/core";
 
 	export interface Emits {
+		sizeChange: [width: number, height: number];
 		scroll: [x: number, y: number, up: boolean];
 		click: [x: number, y: number];
 		drag: [x: number, y: number];
@@ -31,7 +32,6 @@
 	const emit = defineEmits<Emits>();
 	const parent = useTemplateRef("parent");
 	const canvas = useTemplateRef("canvas");
-	const windowScroll = useWindowScroll();
 	const windowSize = useWindowSize();
 
 	const mouseState = ref(MouseState.Up);
@@ -56,13 +56,14 @@
 			canvas.value.height = parent.value.clientHeight;
 			height.value = canvas.value.height;
 			width.value = canvas.value.width;
+			emit("sizeChange", width.value, height.value);
 		}
 	});
 
 	function mouseUp(event: MouseEvent) {
 		if (mouseState.value == MouseState.Down) {
-			const x = event.x - (canvas.value?.offsetLeft ?? 0) + windowScroll.x.value;
-			const y = event.y - (canvas.value?.offsetTop ?? 0) + windowScroll.y.value;
+			const x = event.x - (canvas.value?.offsetLeft ?? 0);
+			const y = event.y - (canvas.value?.offsetTop ?? 0);
 			emit("click", x, y);
 		}
 

@@ -20,10 +20,7 @@ export interface Options {
 export const useSandboxStore = defineStore("sandbox", () => {
 	const controls = useControls(paused => {
 		if (!paused) sandbox.tick();
-		if (ctx.value) {
-			if (options.clearCanvas) ctx.value.clearRect(0, 0, width.value, height.value);
-			sandbox.draw(ctx.value);
-		}
+		draw();
 	});
 
 	const ctx = ref<CanvasRenderingContext2D>();
@@ -71,6 +68,13 @@ export const useSandboxStore = defineStore("sandbox", () => {
 		entities.value = 0;
 	}
 
+	function draw() {
+		if (ctx.value) {
+			if (options.clearCanvas) ctx.value.clearRect(0, 0, width.value, height.value);
+			sandbox.draw(ctx.value);
+		}
+	}
+
 	return {
 		controls,
 		ctx,
@@ -84,5 +88,6 @@ export const useSandboxStore = defineStore("sandbox", () => {
 		entities,
 		addCircle,
 		clearEntities,
+		draw,
 	};
 });

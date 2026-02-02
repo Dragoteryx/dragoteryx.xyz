@@ -7,6 +7,7 @@
 			v-model:width="width"
 			v-model:height="height"
 			v-model:context2d="context2d"
+			@size-change="(w, h) => emit('sizeChange', w, h)"
 			@scroll="(x, y, up) => emit('scroll', x, y, up)"
 			@click="(x, y) => emit('click', x, y)"
 			@drag="(x, y) => emit('drag', x, y)"

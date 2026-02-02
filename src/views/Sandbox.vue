@@ -4,6 +4,7 @@
 		v-model:width="sandboxStore.width"
 		v-model:height="sandboxStore.height"
 		v-model:context2d="sandboxStore.ctx"
+		@size-change="sandboxStore.draw"
 		@click="sandboxStore.addCircle"
 	>
 		<NavButton :icon="Shapes" to="/sandbox" highlight="exact">Spawn entities</NavButton>

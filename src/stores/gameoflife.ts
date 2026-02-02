@@ -32,12 +32,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 			}
 		}
 
-		if (ctx.value) {
-			const style = window.getComputedStyle(document.body);
-			const textColor = style.getPropertyValue("--text");
-			ctx.value.clearRect(0, 0, ctx.value.canvas.width, ctx.value.canvas.height);
-			game.draw(ctx.value, Math.floor(canvasPos.x), Math.floor(canvasPos.y), size.value, textColor);
-		}
+		draw();
 	});
 
 	controls.paused = true;
@@ -132,6 +127,15 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		game.clear();
 	}
 
+	function draw() {
+		if (ctx.value) {
+			const style = window.getComputedStyle(document.body);
+			const textColor = style.getPropertyValue("--text");
+			ctx.value.clearRect(0, 0, ctx.value.canvas.width, ctx.value.canvas.height);
+			game.draw(ctx.value, Math.floor(canvasPos.x), Math.floor(canvasPos.y), size.value, textColor);
+		}
+	}
+
 	return {
 		controls,
 		ctx,
@@ -145,6 +149,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		killCell,
 		toggleCell,
 		clear,
+		draw,
 		zoomIn,
 		zoomOut,
 		toGameCoordinates,
