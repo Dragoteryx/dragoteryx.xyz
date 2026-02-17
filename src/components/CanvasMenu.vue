@@ -13,7 +13,7 @@
 			@drag="(x, y) => emit('drag', x, y)"
 		/>
 		<div class="column spaced padded menu">
-			<ControlsMenu :controls="props.controls" />
+			<ControlsMenu :controls="controls" />
 			<hr />
 			<slot></slot>
 		</div>

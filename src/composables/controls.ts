@@ -18,12 +18,21 @@ export function useActive(update: () => void): WritableComputedRef<boolean> {
 	});
 }
 
-export function useControls(update: (paused: boolean) => void): Controls {
+export function useControls(startPaused: boolean, update: (paused: boolean) => void): Controls {
 	const active = useActive(() => update(paused.value));
-	const paused = ref(false);
+	const paused = ref(startPaused);
 	return reactive({
 		tick: () => update(false),
 		active,
 		paused,
+	});
+}
+
+export function useTimedControls(startPaused: boolean, update: (paused: boolean, now: number, previous: number) => void): Controls {
+	let previous = performance.now();
+	return useControls(startPaused, paused => {
+		const now = performance.now();
+		update(paused, now, previous);
+		previous = now;
 	});
 }

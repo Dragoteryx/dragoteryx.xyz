@@ -1,7 +1,7 @@
 import { reactive, ref, watchEffect, readonly } from "vue";
 import { GameOfLife, type Rule } from "@/wasm/pkg/wasm";
 import { useLocalStorage } from "@vueuse/core";
-import { useControls } from "@/composables/controls";
+import { useControls, useTimedControls } from "@/composables/controls";
 import { useFibonacci } from "@/composables/math";
 import { defineStore } from "pinia";
 
@@ -22,20 +22,11 @@ export function lifeWithoutDeathRule(alive: boolean, neighbors: number): boolean
 }
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
-	let lastTime = 0;
-	const controls = useControls(paused => {
-		if (!paused) {
-			const now = performance.now();
-			if (now - lastTime >= 1000 / speed.value) {
-				aliveCells.value = game.tick();
-				lastTime = now;
-			}
-		}
-
+	const controls = useTimedControls(true, (paused, now, previous) => {
+		if (!paused && now - previous >= 1000 / speed.value)
+			aliveCells.value = game.tick();
 		draw();
 	});
-
-	controls.paused = true;
 
 	const ctx = ref<CanvasRenderingContext2D>();
 	const game = new GameOfLife((alive, neighbors) => {
