@@ -63,6 +63,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 
 	function loadSnapshot(name: string) {
 		game.json = snapshots.get(name) ?? "[]";
+		draw();
 	}
 
 	function removeSnapshot(name: string) {
