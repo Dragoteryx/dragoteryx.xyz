@@ -50,8 +50,8 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		seeds: ["Seeds", seedsRule],
 	});
 
-	watch(canvasPos, () => draw());
 	watch(size, () => draw());
+	watch(canvasPos, () => draw());
 	watchEffect(() => {
 		game.debug = debug.value;
 		draw();
@@ -130,6 +130,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	function clear() {
 		aliveCells.value = 0;
 		game.clear();
+		draw();
 	}
 
 	function draw() {
