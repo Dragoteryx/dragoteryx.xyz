@@ -48,6 +48,8 @@
 
 	watchEffect(() => {
 		if (parent.value && canvas.value) {
+			let oldHeight = canvas.value.height;
+			let oldWidth = canvas.value.width;
 			windowSize.height.value;
 			windowSize.width.value;
 			canvas.value.width = 1;
@@ -56,7 +58,9 @@
 			canvas.value.height = parent.value.clientHeight;
 			height.value = canvas.value.height;
 			width.value = canvas.value.width;
-			emit("sizeChange", width.value, height.value);
+			if (oldHeight != canvas.value.height || oldWidth != canvas.value.width) {
+				emit("sizeChange", width.value, height.value);
+			}
 		}
 	});
 

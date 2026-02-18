@@ -18,7 +18,7 @@ export interface Options {
 }
 
 export const useSandboxStore = defineStore("sandbox", () => {
-	const controls = useControls(false, paused => {
+	const controls = useControls(60, paused => {
 		if (!paused) sandbox.tick();
 		draw();
 	});

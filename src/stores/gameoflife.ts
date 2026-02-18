@@ -1,7 +1,7 @@
-import { reactive, ref, watchEffect, readonly } from "vue";
+import { reactive, ref, watch, watchEffect, readonly } from "vue";
 import { GameOfLife, type Rule } from "@/wasm/pkg/wasm";
 import { useLocalStorage } from "@vueuse/core";
-import { useControls, useTimedControls } from "@/composables/controls";
+import { useControls } from "@/composables/controls";
 import { useFibonacci } from "@/composables/math";
 import { defineStore } from "pinia";
 
@@ -22,12 +22,15 @@ export function lifeWithoutDeathRule(alive: boolean, neighbors: number): boolean
 }
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
-	const controls = useTimedControls(true, (paused, now, previous) => {
-		if (!paused && now - previous >= 1000 / speed.value)
+	const speed = useLocalStorage("game-of-life-speed", 10);
+	const controls = useControls(speed, paused => {
+		if (!paused) {
 			aliveCells.value = game.tick();
-		draw();
+			draw();
+		}
 	});
 
+	controls.paused = true;
 	const ctx = ref<CanvasRenderingContext2D>();
 	const game = new GameOfLife((alive, neighbors) => {
 		return rules[rule.value]?.[1](alive, neighbors) ?? alive;
@@ -37,7 +40,6 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	const canvasPos = reactive({ x: 0, y: 0 });
 	const size = useFibonacci(() => zoom.value + 1);
 	const zoom = useLocalStorage("game-of-life-zoom", 10);
-	const speed = useLocalStorage("game-of-life-speed", 10);
 	const debug = useLocalStorage("game-of-life-debug", false);
 	const rule = useLocalStorage("game-of-life-rule", "conways");
 	const snapshots = reactive<Map<string, string>>(new Map());
@@ -48,7 +50,12 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		seeds: ["Seeds", seedsRule],
 	});
 
-	watchEffect(() => (game.debug = debug.value));
+	watch(canvasPos, () => draw());
+	watch(size, () => draw());
+	watchEffect(() => {
+		game.debug = debug.value;
+		draw();
+	});
 
 	function createSnapshot(name: string) {
 		snapshots.set(name, game.json);
@@ -85,16 +92,23 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
 		if (game.toggle_cell(x, y)) aliveCells.value++;
 		else aliveCells.value--;
+		draw();
 	}
 
 	function birthCell(canvasX: number, canvasY: number) {
 		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
-		if (game.birth_cell(x, y)) aliveCells.value++;
+		if (game.birth_cell(x, y)) {
+			aliveCells.value++;
+			draw();
+		}
 	}
 
 	function killCell(canvasX: number, canvasY: number) {
 		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
-		if (game.kill_cell(x, y)) aliveCells.value--;
+		if (game.kill_cell(x, y)) {
+			aliveCells.value--;
+			draw();
+		}
 	}
 
 	function zoomIn(canvasX: number, canvasY: number) {

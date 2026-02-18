@@ -1,4 +1,4 @@
-import { computed, reactive, ref, type WritableComputedRef } from "vue";
+import { computed, reactive, ref, toValue, type MaybeRefOrGetter, type WritableComputedRef } from "vue";
 import { useIntervalFn } from "@vueuse/core";
 
 export interface Controls {
@@ -7,8 +7,9 @@ export interface Controls {
 	tick(): void;
 }
 
-export function useActive(update: () => void): WritableComputedRef<boolean> {
-	const controls = useIntervalFn(update, 1000 / 60);
+export function useActive(tickrate: MaybeRefOrGetter<number>, update: () => void): WritableComputedRef<boolean> {
+	const interval = computed(() => 1000 / toValue(tickrate));
+	const controls = useIntervalFn(update, interval);
 	return computed({
 		get: () => controls.isActive.value,
 		set(value) {
@@ -18,21 +19,12 @@ export function useActive(update: () => void): WritableComputedRef<boolean> {
 	});
 }
 
-export function useControls(startPaused: boolean, update: (paused: boolean) => void): Controls {
-	const active = useActive(() => update(paused.value));
-	const paused = ref(startPaused);
+export function useControls(tickrate: MaybeRefOrGetter<number>, update: (paused: boolean) => void): Controls {
+	const active = useActive(tickrate, () => update(paused.value));
+	const paused = ref(false);
 	return reactive({
 		tick: () => update(false),
 		active,
 		paused,
-	});
-}
-
-export function useTimedControls(startPaused: boolean, update: (paused: boolean, now: number, previous: number) => void): Controls {
-	let previous = performance.now();
-	return useControls(startPaused, paused => {
-		const now = performance.now();
-		update(paused, now, previous);
-		previous = now;
 	});
 }
