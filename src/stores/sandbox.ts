@@ -1,5 +1,5 @@
 import { useColorLocalStorage } from "@/composables/color";
-import { useControls } from "@/composables/controls";
+import { useTimedControls } from "@/composables/controls";
 import { useLocalStorage } from "@vueuse/core";
 import { Sandbox } from "@/wasm/pkg";
 import { Hsl } from "@/types/color";
@@ -18,8 +18,8 @@ export interface Options {
 }
 
 export const useSandboxStore = defineStore("sandbox", () => {
-	const controls = useControls(60, paused => {
-		if (!paused) sandbox.tick();
+	const controls = useTimedControls(60, (paused, dt) => {
+		if (!paused) sandbox.tick(dt);
 		draw();
 	});
 

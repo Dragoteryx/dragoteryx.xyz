@@ -9,11 +9,10 @@ use entity::*;
 mod util;
 use util::*;
 
-pub const TICK_RATE: f32 = 1.0 / 60.0;
 pub const SUB_STEPS: usize = 16;
 
-pub fn delta_time() -> f32 {
-	TICK_RATE / SUB_STEPS as f32
+pub fn delta_time(dt: f32) -> f32 {
+	dt / SUB_STEPS as f32
 }
 
 #[wasm_bindgen]
@@ -139,7 +138,7 @@ impl Sandbox {
 		}
 	}
 
-	pub fn tick(&self) {
+	pub fn tick(&self, dt: f32) {
 		if self.console_logs {
 			console_log!("=== TICK ===");
 		}
@@ -184,7 +183,7 @@ impl Sandbox {
 			for (i, &ent1) in entities.iter().enumerate() {
 				for &ent2 in neighbor_iters.iter().flatten().flat_map(|v| v.iter()).skip(i + 1) {
 					let distance = ent1.distance(ent2);
-					if distance < ent1.vel().length() || distance < ent2.vel().length() {
+					if distance < ent1.vel(dt).length() || distance < ent2.vel(dt).length() {
 						possible_collisions.push((ent1, ent2));
 					}
 				}
@@ -204,7 +203,7 @@ impl Sandbox {
 
 			for ent in &self.entities {
 				ent.handle_world_collisions(self.world_size);
-				ent.tick(gravity);
+				ent.tick(gravity, dt);
 			}
 		}
 	}

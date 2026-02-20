@@ -23,8 +23,8 @@ impl Entity {
 		self.cur_pos.get()
 	}
 
-	pub fn vel(&self) -> Vec2 {
-		(self.cur_pos.get() - self.prev_pos.get()) / TICK_RATE
+	pub fn vel(&self, dt: f32) -> Vec2 {
+		(self.cur_pos.get() - self.prev_pos.get()) / dt
 	}
 
 	pub fn size(&self) -> f32 {
@@ -43,11 +43,11 @@ impl Entity {
 		self.pos().distance(other.pos()) - radius1 - radius2
 	}
 
-	pub fn tick(&self, gravity: Vec2) {
+	pub fn tick(&self, gravity: Vec2, dt: f32) {
 		let Self { cur_pos, prev_pos, .. } = self;
 		let cur_pos = cur_pos.get();
 		let prev_pos = prev_pos.get();
-		let next_pos = cur_pos + (cur_pos - prev_pos) + gravity * delta_time().powi(2);
+		let next_pos = cur_pos + (cur_pos - prev_pos) + gravity * delta_time(dt).powi(2);
 		self.prev_pos.set(cur_pos);
 		self.cur_pos.set(next_pos);
 	}
