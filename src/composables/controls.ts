@@ -29,7 +29,10 @@ export function useControls(tickrate: MaybeRefOrGetter<number>, update: (paused:
 	});
 }
 
-export function useTimedControls(tickrate: MaybeRefOrGetter<number>, update: (paused: boolean, deltaTime: number) => void): Controls {
+export function useTimedControls(
+	tickrate: MaybeRefOrGetter<number>,
+	update: (paused: boolean, deltaTime: number) => void,
+): Controls {
 	let lastTime = performance.now();
 	return useControls(tickrate, paused => {
 		const now = performance.now();

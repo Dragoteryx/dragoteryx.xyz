@@ -53,7 +53,7 @@ export function useColorLocalStorage(name: string, value: Color): WritableComput
 		set(value) {
 			local.value = value;
 		},
-		get: () => {
+		get() {
 			const arg = local.value;
 			if ("r" in arg && "g" in arg && "b" in arg) {
 				return new Rgb(Number(arg["r"]), Number(arg["g"]), Number(arg["b"]));
