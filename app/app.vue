@@ -10,6 +10,7 @@
 
 <script setup lang="ts">
 	import "@/assets/styles/main.scss";
+	import "animate.css/animate.min.css";
 </script>
 
 <style scoped lang="scss">
