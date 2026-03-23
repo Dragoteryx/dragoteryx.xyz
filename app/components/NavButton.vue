@@ -17,7 +17,7 @@
 	const props = defineProps<Props>();
 	const shouldHighlight = computed(() => {
 		if (props.highlight == "exact") {
-			return route.path == props.to;
+			return route.path == props.to || route.path == props.to + "/";
 		} else if (props.highlight == "partial") {
 			return route.path == props.to || route.path.startsWith(props.to + "/");
 		} else {
