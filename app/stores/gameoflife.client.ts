@@ -1,18 +1,18 @@
 import { GameOfLife, type Rule } from "@/wasm/pkg/wasm";
 
-export function conwaysRule(alive: boolean, neighbors: number): boolean {
+function conwaysRule(alive: boolean, neighbors: number): boolean {
 	return alive ? neighbors == 2 || neighbors == 3 : neighbors == 3;
 }
 
-export function highlifeRule(alive: boolean, neighbors: number): boolean {
+function highlifeRule(alive: boolean, neighbors: number): boolean {
 	return alive ? neighbors == 2 || neighbors == 3 : neighbors == 3 || neighbors == 6;
 }
 
-export function seedsRule(alive: boolean, neighbors: number): boolean {
+function seedsRule(alive: boolean, neighbors: number): boolean {
 	return !alive && neighbors == 2;
 }
 
-export function lifeWithoutDeathRule(alive: boolean, neighbors: number): boolean {
+function lifeWithoutDeathRule(alive: boolean, neighbors: number): boolean {
 	return alive || neighbors == 3;
 }
 
