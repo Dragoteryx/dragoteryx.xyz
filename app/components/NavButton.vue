@@ -1,5 +1,5 @@
 <template>
-	<FormButton v-bind="props" :class="{ highlight: shouldHighlight }" @click="click">
+	<FormButton v-bind="props" :class="{ highlight: shouldHighlight }" @click="navigateTo(to)">
 		<slot></slot>
 	</FormButton>
 </template>
@@ -13,7 +13,6 @@
 	}
 
 	const route = useRoute();
-	const router = useRouter();
 	const props = defineProps<Props>();
 	const shouldHighlight = computed(() => {
 		if (props.highlight == "exact") {
@@ -24,10 +23,6 @@
 			return false;
 		}
 	});
-
-	function click() {
-		router.push(props.to);
-	}
 </script>
 
 <style scoped lang="scss">
