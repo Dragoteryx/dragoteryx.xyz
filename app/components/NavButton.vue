@@ -1,7 +1,9 @@
 <template>
-	<FormButton v-bind="props" :class="{ highlight }" @click="navigateTo(to)">
-		<slot></slot>
-	</FormButton>
+	<NuxtLink :to="to">
+		<FormButton v-bind="props" :class="{ highlight }">
+			<slot></slot>
+		</FormButton>
+	</NuxtLink>
 </template>
 
 <script setup lang="ts">
@@ -26,6 +28,10 @@
 </script>
 
 <style scoped lang="scss">
+	a {
+		text-decoration: none;
+	}
+
 	button {
 		width: 100%;
 	}
