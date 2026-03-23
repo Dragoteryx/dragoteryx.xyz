@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-	import type { Option } from "@/components/form/Select.vue";
+	import type { Option } from "~/components/form/FormSelect.vue";
 	import { Dna, Settings, Skull } from "lucide-vue-next";
 
 	const gameOfLifeStore = useGameOfLifeStore();

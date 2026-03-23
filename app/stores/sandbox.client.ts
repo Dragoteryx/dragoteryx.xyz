@@ -13,7 +13,7 @@ export interface Options {
 
 export const useSandboxStore = defineStore("sandbox", () => {
 	const controls = useTimedControls(60, (paused, dt) => {
-		if (!paused) sandbox.tick(dt);
+		if (!paused) sandbox.tick(Math.min(1/45, dt));
 		draw();
 	});
 

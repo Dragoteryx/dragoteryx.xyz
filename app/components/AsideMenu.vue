@@ -29,13 +29,13 @@
 		</nav>
 		<hr />
 		<footer class="row">
-			<a href="https://twitter.com/Dragoteryx" v-hover:pulse>
+			<a href="https://twitter.com/Dragoteryx">
 				<img src="@/assets/images/twitter_icon.png" alt="Twitter icon" />
 			</a>
-			<a href="https://github.com/Dragoteryx" v-hover:pulse>
+			<a href="https://github.com/Dragoteryx">
 				<img src="@/assets/images/github_icon.png" alt="Github icon" />
 			</a>
-			<a href="https://steamcommunity.com/id/dragoteryx/" v-hover:pulse>
+			<a href="https://steamcommunity.com/id/dragoteryx/">
 				<img src="@/assets/images/steam_icon.png" alt="Steam icon" />
 			</a>
 		</footer>
@@ -44,7 +44,6 @@
 
 <script setup lang="ts">
 	import { House, Shapes, Dna, Fish } from "lucide-vue-next";
-	import { vHover } from "@/directives/animations";
 
 	const dev = import.meta.dev;
 </script>

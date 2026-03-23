@@ -1,11 +1,11 @@
 <template>
-	<FormButton v-bind="props" :class="{ highlight: shouldHighlight }" @click="navigateTo(to)">
+	<FormButton v-bind="props" :class="{ highlight }" @click="navigateTo(to)">
 		<slot></slot>
 	</FormButton>
 </template>
 
 <script setup lang="ts">
-	import type { Props as BtnProps } from "./form/Button.vue";
+	import type { Props as BtnProps } from "./form/FormButton.vue";
 
 	export interface Props extends BtnProps {
 		highlight?: "exact" | "partial";
@@ -14,7 +14,7 @@
 
 	const route = useRoute();
 	const props = defineProps<Props>();
-	const shouldHighlight = computed(() => {
+	const highlight = computed(() => {
 		if (props.highlight == "exact") {
 			return route.path == props.to || route.path == props.to + "/";
 		} else if (props.highlight == "partial") {
