@@ -50,10 +50,6 @@ hr {
 	padding: 10px 20px;
 }
 
-.markdown-body {
-	@extend .column, .spaced, .padded;
-}
-
 .row {
 	display: flex;
 	flex-direction: row;

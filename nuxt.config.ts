@@ -4,7 +4,7 @@ import wasm from "vite-plugin-wasm";
 export default defineNuxtConfig({
 	compatibilityDate: "2025-07-15",
 	devtools: { enabled: true },
-	modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxtjs/color-mode"],
+	modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxtjs/color-mode", "@nuxtjs/mdc"],
 	vite: {
 		plugins: [wasm()],
 		optimizeDeps: {
