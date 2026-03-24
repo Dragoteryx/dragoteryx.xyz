@@ -1,6 +1,5 @@
 <template>
 	<div class="row">
-		<ThemeButton />
 		<AsideMenu />
 		<main class="large column">
 			<slot></slot>
