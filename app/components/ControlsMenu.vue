@@ -1,13 +1,11 @@
 <template>
 	<div class="row spaced">
 		<FormButton class="large" :class="color" :icon="icon" @click="toggle">{{ text }}</FormButton>
-		<FormButton class="large" :icon="StepForward" @click="tick">Step</FormButton>
+		<FormButton class="large" icon="lucide:step-forward" @click="tick">Step</FormButton>
 	</div>
 </template>
 
 <script setup lang="ts">
-	import { Play, Pause, StepForward } from "lucide-vue-next";
-
 	export interface Props {
 		controls: Controls;
 	}
@@ -15,7 +13,7 @@
 	const props = defineProps<Props>();
 	const text = computed(() => (props.controls.paused ? "Resume" : "Pause"));
 	const color = computed(() => (props.controls.paused ? "blue" : "orange"));
-	const icon = computed(() => (props.controls.paused ? Play : Pause));
+	const icon = computed(() => (props.controls.paused ? "lucide:play" : "lucide:pause"));
 
 	function toggle() {
 		props.controls.paused = !props.controls.paused;

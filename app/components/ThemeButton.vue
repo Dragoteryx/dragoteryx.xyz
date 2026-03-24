@@ -2,15 +2,13 @@
 	<FormButton
 		v-if="!colorMode.unknown"
 		aria-label="Toggle dark mode"
-		:icon="dark ? Moon : Sun"
+		:icon="dark ? 'lucide:moon' : 'lucide:sun'"
 		:icon-size="25"
 		@click="dark = !dark"
 	/>
 </template>
 
 <script setup lang="ts">
-	import { Sun, Moon } from "lucide-vue-next";
-
 	const colorMode = useColorMode();
 	const dark = computed({
 		get: () => colorMode.value == "dark",

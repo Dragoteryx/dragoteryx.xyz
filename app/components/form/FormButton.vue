@@ -1,16 +1,13 @@
 <template>
 	<button class="row" @click="emit('click')">
-		<component v-if="icon" :is="icon" :size="iconSize ?? 18" absolute-stroke-width />
+		<Icon v-if="icon" :name="icon" :size="iconSize ?? 18" mode="svg" />
 		<span class="large"><slot></slot></span>
 	</button>
 </template>
 
 <script setup lang="ts">
-	import type { LucideProps } from "lucide-vue-next";
-	import type { FunctionalComponent } from "vue";
-
 	export interface Props {
-		icon?: FunctionalComponent<LucideProps, {}, any, {}>;
+		icon?: string;
 		iconSize?: number;
 	}
 

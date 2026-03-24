@@ -1,10 +1,8 @@
 <template>
-	<FormButton :icon="Plus" class="green" @click="spawn">Spawn {{ amount }}</FormButton>
+	<FormButton icon="lucide:plus" class="green" @click="spawn">Spawn {{ amount }}</FormButton>
 </template>
 
 <script setup lang="ts">
-	import { Plus } from "lucide-vue-next";
-
 	export interface Props {
 		amount: number;
 	}

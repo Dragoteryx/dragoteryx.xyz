@@ -22,10 +22,10 @@
 		</div>
 		<hr />
 		<nav class="column spaced large">
-			<NavButton :icon="House" to="/" highlight="exact">Home</NavButton>
-			<NavButton :icon="Shapes" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
-			<NavButton :icon="Dna" to="/game-of-life" highlight="partial">Game of Life</NavButton>
-			<NavButton v-if="dev" :icon="Fish" to="/boids" highlight="partial">Boids</NavButton>
+			<NavButton icon="lucide:house" to="/" highlight="exact">Home</NavButton>
+			<NavButton icon="lucide:shapes" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
+			<NavButton icon="lucide:dna" to="/game-of-life" highlight="partial">Game of Life</NavButton>
+			<NavButton v-if="dev" icon="lucide:fish" to="/boids" highlight="partial">Boids</NavButton>
 		</nav>
 		<hr />
 		<footer class="row">
@@ -43,8 +43,6 @@
 </template>
 
 <script setup lang="ts">
-	import { House, Shapes, Dna, Fish } from "lucide-vue-next";
-
 	const dev = import.meta.dev;
 </script>
 

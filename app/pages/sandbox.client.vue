@@ -7,8 +7,8 @@
 		@size-change="sandboxStore.draw"
 		@click="sandboxStore.addCircle"
 	>
-		<NavButton :icon="Shapes" to="/sandbox" highlight="exact">Spawn entities</NavButton>
-		<NavButton :icon="Settings" to="/sandbox/settings" highlight="exact">Settings</NavButton>
+		<NavButton icon="lucide:shapes" to="/sandbox" highlight="exact">Spawn entities</NavButton>
+		<NavButton icon="lucide:settings" to="/sandbox/settings" highlight="exact">Settings</NavButton>
 		<hr />
 		<div class="column spaced large">
 			<NuxtPage />
@@ -26,7 +26,5 @@
 </template>
 
 <script setup lang="ts">
-	import { Shapes, Settings } from "lucide-vue-next";
-
 	const sandboxStore = useSandboxStore();
 </script>

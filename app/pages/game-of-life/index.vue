@@ -1,6 +1,6 @@
 <template>
-	<FormButton class="orange" :icon="ClipboardX" @click="clearSnapshots()">Clear snapshots</FormButton>
-	<FormButton class="blue" :icon="ClipboardPlus" @click="createSnapshot()" :disabled="!trimmed">
+	<FormButton class="orange" icon="lucide:clipboard-x" @click="clearSnapshots()">Clear snapshots</FormButton>
+	<FormButton class="blue" icon="lucide:clipboard-plus" @click="createSnapshot()" :disabled="!trimmed">
 		Create snapshot
 	</FormButton>
 	<FormText v-model="name" placeholder="Snapshot name" @submit="createSnapshot()" />
@@ -8,15 +8,13 @@
 	<ul>
 		<li v-for="[name, _] in gameOfLifeStore.snapshots" class="row spaced">
 			<span class="large">{{ name }}</span>
-			<FormButton class="green" :icon="ClipboardPaste" @click="gameOfLifeStore.loadSnapshot(name)" />
-			<FormButton class="red" :icon="ClipboardMinus" @click="gameOfLifeStore.removeSnapshot(name)" />
+			<FormButton class="green" icon="lucide:clipboard-paste" @click="gameOfLifeStore.loadSnapshot(name)" />
+			<FormButton class="red" icon="lucide:clipboard-minus" @click="gameOfLifeStore.removeSnapshot(name)" />
 		</li>
 	</ul>
 </template>
 
 <script setup lang="ts">
-	import { ClipboardPlus, ClipboardX, ClipboardPaste, ClipboardMinus } from "lucide-vue-next";
-
 	const name = ref("");
 	const trimmed = computed(() => name.value.trim());
 	const gameOfLifeStore = useGameOfLifeStore();

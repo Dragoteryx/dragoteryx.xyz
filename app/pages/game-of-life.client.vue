@@ -9,10 +9,10 @@
 		@scroll="scroll"
 		@drag="drag"
 	>
-		<NavButton :icon="Dna" to="/game-of-life" highlight="exact">Snapshots</NavButton>
-		<NavButton :icon="Settings" to="/game-of-life/settings" highlight="exact">Settings</NavButton>
+		<NavButton icon="lucide:dna" to="/game-of-life" highlight="exact">Snapshots</NavButton>
+		<NavButton icon="lucide:settings" to="/game-of-life/settings" highlight="exact">Settings</NavButton>
 		<hr />
-		<FormButton class="red" :icon="Skull" @click="gameOfLifeStore.clear">
+		<FormButton class="red" icon="lucide:skull" @click="gameOfLifeStore.clear">
 			Kill {{ gameOfLifeStore.aliveCells }} alive cells
 		</FormButton>
 		<FormSelect v-model="gameOfLifeStore.rule" :options="options" />
@@ -28,7 +28,6 @@
 
 <script setup lang="ts">
 	import type { Option } from "~/components/form/FormSelect.vue";
-	import { Dna, Settings, Skull } from "lucide-vue-next";
 
 	const gameOfLifeStore = useGameOfLifeStore();
 	const options = computed(() => {
