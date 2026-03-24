@@ -1,17 +1,19 @@
 <template>
-	<FormButton class="orange" icon="lucide:clipboard-x" @click="clearSnapshots()">Clear snapshots</FormButton>
-	<FormButton class="blue" icon="lucide:clipboard-plus" @click="createSnapshot()" :disabled="!trimmed">
-		Create snapshot
-	</FormButton>
-	<FormText v-model="name" placeholder="Snapshot name" @submit="createSnapshot()" />
-	<hr />
-	<ul>
-		<li v-for="[name, _] in gameOfLifeStore.snapshots" class="row spaced">
-			<span class="large">{{ name }}</span>
-			<FormButton class="green" icon="lucide:clipboard-paste" @click="gameOfLifeStore.loadSnapshot(name)" />
-			<FormButton class="red" icon="lucide:clipboard-minus" @click="gameOfLifeStore.removeSnapshot(name)" />
-		</li>
-	</ul>
+	<div class="flex flex-col gap-2">
+		<FormButton class="orange" icon="lucide:clipboard-x" @click="clearSnapshots()">Clear snapshots</FormButton>
+		<FormButton class="blue" icon="lucide:clipboard-plus" @click="createSnapshot()" :disabled="!trimmed">
+			Create snapshot
+		</FormButton>
+		<FormText v-model="name" placeholder="Snapshot name" @submit="createSnapshot()" />
+		<hr />
+		<ul class="gap-2">
+			<li v-for="[name, _] in gameOfLifeStore.snapshots" class="flex flex-row gap-2">
+				<span class="flex-1">{{ name }}</span>
+				<FormButton class="green" icon="lucide:clipboard-paste" @click="gameOfLifeStore.loadSnapshot(name)" />
+				<FormButton class="red" icon="lucide:clipboard-minus" @click="gameOfLifeStore.removeSnapshot(name)" />
+			</li>
+		</ul>
+	</div>
 </template>
 
 <script setup lang="ts">

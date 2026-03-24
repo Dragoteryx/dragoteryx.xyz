@@ -1,5 +1,5 @@
 <template>
-	<label class="row spaced">
+	<label class="flex flex-row gap-2">
 		<span :style="labelSize ? `flex: ${labelSize};` : ''"><slot></slot></span>
 		<input
 			:style="[backg, rangeSize ? `flex: ${rangeSize};` : '']"

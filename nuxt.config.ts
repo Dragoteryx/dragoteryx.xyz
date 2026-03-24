@@ -11,4 +11,11 @@ export default defineNuxtConfig({
 			include: ["color-convert"],
 		},
 	},
+	tailwindcss: {
+		config: {
+			corePlugins: {
+				preflight: false,
+			}
+		}
+	}
 });

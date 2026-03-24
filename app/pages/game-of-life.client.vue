@@ -17,7 +17,7 @@
 		</FormButton>
 		<FormSelect v-model="gameOfLifeStore.rule" :options="options" />
 		<hr />
-		<div class="column spaced large">
+		<div class="flex-1">
 			<NuxtPage />
 		</div>
 		<hr />

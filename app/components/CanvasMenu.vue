@@ -1,7 +1,7 @@
 <template>
-	<div class="large row">
+	<div class="flex flex-row flex-1">
 		<ResizableCanvas
-			class="large"
+			class="flex-1"
 			v-model:mouse-x="mouseX"
 			v-model:mouse-y="mouseY"
 			v-model:width="width"
@@ -12,7 +12,7 @@
 			@click="(x, y) => emit('click', x, y)"
 			@drag="(x, y) => emit('drag', x, y)"
 		/>
-		<div class="column spaced padded menu">
+		<div class="flex flex-col gap-2 px-4 py-2 menu">
 			<ControlsMenu :controls="controls" />
 			<hr />
 			<slot></slot>

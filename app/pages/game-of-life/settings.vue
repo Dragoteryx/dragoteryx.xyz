@@ -1,7 +1,9 @@
 <template>
-	<span><b>Misc settings</b></span>
-	<FormRange :reset="10" :min="1" :max="60" v-model="gameOfLifeStore.speed">Speed</FormRange>
-	<FormCheckbox v-model="gameOfLifeStore.debug">Preview next step</FormCheckbox>
+	<div class="flex flex-col gap-2">
+		<span><b>Misc settings</b></span>
+		<FormRange :reset="10" :min="1" :max="60" v-model="gameOfLifeStore.speed">Speed</FormRange>
+		<FormCheckbox v-model="gameOfLifeStore.debug">Preview next step</FormCheckbox>
+	</div>
 </template>
 
 <script setup lang="ts">

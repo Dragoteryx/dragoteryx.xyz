@@ -10,7 +10,7 @@
 		<NavButton icon="lucide:shapes" to="/sandbox" highlight="exact">Spawn entities</NavButton>
 		<NavButton icon="lucide:settings" to="/sandbox/settings" highlight="exact">Settings</NavButton>
 		<hr />
-		<div class="column spaced large">
+		<div class="flex-1">
 			<NuxtPage />
 		</div>
 		<span>Entity count: {{ sandboxStore.entities }}</span>

@@ -1,15 +1,15 @@
 <template>
-	<aside class="column spaced padded">
-		<header class="row spaced">
+	<aside class="flex flex-col gap-2 px-4 py-2">
+		<header class="flex flex-row gap-4">
 			<img src="@/assets/images/tako.png" alt="A Minecraft style Takodachi" />
-			<div class="column spaced">
+			<div class="flex flex-col gap-2">
 				<span><b>Dragoteryx</b></span>
 				<hr />
 				<span>Developer and Garry's Mod modder.</span>
 			</div>
 		</header>
 		<hr />
-		<div class="column spaced">
+		<div class="flex flex-col gap-2">
 			<span>Fluent in French and English, currently learning Japanese.</span>
 			<div>
 				<span>Main programming languages:</span>
@@ -21,14 +21,14 @@
 			</div>
 		</div>
 		<hr />
-		<nav class="column spaced large">
+		<nav class="flex flex-col flex-1 gap-2">
 			<NavButton icon="lucide:house" to="/" highlight="exact">Home</NavButton>
 			<NavButton icon="lucide:shapes" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
 			<NavButton icon="lucide:dna" to="/game-of-life" highlight="partial">Game of Life</NavButton>
 			<NavButton v-if="dev" icon="lucide:fish" to="/boids" highlight="partial">Boids</NavButton>
 		</nav>
 		<hr />
-		<footer class="row">
+		<footer class="flex flex-row">
 			<a href="https://twitter.com/Dragoteryx">
 				<img src="@/assets/images/twitter_icon.png" alt="Twitter icon" />
 			</a>

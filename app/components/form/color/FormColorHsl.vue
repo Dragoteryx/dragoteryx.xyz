@@ -1,5 +1,5 @@
 <template>
-	<div class="column spaced">
+	<div class="flex flex-col gap-1">
 		<FormRange v-model="h" :min="0" :max="360" :backg="hBackg" :label-size="1" :range-size="10">H</FormRange>
 		<FormRange v-model="s" :min="0" :max="100" :backg="sBackg" :label-size="1" :range-size="10">S</FormRange>
 		<FormRange v-model="l" :min="0" :max="100" :backg="lBackg" :label-size="1" :range-size="10">L</FormRange>

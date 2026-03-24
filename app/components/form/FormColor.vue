@@ -1,11 +1,11 @@
 <template>
-	<div class="column spaced">
+	<div class="flex flex-col gap-2">
 		<FormColorRgb v-if="mode == 'rgb'" v-model="color" />
 		<FormColorHsl v-if="mode == 'hsl'" v-model="color" />
 		<FormColorHsv v-if="mode == 'hsv'" v-model="color" />
 		<FormColorHwb v-if="mode == 'hwb'" v-model="color" />
 		<FormColorCmyk v-if="mode == 'cmyk'" v-model="color" />
-		<div class="row spaced">
+		<div class="flex flex-row gap-2">
 			<div ref="preview" :class="previewClasses">{{ color.hex }}</div>
 			<ResetButton v-if="reset != undefined" @click="resetColor" />
 		</div>
@@ -23,7 +23,7 @@
 	const props = defineProps<Props>();
 
 	const previewClasses = computed(() => {
-		const classes = ["preview", "large"];
+		const classes = ["preview", "flex-1"];
 		if (color.value.hsl.l < 50) classes.push("dark");
 		return classes;
 	});

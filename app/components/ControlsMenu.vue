@@ -1,7 +1,7 @@
 <template>
-	<div class="row spaced">
-		<FormButton class="large" :class="color" :icon="icon" @click="toggle">{{ text }}</FormButton>
-		<FormButton class="large" icon="lucide:step-forward" @click="tick">Step</FormButton>
+	<div class="flex flex-row gap-2">
+		<FormButton class="flex-1" :class="color" :icon="icon" @click="toggle">{{ text }}</FormButton>
+		<FormButton class="flex-1" icon="lucide:step-forward" @click="tick">Step</FormButton>
 	</div>
 </template>
 

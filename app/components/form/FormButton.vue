@@ -1,14 +1,14 @@
 <template>
-	<button class="row" @click="emit('click')">
-		<Icon v-if="icon" :name="icon" :size="iconSize ?? 18" mode="svg" />
-		<span class="large"><slot></slot></span>
+	<button class="flex flex-row" @click="emit('click')">
+		<Icon v-if="icon" :name="icon" :size="iconSize ?? 20" mode="svg" />
+		<span class="flex-1"><slot></slot></span>
 	</button>
 </template>
 
 <script setup lang="ts">
 	export interface Props {
+		iconSize?: string | number;
 		icon?: string;
-		iconSize?: number;
 	}
 
 	export interface Emits {

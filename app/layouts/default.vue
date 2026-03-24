@@ -1,7 +1,7 @@
 <template>
-	<div class="row">
+	<div class="flex flex-row">
 		<AsideMenu />
-		<main class="large column">
+		<main class="flex flex-col flex-1">
 			<slot></slot>
 		</main>
 	</div>

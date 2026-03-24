@@ -3,7 +3,7 @@
 		v-if="!colorMode.unknown"
 		aria-label="Toggle dark mode"
 		:icon="dark ? 'lucide:moon' : 'lucide:sun'"
-		:icon-size="25"
+		icon-size="1.5rem"
 		@click="dark = !dark"
 	/>
 </template>
@@ -23,7 +23,7 @@
 		position: fixed;
 		border-radius: 100%;
 		font-size: 25px;
-		top: 10px;
-		left: 10px;
+		top: 0.5rem;
+		left: 0.5rem;
 	}
 </style>
