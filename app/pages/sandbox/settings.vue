@@ -1,8 +1,12 @@
 <template>
 	<div class="flex flex-col gap-2">
 		<span><b>Gravity settings</b></span>
-		<FormRange v-model="sandboxStore.gravity.strength" :min="0" :max="9810" :reset="981" :range-size="1">Strength</FormRange>
-		<FormRange v-model="sandboxStore.gravity.angle" :min="-180" :max="180" :reset="0" dir="rtl" :range-size="1">Angle</FormRange>
+		<FormRange v-model="sandboxStore.gravity.strength" :min="0" :max="9810" :reset="981" :range-size="1"
+			>Strength</FormRange
+		>
+		<FormRange v-model="sandboxStore.gravity.angle" :min="-180" :max="180" :reset="0" dir="rtl" :range-size="1"
+			>Angle</FormRange
+		>
 		<hr />
 		<span><b>Misc settings</b></span>
 		<FormCheckbox v-model="sandboxStore.options.clearCanvas">Clear previous frame</FormCheckbox>

@@ -25,7 +25,8 @@ $dark: hsl(270, 20%, 11%);
 	--medium: #{$medium};
 	--dark: #{$dark};
 
-	transition: --background-center 0.2s ease,
+	transition:
+		--background-center 0.2s ease,
 		--background-edges 0.2s ease,
 		--text 0.2s ease;
 
@@ -37,8 +38,8 @@ $dark: hsl(270, 20%, 11%);
 }
 
 @property --background-center {
-  syntax: "<color>";
-  initial-value: #{$medium};
+	syntax: "<color>";
+	initial-value: #{$medium};
 	inherits: true;
 }
 

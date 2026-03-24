@@ -1,5 +1,4 @@
 import type { Rule } from "@/wasm/pkg/wasm";
-import { skipHydrate } from "pinia";
 
 function conwaysRule(alive: boolean, neighbors: number): boolean {
 	return alive ? neighbors == 2 || neighbors == 3 : neighbors == 3;
@@ -17,8 +16,14 @@ function lifeWithoutDeathRule(alive: boolean, neighbors: number): boolean {
 	return alive || neighbors == 3;
 }
 
+const rules: Record<string, [string, Rule]> = {
+	conways: ["Conway's Game of Life", conwaysRule],
+	lifeWithoutDeath: ["Life without death", lifeWithoutDeathRule],
+	highlife: ["Highlife", highlifeRule],
+	seeds: ["Seeds", seedsRule],
+};
+
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
-	const ctx = ref<CanvasRenderingContext2D>();
 	const game = useWasmModule(module => {
 		return new module.GameOfLife((alive, neighbors) => {
 			return rules[rule.value]?.[1](alive, neighbors) ?? alive;
@@ -30,21 +35,14 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	const debug = ref(false);
 	const speed = ref(10);
 	const zoom = ref(10);
-
+	const canvasPos = reactive({ x: 0, y: 0 });
+	const ctx = ref<CanvasRenderingContext2D>();
+	const size = useFibonacci(() => zoom.value + 1);
+	const snapshots = reactive<Map<string, string>>(new Map());
 	const controls = useControls(speed, paused => {
 		if (!paused) aliveCells.value = game.value?.tick() ?? 0;
 		draw();
 	});
-
-	const canvasPos = reactive({ x: 0, y: 0 });
-	const size = useFibonacci(() => zoom.value + 1);
-	const snapshots = reactive<Map<string, string>>(new Map());
-	const rules = skipHydrate(reactive<Record<string, [string, Rule]>>({
-		conways: ["Conway's Game of Life", conwaysRule],
-		lifeWithoutDeath: ["Life without death", lifeWithoutDeathRule],
-		highlife: ["Highlife", highlifeRule],
-		seeds: ["Seeds", seedsRule],
-	}));
 
 	controls.paused = true;
 	watch(size, () => draw());

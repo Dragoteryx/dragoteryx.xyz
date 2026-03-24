@@ -13,19 +13,17 @@ export interface Options {
 
 export const useSandboxStore = defineStore("sandbox", () => {
 	const sandbox = useWasmModule(module => new module.Sandbox());
+	const entities = ref(0);
+	const height = ref(0);
+	const width = ref(0);
+	const radius = ref(13);
+	const defaultColor = new Hsl(90, 50, 50);
+	const color = skipHydrate(ref(defaultColor));
 	const ctx = ref<CanvasRenderingContext2D>();
 	const controls = useTimedControls(60, (paused, dt) => {
 		if (!paused) sandbox.value?.tick(Math.min(1 / 45, dt));
 		draw();
 	});
-	
-	const entities = ref(0);
-	const height = ref(0);
-	const width = ref(0);
-
-	const defaultColor = new Hsl(90, 50, 50);
-	const color = skipHydrate(ref(defaultColor));
-	const radius = ref(13);
 
 	const gravity: Gravity = reactive({
 		strength: ref(981),
