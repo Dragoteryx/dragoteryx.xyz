@@ -1,7 +1,7 @@
 <template>
 	<aside class="flex flex-col gap-2 px-4 py-2">
 		<header class="flex flex-row gap-4">
-			<img src="@/assets/images/tako.png" alt="A Minecraft style Takodachi" />
+			<img src="/images/tako.png" alt="A Minecraft style Takodachi" />
 			<div class="flex flex-col gap-2">
 				<span><b>Dragoteryx</b></span>
 				<hr />
@@ -30,13 +30,13 @@
 		<hr />
 		<footer class="flex flex-row">
 			<a href="https://twitter.com/Dragoteryx">
-				<img src="@/assets/images/twitter_icon.png" alt="Twitter icon" class="mx-auto" />
+				<img src="/images/twitter_icon.png" alt="Twitter icon" class="mx-auto" />
 			</a>
 			<a href="https://github.com/Dragoteryx">
-				<img src="@/assets/images/github_icon.png" alt="Github icon" class="mx-auto" />
+				<img src="/images/github_icon.png" alt="Github icon" class="mx-auto" />
 			</a>
 			<a href="https://steamcommunity.com/id/dragoteryx/">
-				<img src="@/assets/images/steam_icon.png" alt="Steam icon" class="mx-auto" />
+				<img src="/images/steam_icon.png" alt="Steam icon" class="mx-auto" />
 			</a>
 		</footer>
 	</aside>
