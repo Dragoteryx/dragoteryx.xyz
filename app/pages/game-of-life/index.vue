@@ -17,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+	useHead({ title: "Game of Life | dragoteryx.xyz" });
+
 	const name = ref("");
 	const trimmed = computed(() => name.value.trim());
 	const gameOfLifeStore = useGameOfLifeStore();

@@ -4,4 +4,6 @@
 
 <script setup lang="ts">
 	import content from "@/markdown/home.md?raw";
+
+	useHead({ title: "Home | dragoteryx.xyz" });
 </script>

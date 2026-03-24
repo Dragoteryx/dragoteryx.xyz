@@ -17,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+	useHead({ title: "Sandbox/Settings | dragoteryx.xyz" });
+
 	const sandboxStore = useSandboxStore();
 	const colorPickers = [
 		{ value: "rgb", description: "RGB" },

@@ -12,6 +12,8 @@
 </template>
 
 <script setup lang="ts">
+	useHead({ title: "Sandbox | dragoteryx.xyz" });
+
 	const sandboxStore = useSandboxStore();
 
 	function clear() {
