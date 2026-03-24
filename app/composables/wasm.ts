@@ -5,7 +5,6 @@ export function useWasmModule<T>(init: (module: WasmModule) => T): Readonly<Ref<
 	onNuxtReady(async () => {
 		const module = await import("@/wasm/pkg");
 		result.value = init(module);
-		console.log(module);
 	});
 
 	return shallowReadonly(result);
