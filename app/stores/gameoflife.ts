@@ -32,10 +32,8 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	const zoom = ref(10);
 
 	const controls = useControls(speed, paused => {
-		if (!paused) {
-			aliveCells.value = game.value?.tick() ?? 0;
-			draw();
-		}
+		if (!paused) aliveCells.value = game.value?.tick() ?? 0;
+		draw();
 	});
 
 	const canvasPos = reactive({ x: 0, y: 0 });
