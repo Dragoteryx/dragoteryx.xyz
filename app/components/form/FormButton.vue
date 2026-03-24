@@ -1,6 +1,6 @@
 <template>
-	<button class="flex flex-row p-1" @click="emit('click')">
-		<Icon v-if="icon" :name="icon" :size="iconSize ?? '1.25rem'" :aria-label="label" />
+	<button class="flex flex-row p-1" :aria-label="label" @click="emit('click')">
+		<Icon v-if="icon" :name="icon" :size="iconSize ?? '1.25rem'" />
 		<span class="flex-1"><slot></slot></span>
 	</button>
 </template>
