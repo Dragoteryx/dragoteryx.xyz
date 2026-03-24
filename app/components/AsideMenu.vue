@@ -30,13 +30,13 @@
 		<hr />
 		<footer class="flex flex-row">
 			<a href="https://twitter.com/Dragoteryx">
-				<img src="@/assets/images/twitter_icon.png" alt="Twitter icon" />
+				<img src="@/assets/images/twitter_icon.png" alt="Twitter icon" class="mx-auto" />
 			</a>
 			<a href="https://github.com/Dragoteryx">
-				<img src="@/assets/images/github_icon.png" alt="Github icon" />
+				<img src="@/assets/images/github_icon.png" alt="Github icon" class="mx-auto" />
 			</a>
 			<a href="https://steamcommunity.com/id/dragoteryx/">
-				<img src="@/assets/images/steam_icon.png" alt="Steam icon" />
+				<img src="@/assets/images/steam_icon.png" alt="Steam icon" class="mx-auto" />
 			</a>
 		</footer>
 	</aside>

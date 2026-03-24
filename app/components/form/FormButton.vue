@@ -28,6 +28,7 @@
 		font-size: 1rem;
 		color: var(--white);
 
+		line-height: normal;
 		text-align: center;
 		text-decoration: none;
 		outline: none;
