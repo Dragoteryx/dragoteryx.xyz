@@ -1,32 +1,22 @@
 <template>
 	<label class="flex flex-row gap-2">
-		<span :style="labelSize ? `flex: ${labelSize};` : ''"><slot></slot></span>
-		<input
-			:style="[backg, rangeSize ? `flex: ${rangeSize};` : '']"
-			type="range"
-			v-model="rangeValue"
-			:min="min"
-			:max="max"
-			:dir="dir"
-		/>
+		<span class="min-w-4"><slot></slot></span>
+		<input type="range" class="flex-1" v-model="rangeValue" :min="min" :max="max" :dir="dir" :style="{ background }" />
 		<ResetButton v-if="reset != undefined" @click="value = reset ?? 0" />
 	</label>
 </template>
 
 <script setup lang="ts">
 	export interface Props {
-		labelSize?: number;
-		rangeSize?: number;
+		background?: string;
 		dir?: "ltr" | "rtl";
 		reset?: number;
-		backg?: string;
 		min: number;
 		max: number;
 	}
 
 	const props = defineProps<Props>();
 	const value = defineModel<number>({ required: true });
-	const backg = computed(() => (props.backg ? `background: ${props.backg};` : ""));
 	const rangeValue = computed({
 		get: () => value.value,
 		set(num) {
@@ -41,6 +31,7 @@
 		outline: none;
 
 		height: 1rem;
+		min-width: 1rem;
 		position: relative;
 		top: 0.25rem;
 

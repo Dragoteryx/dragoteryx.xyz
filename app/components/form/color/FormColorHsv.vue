@@ -1,8 +1,8 @@
 <template>
 	<div class="flex flex-col gap-1">
-		<FormRange v-model="h" :min="0" :max="360" :backg="hBackg" :label-size="1" :range-size="10">H</FormRange>
-		<FormRange v-model="s" :min="0" :max="100" :backg="sBackg" :label-size="1" :range-size="10">S</FormRange>
-		<FormRange v-model="v" :min="0" :max="100" :backg="vBackg" :label-size="1" :range-size="10">V</FormRange>
+		<FormRange v-model="h" :min="0" :max="360" :background="hBackg">H</FormRange>
+		<FormRange v-model="s" :min="0" :max="100" :background="sBackg">S</FormRange>
+		<FormRange v-model="v" :min="0" :max="100" :background="vBackg">V</FormRange>
 	</div>
 </template>
 
