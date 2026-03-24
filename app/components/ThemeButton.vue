@@ -22,7 +22,6 @@
 	button {
 		position: fixed;
 		border-radius: 100%;
-		font-size: 25px;
 		top: 0.5rem;
 		left: 0.5rem;
 	}

@@ -23,7 +23,7 @@
 	const props = defineProps<Props>();
 
 	const previewClasses = computed(() => {
-		const classes = ["preview", "flex-1"];
+		const classes = ["preview", "flex-1", "pl-1"];
 		if (color.value.hsl.l < 50) classes.push("dark");
 		return classes;
 	});
@@ -45,9 +45,7 @@
 	.preview {
 		border: 1px solid var(--dark);
 		color: var(--dark);
-		height: 24px;
-		padding-left: 4px;
-		font-size: 16px;
+		height: 1.5rem;
 		font-weight: 550;
 
 		&.dark {

@@ -1,13 +1,9 @@
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
+@use "./titles";
+@use "./misc";
 
 :root {
 	color: var(--text);
 	font-family: "Segoe UI";
-	font-size: 16px;
 
 	--white: #eef;
 	--gray: #ccd;
@@ -19,29 +15,13 @@
 	--medium: hsl(270, 20%, 18%);
 	--dark: hsl(270, 20%, 11%);
 
-	--background-center: var(--white);
-	--background-edges: var(--gray);
-	--text: var(--dark);
+	--background-center: var(--medium);
+	--background-edges: var(--dark);
+	--text: var(--white);
 
-	&.dark {
-		--background-center: var(--medium);
-		--background-edges: var(--dark);
-		--text: var(--white);
+	&.light {
+		--background-center: var(--white);
+		--background-edges: var(--gray);
+		--text: var(--dark);
 	}
-}
-
-ul,
-ol {
-	list-style: inside;
-}
-
-ul > li::marker {
-	content: "ඞ ";
-}
-
-hr {
-	min-width: 2px;
-	min-height: 2px;
-	background: var(--dark);
-	border: none;
 }

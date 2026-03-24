@@ -16,10 +16,10 @@
 		cursor: pointer;
 		appearance: none;
 
-		height: 15px;
-		width: 15px;
+		height: 1rem;
+		width: 1rem;
 		position: relative;
-		top: 5px;
+		top: 0.5rem;
 
 		background: var(--medium);
 		border: 1px solid var(--dark);
@@ -35,8 +35,8 @@
 
 				color: var(--white);
 				position: relative;
-				bottom: 2.5px;
-				left: 2px;
+				bottom: 0.3rem;
+				left: 0.1rem;
 			}
 		}
 	}

@@ -1,5 +1,5 @@
 <template>
-	<select v-model="value">
+	<select v-model="value" class="p-1">
 		<option v-for="option in options" :value="option.value">
 			{{ option.description }}
 		</option>
@@ -25,7 +25,6 @@
 		border: 1px solid var(--dark);
 		background: var(--medium);
 		color: var(--white);
-		padding: 5px;
 		outline: none;
 	}
 </style>

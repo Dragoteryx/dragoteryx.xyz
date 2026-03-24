@@ -40,10 +40,9 @@
 		appearance: none;
 		outline: none;
 
-		height: 16px;
-		min-width: 100px;
+		height: 1rem;
 		position: relative;
-		top: 4px;
+		top: 0.25rem;
 
 		background-color: var(--medium);
 		border: 1px solid var(--dark);
@@ -52,8 +51,8 @@
 			cursor: pointer;
 			appearance: none;
 
-			height: 20px;
-			width: 10px;
+			height: 1.5rem;
+			width: 0.75rem;
 
 			background-color: var(--light);
 			border: 1px solid var(--dark);

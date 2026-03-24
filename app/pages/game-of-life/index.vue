@@ -6,7 +6,7 @@
 		</FormButton>
 		<FormText v-model="name" placeholder="Snapshot name" @submit="createSnapshot()" />
 		<hr />
-		<ul class="gap-2">
+		<ul class="flex flex-col gap-1">
 			<li v-for="[name, _] in gameOfLifeStore.snapshots" class="flex flex-row gap-2">
 				<span class="flex-1">{{ name }}</span>
 				<FormButton class="green" icon="lucide:clipboard-paste" @click="gameOfLifeStore.loadSnapshot(name)" />
@@ -31,9 +31,3 @@
 		gameOfLifeStore.clearSnapshots();
 	}
 </script>
-
-<style scoped lang="scss">
-	li + li {
-		margin-top: 5px;
-	}
-</style>

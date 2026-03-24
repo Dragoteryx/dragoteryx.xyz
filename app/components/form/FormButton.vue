@@ -1,6 +1,6 @@
 <template>
-	<button class="flex flex-row" @click="emit('click')">
-		<Icon v-if="icon" :name="icon" :size="iconSize ?? 20" mode="svg" />
+	<button class="flex flex-row p-1" @click="emit('click')">
+		<Icon v-if="icon" :name="icon" :size="iconSize ?? '1.25rem'" mode="svg" />
 		<span class="flex-1"><slot></slot></span>
 	</button>
 </template>
@@ -23,9 +23,6 @@
 	@use "@/assets/styles/mixins.scss";
 
 	button {
-		padding: 5px;
-
-		font-size: 1rem;
 		color: var(--white);
 
 		line-height: normal;

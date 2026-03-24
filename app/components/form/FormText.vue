@@ -1,5 +1,5 @@
 <template>
-	<input type="text" v-model="text" v-bind="props" @keydown.enter="emit('submit', text)" />
+	<input type="text" class="p-1" v-model="text" v-bind="props" @keydown.enter="emit('submit', text)" />
 </template>
 
 <script setup lang="ts">
@@ -22,9 +22,7 @@
 		border: 1px solid var(--dark);
 		background: var(--background-center);
 		color: var(--text);
-		padding: 5px;
 		outline: none;
-		height: 30px;
 
 		&::placeholder {
 			color: var(--dark);

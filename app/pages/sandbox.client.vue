@@ -15,7 +15,7 @@
 		</div>
 		<span>Entity count: {{ sandboxStore.entities }}</span>
 		<hr />
-		<FormRange v-model="sandboxStore.radius" :min="5" :max="45" :reset="15">Radius</FormRange>
+		<FormRange v-model="sandboxStore.radius" :min="5" :max="45" :reset="15" :range-size="1">Radius</FormRange>
 		<hr />
 		<FormColor
 			v-model="sandboxStore.color"

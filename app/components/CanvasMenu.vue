@@ -46,7 +46,7 @@
 
 <style scoped lang="scss">
 	.menu {
-		width: 250px;
+		width: 16rem;
 		color: var(--white);
 		background: var(--light);
 		border-left: 1px solid var(--dark);

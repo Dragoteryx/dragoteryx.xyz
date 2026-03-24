@@ -1,5 +1,5 @@
 <template>
-	<FormButton icon="lucide:rotate-ccw" :icon-size="12" @click="emit('click')" />
+	<FormButton icon="lucide:rotate-ccw" icon-size="0.75rem" @click="emit('click')" />
 </template>
 
 <script setup lang="ts">

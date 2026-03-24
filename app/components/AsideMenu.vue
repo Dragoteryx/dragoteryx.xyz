@@ -48,7 +48,7 @@
 
 <style scoped lang="scss">
 	aside {
-		width: 290px;
+		width: 18rem;
 
 		color: var(--white);
 		background: var(--light);
@@ -57,7 +57,7 @@
 		display: flex;
 
 		> header > img {
-			width: 125px;
+			width: 8rem;
 
 			background: radial-gradient(circle, var(--background-center), var(--background-edges));
 			border: 1px solid var(--dark);
@@ -66,7 +66,6 @@
 
 		> footer > a {
 			text-align: center;
-			max-height: 100px;
 
 			> img {
 				width: 60%;

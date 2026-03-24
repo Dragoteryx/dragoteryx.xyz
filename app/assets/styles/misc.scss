@@ -1,0 +1,15 @@
+ul,
+ol {
+	list-style: inside;
+}
+
+ul > li::marker {
+	content: "ඞ ";
+}
+
+hr {
+	min-width: 2px;
+	min-height: 2px;
+	background: var(--dark);
+	border: none;
+}
