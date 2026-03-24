@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-	useHead({ title: "Boids | dragoteryx.xyz" });
+	useHead({ title: "Boids" });
 
 	const boidsStore = useBoidsStore();
 </script>

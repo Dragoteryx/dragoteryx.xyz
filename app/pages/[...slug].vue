@@ -5,5 +5,5 @@
 <script setup lang="ts">
 	import content from "@/markdown/unknown.md?raw";
 
-	useHead({ title: "404 | dragoteryx.xyz" });
+	useHead({ title: "404" });
 </script>

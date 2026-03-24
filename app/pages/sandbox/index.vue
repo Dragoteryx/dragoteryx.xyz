@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-	useHead({ title: "Sandbox | dragoteryx.xyz" });
+	useHead({ title: "Sandbox" });
 
 	const sandboxStore = useSandboxStore();
 

@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-	useHead({ title: "Game of Life/Settings | dragoteryx.xyz" });
+	useHead({ title: "Game of Life/Settings" });
 
 	const gameOfLifeStore = useGameOfLifeStore();
 </script>
