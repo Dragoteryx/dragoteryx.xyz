@@ -1,4 +1,7 @@
-import { GameOfLife, type Rule } from "@/wasm/pkg/wasm";
+import { type Rule } from "@/wasm/pkg/wasm";
+import { skipHydrate } from "pinia";
+
+const { GameOfLife } = import.meta.client ? await import("@/wasm/pkg") : {};
 
 function conwaysRule(alive: boolean, neighbors: number): boolean {
 	return alive ? neighbors == 2 || neighbors == 3 : neighbors == 3;
@@ -17,46 +20,50 @@ function lifeWithoutDeathRule(alive: boolean, neighbors: number): boolean {
 }
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
-	const speed = useLocalStorage("game-of-life-speed", 10);
+	const speed = ref(10);
 	const controls = useControls(speed, paused => {
 		if (!paused) {
-			aliveCells.value = game.tick();
+			aliveCells.value = game?.tick() ?? 0;
 			draw();
 		}
 	});
 
 	controls.paused = true;
 	const ctx = ref<CanvasRenderingContext2D>();
-	const game = new GameOfLife((alive, neighbors) => {
+	const game = GameOfLife ? new GameOfLife((alive, neighbors) => {
 		return rules[rule.value]?.[1](alive, neighbors) ?? alive;
-	});
+	}) : null;
 
 	const aliveCells = ref(0);
+	const debug = ref(false);
+	const rule = ref("conways");
+	const zoom = ref(10);
+
 	const canvasPos = reactive({ x: 0, y: 0 });
 	const size = useFibonacci(() => zoom.value + 1);
-	const zoom = useLocalStorage("game-of-life-zoom", 10);
-	const debug = useLocalStorage("game-of-life-debug", false);
-	const rule = useLocalStorage("game-of-life-rule", "conways");
 	const snapshots = reactive<Map<string, string>>(new Map());
-	const rules = reactive<Record<string, [string, Rule]>>({
+	const rules = skipHydrate(reactive<Record<string, [string, Rule]>>({
 		conways: ["Conway's Game of Life", conwaysRule],
 		lifeWithoutDeath: ["Life without death", lifeWithoutDeathRule],
 		highlife: ["Highlife", highlifeRule],
 		seeds: ["Seeds", seedsRule],
-	});
+	}));
 
 	watch(size, () => draw());
 	watch(canvasPos, () => draw());
 	watchEffect(() => {
+		if (!game) return;
 		game.debug = debug.value;
 		draw();
 	});
 
 	function createSnapshot(name: string) {
+		if (!game) return;
 		snapshots.set(name, game.json);
 	}
 
 	function loadSnapshot(name: string) {
+		if (!game) return;
 		game.json = snapshots.get(name) ?? "[]";
 		draw();
 	}
@@ -85,6 +92,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	}
 
 	function toggleCell(canvasX: number, canvasY: number) {
+		if (!game) return;
 		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
 		if (game.toggle_cell(x, y)) aliveCells.value++;
 		else aliveCells.value--;
@@ -92,6 +100,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	}
 
 	function birthCell(canvasX: number, canvasY: number) {
+		if (!game) return;
 		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
 		if (game.birth_cell(x, y)) {
 			aliveCells.value++;
@@ -100,6 +109,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	}
 
 	function killCell(canvasX: number, canvasY: number) {
+		if (!game) return;
 		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
 		if (game.kill_cell(x, y)) {
 			aliveCells.value--;
@@ -125,7 +135,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 
 	function clear() {
 		aliveCells.value = 0;
-		game.clear();
+		game?.clear();
 		draw();
 	}
 
@@ -134,7 +144,7 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 			const style = window.getComputedStyle(document.body);
 			const textColor = style.getPropertyValue("--text");
 			ctx.value.clearRect(0, 0, ctx.value.canvas.width, ctx.value.canvas.height);
-			game.draw(ctx.value, Math.floor(canvasPos.x), Math.floor(canvasPos.y), size.value, textColor);
+			game?.draw(ctx.value, Math.floor(canvasPos.x), Math.floor(canvasPos.y), size.value, textColor);
 		}
 	}
 

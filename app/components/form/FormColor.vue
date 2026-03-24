@@ -6,7 +6,7 @@
 		<FormColorHwb v-if="mode == 'hwb'" v-model="color" />
 		<FormColorCmyk v-if="mode == 'cmyk'" v-model="color" />
 		<div class="flex flex-row gap-2">
-			<div ref="preview" :class="previewClasses">{{ color.hex }}</div>
+			<div :style="{backgroundColor: color.hex}" :class="previewClasses">{{ color.hex }}</div>
 			<ResetButton v-if="reset != undefined" @click="resetColor" />
 		</div>
 	</div>
@@ -18,7 +18,6 @@
 		mode: string;
 	}
 
-	const preview = useTemplateRef("preview");
 	const color = defineModel<Color>({ required: true });
 	const props = defineProps<Props>();
 
@@ -26,12 +25,6 @@
 		const classes = ["preview", "flex-1", "pl-1"];
 		if (color.value.hsl.l < 50) classes.push("dark");
 		return classes;
-	});
-
-	watchEffect(() => {
-		if (preview.value) {
-			preview.value.style.backgroundColor = color.value.hex;
-		}
 	});
 
 	function resetColor() {

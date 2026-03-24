@@ -39,8 +39,8 @@
 		return options;
 	});
 
-	const mouseX = ref(0);
-	const mouseY = ref(0);
+	const mouseX = ref();
+	const mouseY = ref();
 	const pos = computed(() => {
 		if (mouseX.value !== undefined && mouseY.value !== undefined) {
 			return gameOfLifeStore.toGameCoordinatesFloored(mouseX.value, mouseY.value);

@@ -44,28 +44,3 @@ export function useCmyk(color: Ref<Color>): WritableComputedRef<Cmyk> {
 		},
 	});
 }
-
-export function useColorLocalStorage(name: string, value: Color): WritableComputedRef<Color> {
-	const local = useLocalStorage<object>(name, value);
-	return computed({
-		set(value) {
-			local.value = value;
-		},
-		get() {
-			const arg = local.value;
-			if ("r" in arg && "g" in arg && "b" in arg) {
-				return new Rgb(Number(arg["r"]), Number(arg["g"]), Number(arg["b"]));
-			} else if ("h" in arg && "s" in arg && "l" in arg) {
-				return new Hsl(Number(arg["h"]), Number(arg["s"]), Number(arg["l"]));
-			} else if ("h" in arg && "s" in arg && "v" in arg) {
-				return new Hsv(Number(arg["h"]), Number(arg["s"]), Number(arg["v"]));
-			} else if ("h" in arg && "w" in arg && "b" in arg) {
-				return new Hwb(Number(arg["h"]), Number(arg["w"]), Number(arg["b"]));
-			} else if ("c" in arg && "m" in arg && "y" in arg && "k" in arg) {
-				return new Cmyk(Number(arg["c"]), Number(arg["m"]), Number(arg["y"]), Number(arg["k"]));
-			}
-
-			return value;
-		},
-	});
-}
