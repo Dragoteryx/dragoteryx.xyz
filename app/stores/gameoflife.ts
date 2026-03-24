@@ -1,7 +1,5 @@
-import { type Rule } from "@/wasm/pkg/wasm";
+import type { Rule } from "@/wasm/pkg/wasm";
 import { skipHydrate } from "pinia";
-
-const { GameOfLife } = import.meta.client ? await import("@/wasm/pkg") : {};
 
 function conwaysRule(alive: boolean, neighbors: number): boolean {
 	return alive ? neighbors == 2 || neighbors == 3 : neighbors == 3;
@@ -20,24 +18,25 @@ function lifeWithoutDeathRule(alive: boolean, neighbors: number): boolean {
 }
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
+	const ctx = ref<CanvasRenderingContext2D>();
+	const game = useWasmModule(module => {
+		return new module.GameOfLife((alive, neighbors) => {
+			return rules[rule.value]?.[1](alive, neighbors) ?? alive;
+		});
+	});
+
+	const aliveCells = ref(0);
+	const rule = ref("conways");
+	const debug = ref(false);
 	const speed = ref(10);
+	const zoom = ref(10);
+
 	const controls = useControls(speed, paused => {
 		if (!paused) {
-			aliveCells.value = game?.tick() ?? 0;
+			aliveCells.value = game.value?.tick() ?? 0;
 			draw();
 		}
 	});
-
-	controls.paused = true;
-	const ctx = ref<CanvasRenderingContext2D>();
-	const game = GameOfLife ? new GameOfLife((alive, neighbors) => {
-		return rules[rule.value]?.[1](alive, neighbors) ?? alive;
-	}) : null;
-
-	const aliveCells = ref(0);
-	const debug = ref(false);
-	const rule = ref("conways");
-	const zoom = ref(10);
 
 	const canvasPos = reactive({ x: 0, y: 0 });
 	const size = useFibonacci(() => zoom.value + 1);
@@ -49,23 +48,24 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		seeds: ["Seeds", seedsRule],
 	}));
 
+	controls.paused = true;
 	watch(size, () => draw());
 	watch(canvasPos, () => draw());
 	watchEffect(() => {
-		if (!game) return;
-		game.debug = debug.value;
+		if (!game.value) return;
+		game.value.debug = debug.value;
 		draw();
 	});
 
 	function createSnapshot(name: string) {
-		if (!game) return;
-		snapshots.set(name, game.json);
+		if (game.value) snapshots.set(name, game.value.json);
 	}
 
 	function loadSnapshot(name: string) {
-		if (!game) return;
-		game.json = snapshots.get(name) ?? "[]";
-		draw();
+		if (game.value) {
+			game.value.json = snapshots.get(name) ?? "[]";
+			draw();
+		}
 	}
 
 	function removeSnapshot(name: string) {
@@ -92,28 +92,31 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 	}
 
 	function toggleCell(canvasX: number, canvasY: number) {
-		if (!game) return;
-		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
-		if (game.toggle_cell(x, y)) aliveCells.value++;
-		else aliveCells.value--;
-		draw();
-	}
-
-	function birthCell(canvasX: number, canvasY: number) {
-		if (!game) return;
-		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
-		if (game.birth_cell(x, y)) {
-			aliveCells.value++;
+		if (game.value) {
+			const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
+			if (game.value.toggle_cell(x, y)) aliveCells.value++;
+			else aliveCells.value--;
 			draw();
 		}
 	}
 
+	function birthCell(canvasX: number, canvasY: number) {
+		if (game.value) {
+			const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
+			if (game.value.birth_cell(x, y) ?? false) {
+				aliveCells.value++;
+				draw();
+			}
+		}
+	}
+
 	function killCell(canvasX: number, canvasY: number) {
-		if (!game) return;
-		const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
-		if (game.kill_cell(x, y)) {
-			aliveCells.value--;
-			draw();
+		if (game.value) {
+			const { x, y } = toGameCoordinatesFloored(canvasX, canvasY);
+			if (game.value.kill_cell(x, y) ?? false) {
+				aliveCells.value--;
+				draw();
+			}
 		}
 	}
 
@@ -135,16 +138,16 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 
 	function clear() {
 		aliveCells.value = 0;
-		game?.clear();
+		game.value?.clear();
 		draw();
 	}
 
 	function draw() {
-		if (ctx.value) {
+		if (game.value && ctx.value) {
 			const style = window.getComputedStyle(document.body);
 			const textColor = style.getPropertyValue("--text");
 			ctx.value.clearRect(0, 0, ctx.value.canvas.width, ctx.value.canvas.height);
-			game?.draw(ctx.value, Math.floor(canvasPos.x), Math.floor(canvasPos.y), size.value, textColor);
+			game.value.draw(ctx.value, Math.floor(canvasPos.x), Math.floor(canvasPos.y), size.value, textColor);
 		}
 	}
 

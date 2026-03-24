@@ -1,7 +1,5 @@
 import { skipHydrate } from "pinia";
 
-const { Sandbox } = import.meta.client ? await import("@/wasm/pkg") : {};
-
 export interface Gravity {
 	strength: number;
 	angle: number;
@@ -14,13 +12,13 @@ export interface Options {
 }
 
 export const useSandboxStore = defineStore("sandbox", () => {
+	const sandbox = useWasmModule(module => new module.Sandbox());
+	const ctx = ref<CanvasRenderingContext2D>();
 	const controls = useTimedControls(60, (paused, dt) => {
-		if (!paused) sandbox?.tick(Math.min(1 / 45, dt));
+		if (!paused) sandbox.value?.tick(Math.min(1 / 45, dt));
 		draw();
 	});
-
-	const ctx = ref<CanvasRenderingContext2D>();
-	const sandbox = Sandbox ? new Sandbox() : null;
+	
 	const entities = ref(0);
 	const height = ref(0);
 	const width = ref(0);
@@ -41,35 +39,37 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	});
 
 	watchEffect(() => {
-		if (sandbox) {
+		if (sandbox.value) {
 			const { r, g, b } = color.value.rgb;
-			sandbox.console_logs = options.consoleLogs;
-			sandbox.world_height = height.value;
-			sandbox.world_width = width.value;
-			sandbox.gravity_strength = gravity.strength;
-			sandbox.gravity_angle = gravity.angle;
-			sandbox.color_r = r;
-			sandbox.color_g = g;
-			sandbox.color_b = b;
+			sandbox.value.console_logs = options.consoleLogs;
+			sandbox.value.world_height = height.value;
+			sandbox.value.world_width = width.value;
+			sandbox.value.gravity_strength = gravity.strength;
+			sandbox.value.gravity_angle = gravity.angle;
+			sandbox.value.color_r = r;
+			sandbox.value.color_g = g;
+			sandbox.value.color_b = b;
 		}
 	});
 
 	function addCircle(x: number, y: number) {
-		if (entities.value >= 15000) return false;
-		sandbox?.add_circle(x, y, radius.value);
-		entities.value++;
-		return true;
+		if (sandbox.value) {
+			if (entities.value >= 15000) return false;
+			sandbox.value.add_circle(x, y, radius.value);
+			entities.value++;
+			return true;
+		}
 	}
 
 	function clearEntities() {
-		sandbox?.clear_entities();
+		sandbox.value?.clear_entities();
 		entities.value = 0;
 	}
 
 	function draw() {
-		if (ctx.value) {
+		if (sandbox.value && ctx.value) {
 			if (options.clearCanvas) ctx.value.clearRect(0, 0, width.value, height.value);
-			sandbox?.draw(ctx.value);
+			sandbox.value.draw(ctx.value);
 		}
 	}
 
