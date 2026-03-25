@@ -1,9 +1,10 @@
 <template>
-	<MDC :value="content" class="flex flex-col px-4 py-2" />
+	<div class="flex flex-col px-4 py-2">
+		<h1>Hello</h1>
+		<p>I have no idea what to write here.</p>
+	</div>
 </template>
 
 <script setup lang="ts">
-	import content from "@/markdown/home.md?raw";
-
 	useHead({ title: "Home" });
 </script>
