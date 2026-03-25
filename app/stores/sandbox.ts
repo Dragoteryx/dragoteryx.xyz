@@ -56,16 +56,11 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	}
 
 	function addCircle(x: number, y: number) {
-		const currentColor = color.value.hsl;
-		if (sandbox.value) {
-			if (entities.value >= 15000) return false;
-			const lightness = currentColor.l;
-			const amount = Math.random() * lightness / 3;
-			setColor(currentColor.removeLightness(amount));
-			sandbox.value.add_circle(x, y, radius.value);
-			entities.value++;
-			return true;
-		}
+		if (!sandbox.value || entities.value >= 15000) return false;
+		setColor(color.value.addLightness(Math.random() * 20 - 10));
+		sandbox.value.add_circle(x, y, radius.value);
+		entities.value++;
+		return true;
 	}
 
 	function clearEntities() {

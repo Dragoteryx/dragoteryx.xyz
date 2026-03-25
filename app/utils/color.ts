@@ -9,9 +9,7 @@ export interface Color {
 	readonly cmyk: Cmyk;
 
 	addSaturation(amount: number): Color;
-	removeSaturation(amount: number): Color;
 	addLightness(amount: number): Color;
-	removeLightness(amount: number): Color;
 }
 
 export class Rgb implements Color {
@@ -57,16 +55,8 @@ export class Rgb implements Color {
 		return this.hsl.addSaturation(amount).rgb;
 	}
 
-	public removeSaturation(amount: number): Rgb {
-		return this.hsl.removeSaturation(amount).rgb;
-	}
-
 	public addLightness(amount: number): Rgb {
 		return this.hsl.addLightness(amount).rgb;
-	}
-
-	public removeLightness(amount: number): Rgb {
-		return this.hsl.removeLightness(amount).rgb;
 	}
 }
 
@@ -113,16 +103,8 @@ export class Hsl implements Color {
 		return new Hsl(this.h, this.s + amount, this.l);
 	}
 
-	public removeSaturation(amount: number): Hsl {
-		return new Hsl(this.h, this.s - amount, this.l);
-	}
-
 	public addLightness(amount: number): Hsl {
 		return new Hsl(this.h, this.s, this.l + amount);
-	}
-
-	public removeLightness(amount: number): Hsl {
-		return new Hsl(this.h, this.s, this.l - amount);
 	}
 }
 
@@ -169,16 +151,8 @@ export class Hsv implements Color {
 		return this.hsl.addSaturation(amount).hsv;
 	}
 
-	public removeSaturation(amount: number): Hsv {
-		return this.hsl.removeSaturation(amount).hsv;
-	}
-
 	public addLightness(amount: number): Hsv {
 		return this.hsl.addLightness(amount).hsv;
-	}
-
-	public removeLightness(amount: number): Hsv {
-		return this.hsl.removeLightness(amount).hsv;
 	}
 }
 
@@ -225,16 +199,8 @@ export class Hwb implements Color {
 		return this.hsl.addSaturation(amount).hwb;
 	}
 
-	public removeSaturation(amount: number): Hwb {
-		return this.hsl.removeSaturation(amount).hwb;
-	}
-
 	public addLightness(amount: number): Hwb {
 		return this.hsl.addLightness(amount).hwb;
-	}
-
-	public removeLightness(amount: number): Hwb {
-		return this.hsl.removeLightness(amount).hwb;
 	}
 }
 
@@ -283,15 +249,7 @@ export class Cmyk implements Color {
 		return this.hsl.addSaturation(amount).cmyk;
 	}
 
-	public removeSaturation(amount: number): Cmyk {
-		return this.hsl.removeSaturation(amount).cmyk;
-	}
-
 	public addLightness(amount: number): Cmyk {
 		return this.hsl.addLightness(amount).cmyk;
-	}
-
-	public removeLightness(amount: number): Cmyk {
-		return this.hsl.removeLightness(amount).cmyk;
 	}
 }
