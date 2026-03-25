@@ -16,7 +16,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	const entities = ref(0);
 	const height = ref(0);
 	const width = ref(0);
-	const radius = ref(13);
+	const radius = ref(5);
 	const defaultColor = new Hsl(90, 50, 50);
 	const color = skipHydrate(ref(defaultColor));
 	const ctx = ref<CanvasRenderingContext2D>();
