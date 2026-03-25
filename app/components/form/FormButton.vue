@@ -21,7 +21,7 @@
 </script>
 
 <style scoped lang="scss">
-	@use "@/assets/styles/mixins.scss";
+	@use "@/assets/styles/colors.scss";
 
 	button {
 		line-height: normal;
@@ -41,7 +41,7 @@
 		}
 
 		&:hover:not(:disabled) {
-			@include mixins.colored;
+			@include colors.colored;
 
 			background: var(--light);
 			cursor: pointer;

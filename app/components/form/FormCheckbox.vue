@@ -10,7 +10,7 @@
 </script>
 
 <style scoped lang="scss">
-	@use "@/assets/styles/mixins.scss";
+	@use "@/assets/styles/colors.scss";
 
 	input[type="checkbox"] {
 		cursor: pointer;
@@ -28,7 +28,7 @@
 		transition-duration: 0.2s;
 
 		&:checked {
-			@include mixins.colored;
+			@include colors.colored;
 
 			&:after {
 				content: "✓";

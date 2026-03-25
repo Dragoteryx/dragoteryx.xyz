@@ -1,29 +1,9 @@
-@use "./titles";
+@use "./colors";
 @use "./misc";
-
-$white: #eef;
-$gray: #ccd;
-$green: hsl(90, 50%, 50%);
-$red: hsl(0, 50%, 50%);
-$blue: hsl(210, 50%, 50%);
-$orange: hsl(20, 50%, 50%);
-$light: hsl(270, 20%, 25%);
-$medium: hsl(270, 20%, 18%);
-$dark: hsl(270, 20%, 11%);
 
 :root {
 	color: var(--text);
 	font-family: "Segoe UI";
-
-	--white: #{$white};
-	--gray: #{$gray};
-	--green: #{$green};
-	--red: #{$red};
-	--blue: #{$blue};
-	--orange: #{$orange};
-	--light: #{$light};
-	--medium: #{$medium};
-	--dark: #{$dark};
 
 	transition:
 		--background-center 0.2s ease,
@@ -31,26 +11,8 @@ $dark: hsl(270, 20%, 11%);
 		--text 0.2s ease;
 
 	&.light {
-		--background-center: #{$white};
-		--background-edges: #{$gray};
-		--text: #{$dark};
+		--background-center: #{colors.get("light")};
+		--background-edges: #{colors.get("gray")};
+		--text: #{colors.get("dark")};
 	}
-}
-
-@property --background-center {
-	syntax: "<color>";
-	initial-value: #{$medium};
-	inherits: true;
-}
-
-@property --background-edges {
-	syntax: "<color>";
-	initial-value: #{$dark};
-	inherits: true;
-}
-
-@property --text {
-	syntax: "<color>";
-	initial-value: #{$white};
-	inherits: true;
 }

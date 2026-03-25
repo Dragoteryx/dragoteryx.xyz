@@ -1,0 +1,47 @@
+@use "sass:map";
+
+$colors: (
+	"white": #eef,
+	"gray": #ccd,
+	"green": hsl(90, 50%, 50%),
+	"red": hsl(0, 50%, 50%),
+	"blue": hsl(210, 50%, 50%),
+	"orange": hsl(20, 50%, 50%),
+	"light": hsl(270, 20%, 25%),
+	"medium": hsl(270, 20%, 18%),
+	"dark": hsl(270, 20%, 11%)
+);
+
+@function get($name) {
+	@return map.get($colors, $name);
+}
+
+@mixin color-property($name, $color) {
+	@property --#{$name} {
+		syntax: "<color>";
+		initial-value: #{$color};
+		inherits: true;
+	}
+}
+
+@include color-property("text", get("white"));
+@include color-property("background-center", get("medium"));
+@include color-property("background-edges", get("dark"));
+@each $name, $color in $colors {
+	@include color-property($name, $color);
+}
+
+@mixin colored {
+	&.red {
+		background: var(--red);
+	}
+	&.green {
+		background: var(--green);
+	}
+	&.blue {
+		background: var(--blue);
+	}
+	&.orange {
+		background: var(--orange);
+	}
+}
