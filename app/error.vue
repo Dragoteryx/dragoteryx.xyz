@@ -19,5 +19,6 @@
 		error: NuxtError;
 	}
 
-	defineProps<Props>();
+	const props = defineProps<Props>();
+	useHead({ title: `Error ${props.error.status}` });
 </script>
