@@ -24,18 +24,17 @@
 	@use "@/assets/styles/mixins.scss";
 
 	button {
-		color: var(--white);
-
 		line-height: normal;
 		text-align: center;
 		text-decoration: none;
 		outline: none;
 
+		color: var(--white);
 		background: var(--medium);
 		border: 1px solid var(--dark);
-
-		transition-property: background-color, color;
-		transition-duration: 0.2s, 0.2s;
+		transition:
+			background-color 0.2s ease,
+			color 0.2s ease;
 
 		&:disabled {
 			color: var(--dark);
