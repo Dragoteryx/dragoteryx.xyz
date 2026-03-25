@@ -38,21 +38,30 @@ export const useSandboxStore = defineStore("sandbox", () => {
 
 	watchEffect(() => {
 		if (sandbox.value) {
-			const { r, g, b } = color.value.rgb;
 			sandbox.value.console_logs = options.consoleLogs;
 			sandbox.value.world_height = height.value;
 			sandbox.value.world_width = width.value;
 			sandbox.value.gravity_strength = gravity.strength;
 			sandbox.value.gravity_angle = gravity.angle;
-			sandbox.value.color_r = r;
-			sandbox.value.color_g = g;
-			sandbox.value.color_b = b;
 		}
 	});
 
+	function setColor(color: Color) {
+		if (sandbox.value) {
+			const rgb = color.rgb;
+			sandbox.value.color_r = rgb.r;
+			sandbox.value.color_g = rgb.g;
+			sandbox.value.color_b = rgb.b;
+		}
+	}
+
 	function addCircle(x: number, y: number) {
+		const currentColor = color.value.hsl;
 		if (sandbox.value) {
 			if (entities.value >= 15000) return false;
+			const lightness = currentColor.l;
+			const amount = Math.random() * lightness / 3;
+			setColor(currentColor.removeLightness(amount));
 			sandbox.value.add_circle(x, y, radius.value);
 			entities.value++;
 			return true;
