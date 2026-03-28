@@ -14,8 +14,9 @@
 			<NuxtPage />
 		</div>
 		<span>Entity count: {{ sandboxStore.entities }}</span>
+		<span>BVH depth: {{ sandboxStore.bvhDepth }}</span>
 		<hr />
-		<FormRange v-model="sandboxStore.radius" :min="5" :max="45" :reset="5" :range-size="1">Radius</FormRange>
+		<FormRange v-model="sandboxStore.radius" :min="6" :max="60" :reset="6" :range-size="1">Radius</FormRange>
 		<hr />
 		<FormColor
 			v-model="sandboxStore.color"

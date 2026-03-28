@@ -1,7 +1,9 @@
 use glam::Vec2;
-use std::collections::HashMap;
 use wasm_bindgen::prelude::*;
 use web_sys::CanvasRenderingContext2d;
+
+mod aabb;
+use aabb::*;
 
 mod entity;
 use entity::*;
@@ -9,45 +11,41 @@ use entity::*;
 mod util;
 use util::*;
 
-pub const SUB_STEPS: usize = 16;
-
-pub fn delta_time(dt: f32) -> f32 {
-	dt / SUB_STEPS as f32
-}
-
 #[wasm_bindgen]
-#[derive(Default, Debug, Clone, PartialEq)]
-pub struct Sandbox {
+pub struct Sandbox2 {
 	entities: Vec<Entity>,
-	console_logs: bool,
-	world_size: Vec2,
+	bvh: BvhTree,
+
+	draw_volumes: bool,
 	gravity_strength: f32,
 	gravity_angle: f32,
+	world_size: Vec2,
 	color: Color,
 }
 
 #[wasm_bindgen]
-impl Sandbox {
+impl Sandbox2 {
 	#[wasm_bindgen(constructor)]
 	pub fn new() -> Self {
 		Self {
 			entities: Vec::new(),
-			console_logs: false,
-			world_size: Vec2::ZERO,
 			gravity_strength: 981.0,
 			gravity_angle: 0.0,
-			color: Color { r: 0, g: 0, b: 0 },
+			world_size: Vec2::ZERO,
+			color: Color::default(),
+			bvh: BvhTree::Empty,
+			draw_volumes: false,
 		}
 	}
 
 	#[wasm_bindgen(getter)]
-	pub fn console_logs(&self) -> bool {
-		self.console_logs
+	pub fn draw_volumes(&self) -> bool {
+		self.draw_volumes
 	}
 
 	#[wasm_bindgen(setter)]
-	pub fn set_console_logs(&mut self, console_logs: bool) {
-		self.console_logs = console_logs;
+	pub fn set_draw_volumes(&mut self, draw_volumes: bool) {
+		self.draw_volumes = draw_volumes;
 	}
 
 	#[wasm_bindgen(getter)]
@@ -76,8 +74,8 @@ impl Sandbox {
 	}
 
 	#[wasm_bindgen(setter)]
-	pub fn set_gravity_strength(&mut self, strength: f32) {
-		self.gravity_strength = strength;
+	pub fn set_gravity_strength(&mut self, gravity_strength: f32) {
+		self.gravity_strength = gravity_strength;
 	}
 
 	#[wasm_bindgen(getter)]
@@ -86,8 +84,8 @@ impl Sandbox {
 	}
 
 	#[wasm_bindgen(setter)]
-	pub fn set_gravity_angle(&mut self, angle: f32) {
-		self.gravity_angle = angle;
+	pub fn set_gravity_angle(&mut self, gravity_angle: f32) {
+		self.gravity_angle = gravity_angle;
 	}
 
 	#[wasm_bindgen(getter)]
@@ -120,97 +118,65 @@ impl Sandbox {
 		self.color.b = b;
 	}
 
+	#[wasm_bindgen(getter)]
+	pub fn bvh_depth(&self) -> usize {
+		self.bvh.depth()
+	}
+
+	pub fn build_bvh(&mut self) {
+		self.bvh = BvhTree::build(&mut self.entities);
+	}
+
+	pub fn refit_bvh(&mut self) {
+		self.bvh.refit();
+	}
+
 	pub fn add_circle(&mut self, x: f32, y: f32, radius: f32) {
-		self.entities
-			.push(Entity::circle(Vec2::new(x, y), radius, self.color));
+		let entity = Entity::circle(Vec2::new(x, y), radius, self.color);
+		self.bvh.insert(entity.clone());
+		self.entities.push(entity);
 	}
 
 	pub fn clear_entities(&mut self) {
 		self.entities.clear();
+		self.bvh.clear();
 	}
 
-	pub fn draw(&self, ctx: &CanvasRenderingContext2d) {
-		for entity in &self.entities {
-			entity.draw(ctx);
-		}
-	}
-
-	pub fn tick(&self, dt: f32) {
-		if self.console_logs {
-			console_log!("=== TICK ===");
-		}
-
-		if self.entities.is_empty() {
-			if self.console_logs {
-				console_log!("No entities");
-			}
-			return;
-		}
-
-		let area_size = self
-			.entities
-			.iter()
-			.map(|ent| (ent.size() + 1.0) as usize * 2)
-			.max()
-			.unwrap_or_default();
-
-		if self.console_logs {
-			console_log!("Area size: {}", area_size);
-		}
-
-		let mut areas: HashMap<_, Vec<_>> = HashMap::new();
+	pub fn draw(&mut self, ctx: &CanvasRenderingContext2d) {
 		for ent in &self.entities {
-			let area = ent.calc_area(area_size);
-			areas.entry(area).or_default().push(ent);
+			ent.draw(ctx);
 		}
 
-		if self.console_logs {
-			console_log!("Areas: {}", areas.len());
-			console_log!(
-				"Average area population: {}",
-				self.entities.len() / areas.len()
-			);
+		if self.draw_volumes {
+			self.bvh.draw(ctx);
 		}
+	}
 
-		let mut possible_collisions = Vec::new();
-		for (&(x, y), entities) in &areas {
-			let neighbor_iters = [
-				areas.get(&(x, y)),
-				areas.get(&(x + 1, y)),
-				areas.get(&(x, y + 1)),
-				areas.get(&(x + 1, y + 1)),
-				areas.get(&(x + 1, y - 1)),
-			];
-
-			for (i, &ent1) in entities.iter().enumerate() {
-				for &ent2 in neighbor_iters
-					.iter()
-					.flatten()
-					.flat_map(|v| v.iter())
-					.skip(i + 1)
-				{
-					let distance = ent1.distance(ent2);
-					if distance < ent1.vel(dt).length() || distance < ent2.vel(dt).length() {
-						possible_collisions.push((ent1, ent2));
-					}
-				}
-			}
-		}
-
-		if self.console_logs {
-			console_log!("Possible collisions: {}", possible_collisions.len());
-		}
-
+	pub fn update(&mut self, delta_time: f32, sub_steps: u8) {
 		let angle = (self.gravity_angle + 90.0).to_radians();
 		let gravity = Vec2::from_angle(angle) * self.gravity_strength;
-		for _ in 0..SUB_STEPS {
-			for &(ent1, ent2) in &possible_collisions {
-				ent1.handle_collisions(ent2);
+		let dt = delta_time / sub_steps as f32;
+
+		self.build_bvh();
+		for i in 0..sub_steps {
+			for ent in &self.entities {
+				ent.update(gravity, dt);
+			}
+
+			for ent1 in &self.entities {
+				self.bvh.query(&ent1.aabb(), &mut |_, ent2| {
+					if ent1.id() < ent2.id() {
+						ent1.solve_collision(ent2);
+					}
+				});
 			}
 
 			for ent in &self.entities {
-				ent.handle_world_collisions(self.world_size);
-				ent.tick(gravity, dt);
+				ent.apply_world_boundaries(self.world_size);
+			}
+
+			if i < sub_steps - 1 {
+				self.refit_bvh();
 			}
 		}
 	}

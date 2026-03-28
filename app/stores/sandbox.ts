@@ -6,22 +6,24 @@ export interface Gravity {
 }
 
 export interface Options {
+	drawVolumes: boolean;
 	clearCanvas: boolean;
-	consoleLogs: boolean;
 	colorPicker: string;
 }
 
 export const useSandboxStore = defineStore("sandbox", () => {
-	const sandbox = useWasmModule(module => new module.Sandbox());
+	const sandbox = useWasmModule(module => new module.Sandbox2());
 	const entities = ref(0);
 	const height = ref(0);
 	const width = ref(0);
-	const radius = ref(5);
+	const radius = ref(6);
+	const bvhDepth = ref(0);
 	const defaultColor = new Hsl(90, 50, 50);
 	const color = skipHydrate(ref(defaultColor));
 	const ctx = ref<CanvasRenderingContext2D>();
 	const controls = useTimedControls(60, (paused, dt) => {
-		if (!paused) sandbox.value?.tick(Math.min(1 / 45, dt));
+		if (!paused) sandbox.value?.update(Math.min(1 / 45, dt), 8);
+		bvhDepth.value = sandbox.value?.bvh_depth ?? 0;
 		draw();
 	});
 
@@ -31,16 +33,16 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	});
 
 	const options: Options = reactive({
-		colorPicker: ref("hsl"),
+		drawVolumes: ref(false),
 		clearCanvas: ref(true),
-		consoleLogs: ref(false),
+		colorPicker: ref("hsl"),
 	});
 
 	watchEffect(() => {
 		if (sandbox.value) {
-			sandbox.value.console_logs = options.consoleLogs;
-			sandbox.value.world_height = height.value;
 			sandbox.value.world_width = width.value;
+			sandbox.value.world_height = height.value;
+			sandbox.value.draw_volumes = options.drawVolumes;
 			sandbox.value.gravity_strength = gravity.strength;
 			sandbox.value.gravity_angle = gravity.angle;
 		}
@@ -56,7 +58,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	}
 
 	function addCircle(x: number, y: number) {
-		if (!sandbox.value || entities.value >= 15000) return false;
+		if (!sandbox.value || entities.value >= 5000) return false;
 		setColor(color.value.addLightness(Math.random() * 20 - 10));
 		sandbox.value.add_circle(x, y, radius.value);
 		entities.value++;
@@ -79,6 +81,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 		controls,
 		ctx,
 		defaultColor,
+		bvhDepth,
 		color,
 		radius,
 		height,

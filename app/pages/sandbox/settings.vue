@@ -6,7 +6,7 @@
 		<hr />
 		<span><b>Misc settings</b></span>
 		<FormCheckbox v-model="sandboxStore.options.clearCanvas">Clear previous frame</FormCheckbox>
-		<FormCheckbox v-model="sandboxStore.options.consoleLogs">Console logs</FormCheckbox>
+		<FormCheckbox v-model="sandboxStore.options.drawVolumes">Draw volumes</FormCheckbox>
 		<span>Color picker</span>
 		<FormSelect v-model="sandboxStore.options.colorPicker" :options="colorPickers" />
 	</div>
