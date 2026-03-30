@@ -156,9 +156,9 @@ impl Sandbox2 {
 		let angle = (self.gravity_angle + 90.0).to_radians();
 		let gravity = Vec2::from_angle(angle) * self.gravity_strength;
 		let dt = delta_time / sub_steps as f32;
-
 		self.build_bvh();
-		for i in 0..sub_steps {
+
+		for _ in 0..sub_steps {
 			for ent in &self.entities {
 				ent.update(gravity, dt);
 			}
@@ -175,9 +175,7 @@ impl Sandbox2 {
 				ent.apply_world_boundaries(self.world_size);
 			}
 
-			if i < sub_steps - 1 {
-				self.refit_bvh();
-			}
+			self.refit_bvh();
 		}
 	}
 }

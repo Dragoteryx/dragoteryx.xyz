@@ -171,8 +171,8 @@ impl BvhTree {
 
 	#[allow(deprecated)]
 	pub fn draw(&self, ctx: &CanvasRenderingContext2d) {
+		ctx.set_stroke_style(&"black".into());
 		self.visit(&|aabb, _| {
-			ctx.set_stroke_style(&"black".into());
 			ctx.stroke_rect(
 				aabb.min.x as f64,
 				aabb.min.y as f64,
