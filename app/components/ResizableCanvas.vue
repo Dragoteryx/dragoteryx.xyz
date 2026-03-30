@@ -1,16 +1,14 @@
 <template>
 	<div ref="parent">
-		<ClientOnly>
-			<canvas
-				ref="canvas"
-				@mouseup="mouseUp"
-				@mousedown="mouseDown"
-				@mouseenter="mouseEnter"
-				@mouseleave="mouseLeave"
-				@mousemove="mouseMove"
-				@wheel.passive="wheel"
-			></canvas>
-		</ClientOnly>
+		<canvas
+			ref="canvas"
+			@mouseup="mouseUp"
+			@mousedown="mouseDown"
+			@mouseenter="mouseEnter"
+			@mouseleave="mouseLeave"
+			@mousemove="mouseMove"
+			@wheel.passive="wheel"
+		></canvas>
 	</div>
 </template>
 
