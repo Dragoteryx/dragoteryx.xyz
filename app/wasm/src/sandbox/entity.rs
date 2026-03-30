@@ -45,7 +45,7 @@ impl Entity {
 		self.0.curr_pos.set(next_pos);
 	}
 
-	pub fn solve_collision(&self, other: &Entity) {
+	pub fn resolve_collision(&self, other: &Entity) {
 		let Collider::Circle { radius: radius1 } = self.0.collider;
 		let Collider::Circle { radius: radius2 } = other.0.collider;
 		let pos1 = self.0.curr_pos.get();

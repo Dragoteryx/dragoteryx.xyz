@@ -166,7 +166,7 @@ impl Sandbox2 {
 			for ent1 in &self.entities {
 				self.bvh.query(&ent1.aabb(), &mut |_, ent2| {
 					if ent1.id() < ent2.id() {
-						ent1.solve_collision(ent2);
+						ent1.resolve_collision(ent2);
 					}
 				});
 			}
