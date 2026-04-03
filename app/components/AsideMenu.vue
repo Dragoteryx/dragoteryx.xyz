@@ -25,7 +25,6 @@
 			<NavButton icon="lucide:house" to="/" highlight="exact">Home</NavButton>
 			<NavButton icon="lucide:shapes" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
 			<NavButton icon="lucide:dna" to="/game-of-life" highlight="partial">Game of Life</NavButton>
-			<NavButton v-if="dev" icon="lucide:fish" to="/boids" highlight="partial">Boids</NavButton>
 		</nav>
 		<hr />
 		<footer class="flex flex-row">
@@ -41,10 +40,6 @@
 		</footer>
 	</aside>
 </template>
-
-<script setup lang="ts">
-	const dev = import.meta.dev;
-</script>
 
 <style scoped lang="scss">
 	aside {

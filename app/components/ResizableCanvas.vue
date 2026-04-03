@@ -13,6 +13,10 @@
 </template>
 
 <script setup lang="ts">
+	export interface Props {
+		mode: "canvas2d" | "webgpu";
+	}
+
 	export interface Emits {
 		sizeChange: [width: number, height: number];
 		scroll: [x: number, y: number, up: boolean];
@@ -26,6 +30,7 @@
 		Drag,
 	}
 
+	const props = defineProps<Props>();
 	const emit = defineEmits<Emits>();
 	const parent = useTemplateRef("parent");
 	const canvas = useTemplateRef("canvas");
@@ -37,10 +42,18 @@
 	const width = defineModel<number>("width");
 	const height = defineModel<number>("height");
 	const context2d = defineModel<CanvasRenderingContext2D>("context2d");
+	const contextGpu = defineModel<GPUCanvasContext>("contextGpu");
 
 	watchEffect(() => {
-		const ctx = canvas.value?.getContext("2d");
-		context2d.value = ctx ?? undefined;
+		if (canvas.value) {
+			if (props.mode == "canvas2d") {
+				const ctx2d = canvas.value.getContext("2d");
+				context2d.value = ctx2d ?? undefined;
+			} else if (props.mode == "webgpu") {
+				const ctxGpu = canvas.value.getContext("webgpu");
+				contextGpu.value = ctxGpu ?? undefined;
+			}
+		}
 	});
 
 	watchEffect(() => {

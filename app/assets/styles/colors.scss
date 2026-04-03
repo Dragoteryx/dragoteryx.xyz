@@ -9,7 +9,7 @@ $colors: (
 	"orange": hsl(20, 50%, 50%),
 	"light": hsl(270, 20%, 25%),
 	"medium": hsl(270, 20%, 18%),
-	"dark": hsl(270, 20%, 11%)
+	"dark": hsl(270, 20%, 11%),
 );
 
 @function get($name) {

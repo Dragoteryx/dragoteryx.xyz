@@ -11,8 +11,6 @@
 	const sandboxStore = useSandboxStore();
 
 	function spawn() {
-		for (let i = 0; i < props.amount; i++) {
-			if (!sandboxStore.addCircle(Math.random() * sandboxStore.width, Math.random() * sandboxStore.height)) break;
-		}
+		sandboxStore.spawnEntities(props.amount);
 	}
 </script>

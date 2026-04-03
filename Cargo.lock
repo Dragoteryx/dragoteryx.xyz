@@ -65,12 +65,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "glam"
-version = "0.32.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f70749695b063ecbf6b62949ccccde2e733ec3ecbbd71d467dca4e5c6c97cca0"
-
-[[package]]
 name = "itoa"
 version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -213,7 +207,6 @@ name = "wasm"
 version = "0.1.0"
 dependencies = [
  "ahash",
- "glam",
  "js-sys",
  "serde_json",
  "wasm-bindgen",

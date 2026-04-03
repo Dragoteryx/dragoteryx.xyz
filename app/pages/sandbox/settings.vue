@@ -4,9 +4,6 @@
 		<FormRange v-model="sandboxStore.gravity.strength" :min="0" :max="9810" :reset="981">Strength</FormRange>
 		<FormRange v-model="sandboxStore.gravity.angle" dir="rtl" :min="-180" :max="180" :reset="0">Angle</FormRange>
 		<hr />
-		<span><b>Misc settings</b></span>
-		<FormCheckbox v-model="sandboxStore.options.clearCanvas">Clear previous frame</FormCheckbox>
-		<FormCheckbox v-model="sandboxStore.options.drawVolumes">Draw volumes</FormCheckbox>
 		<span>Color picker</span>
 		<FormSelect v-model="sandboxStore.options.colorPicker" :options="colorPickers" />
 	</div>

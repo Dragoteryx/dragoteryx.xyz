@@ -2,11 +2,13 @@
 	<div class="flex flex-row flex-1">
 		<ResizableCanvas
 			class="flex-1"
+			:mode="mode"
 			v-model:mouse-x="mouseX"
 			v-model:mouse-y="mouseY"
 			v-model:width="width"
 			v-model:height="height"
 			v-model:context2d="context2d"
+			v-model:contextGpu="contextGpu"
 			@size-change="(w, h) => emit('sizeChange', w, h)"
 			@scroll="(x, y, up) => emit('scroll', x, y, up)"
 			@click="(x, y) => emit('click', x, y)"
@@ -21,9 +23,9 @@
 </template>
 
 <script setup lang="ts">
-	import type { Emits } from "./ResizableCanvas.vue";
+	import type { Props as CanvasProps, Emits } from "./ResizableCanvas.vue";
 
-	export interface Props {
+	export interface Props extends CanvasProps {
 		controls: Controls;
 	}
 
@@ -34,6 +36,7 @@
 	const width = defineModel("width", { default: 0 });
 	const height = defineModel("height", { default: 0 });
 	const context2d = defineModel<CanvasRenderingContext2D>("context2d");
+	const contextGpu = defineModel<GPUCanvasContext>("contextGpu");
 
 	onMounted(() => {
 		props.controls.active = true;

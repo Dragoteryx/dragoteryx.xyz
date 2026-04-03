@@ -24,10 +24,9 @@ const rules: Record<string, [string, Rule]> = {
 };
 
 export const useGameOfLifeStore = defineStore("game-of-life", () => {
-	const game = useWasmModule(module => {
-		return new module.GameOfLife((alive, neighbors) => {
-			return rules[rule.value]?.[1](alive, neighbors) ?? alive;
-		});
+	const wasm = useWasmModule();
+	const game = computed(() => {
+		return wasm.value ? new wasm.value.GameOfLife(currentRule) : null;
 	});
 
 	const aliveCells = ref(0);
@@ -52,6 +51,10 @@ export const useGameOfLifeStore = defineStore("game-of-life", () => {
 		game.value.debug = debug.value;
 		draw();
 	});
+
+	function currentRule(alive: boolean, neighbors: number): boolean {
+		return rules[rule.value]?.[1](alive, neighbors) ?? alive;
+	}
 
 	function createSnapshot(name: string) {
 		if (game.value) snapshots.set(name, game.value.json);

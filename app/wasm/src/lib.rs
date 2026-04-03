@@ -23,5 +23,3 @@ macro_rules! console_error {
 }
 
 pub mod gameoflife;
-
-pub mod sandbox;

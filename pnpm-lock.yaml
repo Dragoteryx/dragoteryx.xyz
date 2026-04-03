@@ -38,6 +38,9 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4(@vue/compiler-sfc@3.5.30)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.30(typescript@5.9.3)))(vue@3.5.30(typescript@5.9.3))
     devDependencies:
+      "@webgpu/types":
+        specifier: ^0.1.69
+        version: 0.1.69
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -1667,6 +1670,10 @@ packages:
       { integrity: sha512-shTJncjV9JTI4oVNyF1FQonetYAiTBd+Qj7cY89SWbXSkx7gyhrgtEdF2ZAVWS1S3SHlaROO6F2IesJxQEkZBw== }
     peerDependencies:
       vue: ^3.5.0
+
+  "@webgpu/types@0.1.69":
+    resolution:
+      { integrity: sha512-RPmm6kgRbI8e98zSD3RVACvnuktIja5+yLgDAkTmxLr90BEwdTXRQWNLF3ETTTyH/8mKhznZuN5AveXYFEsMGQ== }
 
   abbrev@3.0.1:
     resolution:
@@ -6383,6 +6390,8 @@ snapshots:
   "@vueuse/shared@14.2.1(vue@3.5.30(typescript@5.9.3))":
     dependencies:
       vue: 3.5.30(typescript@5.9.3)
+
+  "@webgpu/types@0.1.69": {}
 
   abbrev@3.0.1: {}
 

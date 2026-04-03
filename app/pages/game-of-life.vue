@@ -1,5 +1,6 @@
 <template>
 	<CanvasMenu
+		mode="canvas2d"
 		v-model:mouse-x="mouseX"
 		v-model:mouse-y="mouseY"
 		:controls="gameOfLifeStore.controls"
