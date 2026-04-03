@@ -3,8 +3,8 @@ import renderCode from "@/assets/shaders/physics/render.wgsl?raw";
 import { skipHydrate } from "pinia";
 
 export const DEFAULT_COLOR = new Hsl(90, 50, 50);
-export const MAX_ENTITIES = 5000;//65536;
-export const ENTITY_STRIDE = 32;
+export const MAX_PARTICLES = 5000;//65536;
+export const PARTICLE_STRIDE = 32;
 
 export interface Bounds {
 	width: number;
@@ -54,12 +54,12 @@ export const useParticlesStore = defineStore("particles", () => {
 
 			const particleBuffer1 = device.value.createBuffer({
 				usage: GPUBufferUsage.STORAGE | GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
-				size: MAX_ENTITIES * ENTITY_STRIDE,
+				size: MAX_PARTICLES * PARTICLE_STRIDE,
 			});
 
 			const particleBuffer2 = device.value.createBuffer({
 				usage: GPUBufferUsage.STORAGE | GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
-				size: MAX_ENTITIES * ENTITY_STRIDE,
+				size: MAX_PARTICLES * PARTICLE_STRIDE,
 			});
 
 			const particleInBuffer = computed(() => {
@@ -202,7 +202,7 @@ export const useParticlesStore = defineStore("particles", () => {
 					entryPoint: "vs_main",
 					buffers: [
 						{
-							arrayStride: ENTITY_STRIDE,
+							arrayStride: PARTICLE_STRIDE,
 							stepMode: "instance",
 							attributes: [
 								{ shaderLocation: 0	, offset: 0, format: "float32x2" },
@@ -256,32 +256,32 @@ export const useParticlesStore = defineStore("particles", () => {
 			}
 
 			async function spawnParticles(count: number, x?: number, y?: number) {
-				const newCount = Math.min(particleCount.value + count, MAX_ENTITIES);
-				const entities = await fetchParticleBuffer();
-				if (entities) {
+				const newCount = Math.min(particleCount.value + count, MAX_PARTICLES);
+				const particles = await fetchParticleBuffer();
+				if (particles) {
 					for (let i = particleCount.value; i < newCount; i++) {
 						const entColor = color.value.addLightness(Math.random() * 10 - 5);
 						const posX = x ?? (Math.random() * bounds.width);
 						const posY = y ?? (Math.random() * bounds.height);
 						const { r, g, b } = entColor.rgb;
-						entities[i * 8 + 0] = posX;
-						entities[i * 8 + 1] = posY;
-						entities[i * 8 + 2] = posX;
-						entities[i * 8 +	3] = posY;
-						entities[i * 8 + 4] = r / 255;
-						entities[i * 8 + 5] = g / 255;
-						entities[i * 8 + 6] = b / 255;
-						entities[i * 8 + 7] = radius.value;
+						particles[i * 8 + 0] = posX;
+						particles[i * 8 + 1] = posY;
+						particles[i * 8 + 2] = posX;
+						particles[i * 8 +	3] = posY;
+						particles[i * 8 + 4] = r / 255;
+						particles[i * 8 + 5] = g / 255;
+						particles[i * 8 + 6] = b / 255;
+						particles[i * 8 + 7] = radius.value;
 					}
 
-					saveParticleBuffer(entities);
+					saveParticleBuffer(particles);
 					particleCount.value = newCount;
 				}
 			}
 
 			function clearParticles() {
 				if (device.value) {
-					const emptyData = new Float32Array(MAX_ENTITIES * ENTITY_STRIDE / 4);
+					const emptyData = new Float32Array(MAX_PARTICLES * PARTICLE_STRIDE / 4);
 					device.value.queue.writeBuffer(particleInBuffer.value, 0, emptyData);
 					particleCount.value = 0;
 				}
@@ -291,10 +291,10 @@ export const useParticlesStore = defineStore("particles", () => {
 				if (device.value) {
 					const readBuffer = device.value.createBuffer({
 						usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
-						size: MAX_ENTITIES * ENTITY_STRIDE,
+						size: MAX_PARTICLES * PARTICLE_STRIDE,
 					});
 
-					const size = particleCount.value * ENTITY_STRIDE;
+					const size = particleCount.value * PARTICLE_STRIDE;
 					const commandEncoder = device.value.createCommandEncoder();
 					commandEncoder.copyBufferToBuffer(particleInBuffer.value, 0, readBuffer, 0, size);
 					device.value.queue.submit([commandEncoder.finish()]);
