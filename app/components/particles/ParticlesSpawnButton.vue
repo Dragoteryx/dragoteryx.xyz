@@ -8,9 +8,9 @@
 	}
 
 	const props = defineProps<Props>();
-	const sandboxStore = useSandboxStore();
+	const sandboxStore = useParticlesStore();
 
 	function spawn() {
-		sandboxStore.spawnEntities(props.amount);
+		sandboxStore.spawnParticles(props.amount);
 	}
 </script>

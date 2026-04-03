@@ -23,7 +23,7 @@
 		<hr />
 		<nav class="flex flex-col flex-1 gap-2">
 			<NavButton icon="lucide:house" to="/" highlight="exact">Home</NavButton>
-			<NavButton icon="lucide:shapes" to="/sandbox" highlight="partial">2D Sandbox</NavButton>
+			<NavButton icon="lucide:circle-pile" to="/particles" highlight="partial">Particles</NavButton>
 			<NavButton icon="lucide:dna" to="/game-of-life" highlight="partial">Game of Life</NavButton>
 		</nav>
 		<hr />

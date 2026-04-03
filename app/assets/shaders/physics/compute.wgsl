@@ -11,10 +11,10 @@ struct Aabb {
 }
 
 @group(0) @binding(0)
-var<storage, read> entities_in: array<Entity>;
+var<storage, read> particles_in: array<Entity>;
 
 @group(0) @binding(1)
-var<storage, read_write> entities_out: array<Entity>;
+var<storage, read_write> particles_out: array<Entity>;
 
 @group(0) @binding(2)
 var<uniform> entity_count: u32;
@@ -54,11 +54,11 @@ fn spread_bits(x: u32) -> u32 {
 fn update_positions(@builtin(global_invocation_id) gid: vec3u) {
 	let i = gid.x;
 	if (i < entity_count) {
-		var ent = entities_in[i];
+		var ent = particles_in[i];
 		let next_pos = ent.curr_pos * 2 - ent.prev_pos + gravity * DT_SQ;
 		ent.prev_pos = ent.curr_pos;
 		ent.curr_pos = next_pos;
-		entities_out[i] = ent;
+		particles_out[i] = ent;
 	}
 }
 
@@ -66,10 +66,10 @@ fn update_positions(@builtin(global_invocation_id) gid: vec3u) {
 fn resolve_collisions(@builtin(global_invocation_id) gid: vec3u) {
 	let i = gid.x;
 	if (i < entity_count) {
-		var ent1 = entities_in[i];
+		var ent1 = particles_in[i];
 		for (var j = 0u; j < entity_count; j++) {
 			if (i != j) {
-				let ent2 = entities_in[j];
+				let ent2 = particles_in[j];
 				let pos1 = ent1.curr_pos;
 				let pos2 = ent2.curr_pos;
 				let radius1 = ent1.radius;
@@ -98,7 +98,7 @@ fn resolve_collisions(@builtin(global_invocation_id) gid: vec3u) {
 			}
 		}
 
-		entities_out[i] = ent1;
+		particles_out[i] = ent1;
 	}
 }
 
@@ -106,7 +106,7 @@ fn resolve_collisions(@builtin(global_invocation_id) gid: vec3u) {
 fn apply_world_bounds(@builtin(global_invocation_id) gid: vec3u) {
 	let i = gid.x;
 	if (i < entity_count) {
-		var ent = entities_in[i];
+		var ent = particles_in[i];
 		let radius = ent.radius;
 		let aabb = calc_aabb(ent.curr_pos, radius);
 
@@ -122,6 +122,6 @@ fn apply_world_bounds(@builtin(global_invocation_id) gid: vec3u) {
 			ent.curr_pos.y = bounds.y - radius;
 		}
 
-		entities_out[i] = ent;
+		particles_out[i] = ent;
 	}
 }

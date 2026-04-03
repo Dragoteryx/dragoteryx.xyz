@@ -20,11 +20,11 @@ export interface Options {
 	colorPicker: string;
 }
 
-export const useSandboxStore = defineStore("sandbox", () => {
+export const useParticlesStore = defineStore("particles", () => {
 	const ctx = ref<GPUCanvasContext>();
 	const device = useGPUDevice();
 	const radius = ref(6);
-	const entityCount = ref(0);
+	const particleCount = ref(0);
 	const color = skipHydrate(ref(DEFAULT_COLOR));
 	const controls = useControls(60, paused => {
 		if (!paused) update();
@@ -45,28 +45,28 @@ export const useSandboxStore = defineStore("sandbox", () => {
 		colorPicker: ref("hsl"),
 	});
 
-	const sandbox = computed(() => {
+	const particles = computed(() => {
 		if (device.value) {
 			const computeModule = device.value.createShaderModule({ code: computeCode });
 			const renderModule = device.value.createShaderModule({ code: renderCode });
 			const format = navigator.gpu.getPreferredCanvasFormat();
-			const reverseEntityBuffers = ref(false);
+			const reverseParticleBuffers = ref(false);
 
-			const entityBuffer1 = device.value.createBuffer({
+			const particleBuffer1 = device.value.createBuffer({
 				usage: GPUBufferUsage.STORAGE | GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
 				size: MAX_ENTITIES * ENTITY_STRIDE,
 			});
 
-			const entityBuffer2 = device.value.createBuffer({
+			const particleBuffer2 = device.value.createBuffer({
 				usage: GPUBufferUsage.STORAGE | GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
 				size: MAX_ENTITIES * ENTITY_STRIDE,
 			});
 
-			const entityInBuffer = computed(() => {
-				return reverseEntityBuffers.value ? entityBuffer2 : entityBuffer1;
+			const particleInBuffer = computed(() => {
+				return reverseParticleBuffers.value ? particleBuffer2 : particleBuffer1;
 			});
 
-			const entityCountBuffer = device.value.createBuffer({
+			const particleCountBuffer = device.value.createBuffer({
 				usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
 				size: 4,
 			});
@@ -94,9 +94,9 @@ export const useSandboxStore = defineStore("sandbox", () => {
 			const computeBindGroup1 = device.value.createBindGroup({
 				layout: computeBindGroupLayout,
 				entries: [
-					{ binding: 0, resource: { buffer: entityBuffer1 } },
-					{ binding: 1, resource: { buffer: entityBuffer2 } },
-					{ binding: 2, resource: { buffer: entityCountBuffer } },
+					{ binding: 0, resource: { buffer: particleBuffer1 } },
+					{ binding: 1, resource: { buffer: particleBuffer2 } },
+					{ binding: 2, resource: { buffer: particleCountBuffer } },
 					{ binding: 3, resource: { buffer: gravityBuffer } },
 					{ binding: 4, resource: { buffer: boundsBuffer } },
 				],
@@ -105,9 +105,9 @@ export const useSandboxStore = defineStore("sandbox", () => {
 			const computeBindGroup2 = device.value.createBindGroup({
 				layout: computeBindGroupLayout,
 				entries: [
-					{ binding: 0, resource: { buffer: entityBuffer2 } },
-					{ binding: 1, resource: { buffer: entityBuffer1 } },
-					{ binding: 2, resource: { buffer: entityCountBuffer } },
+					{ binding: 0, resource: { buffer: particleBuffer2 } },
+					{ binding: 1, resource: { buffer: particleBuffer1 } },
+					{ binding: 2, resource: { buffer: particleCountBuffer } },
 					{ binding: 3, resource: { buffer: gravityBuffer } },
 					{ binding: 4, resource: { buffer: boundsBuffer } },
 				],
@@ -143,13 +143,13 @@ export const useSandboxStore = defineStore("sandbox", () => {
 
 			async function update() {
 				if (!device.value) return;
-				if (entityCount.value == 0) return;
+				if (particleCount.value == 0) return;
 				for (let i = 0; i < 16; i++) {
 					const commandEncoder = device.value.createCommandEncoder();
-					const bindGroup1 = reverseEntityBuffers.value ? computeBindGroup2 : computeBindGroup1;
-					const bindGroup2 = reverseEntityBuffers.value ? computeBindGroup1 : computeBindGroup2;
-					const workgroups = Math.ceil(entityCount.value / 64);
-					reverseEntityBuffers.value = !reverseEntityBuffers.value;
+					const bindGroup1 = reverseParticleBuffers.value ? computeBindGroup2 : computeBindGroup1;
+					const bindGroup2 = reverseParticleBuffers.value ? computeBindGroup1 : computeBindGroup2;
+					const workgroups = Math.ceil(particleCount.value / 64);
+					reverseParticleBuffers.value = !reverseParticleBuffers.value;
 
 					const passEncoder = commandEncoder.beginComputePass();
 					passEncoder.setPipeline(updatePositionsPipeline);
@@ -224,7 +224,7 @@ export const useSandboxStore = defineStore("sandbox", () => {
 						});
 					}
 
-					if (entityCount.value == 0) {
+					if (particleCount.value == 0) {
 						ctx.value.getCurrentTexture().destroy();
 						return;
 					}
@@ -243,24 +243,24 @@ export const useSandboxStore = defineStore("sandbox", () => {
 
 					passEncoder.setPipeline(renderPipeline);
 					passEncoder.setBindGroup(0, renderBindGroup);
-					passEncoder.setVertexBuffer(0, entityInBuffer.value);
-					passEncoder.draw(6, entityCount.value);
+					passEncoder.setVertexBuffer(0, particleInBuffer.value);
+					passEncoder.draw(6, particleCount.value);
 					passEncoder.end();
 
 					device.value.queue.submit([commandEncoder.finish()]);
 				}
 			}
 
-			function spawnEntity(x?: number, y?: number) {
-				spawnEntities(1, x, y);
+			function spawnParticle(x?: number, y?: number) {
+				spawnParticles(1, x, y);
 			}
 
-			async function spawnEntities(count: number, x?: number, y?: number) {
-				const newCount = Math.min(entityCount.value + count, MAX_ENTITIES);
-				const entities = await fetchEntityBuffer();
+			async function spawnParticles(count: number, x?: number, y?: number) {
+				const newCount = Math.min(particleCount.value + count, MAX_ENTITIES);
+				const entities = await fetchParticleBuffer();
 				if (entities) {
-					for (let i = entityCount.value; i < newCount; i++) {
-						const entColor = color.value.addLightness(Math.random() * 20 - 10);
+					for (let i = particleCount.value; i < newCount; i++) {
+						const entColor = color.value.addLightness(Math.random() * 10 - 5);
 						const posX = x ?? (Math.random() * bounds.width);
 						const posY = y ?? (Math.random() * bounds.height);
 						const { r, g, b } = entColor.rgb;
@@ -274,29 +274,29 @@ export const useSandboxStore = defineStore("sandbox", () => {
 						entities[i * 8 + 7] = radius.value;
 					}
 
-					saveEntityBuffer(entities);
-					entityCount.value = newCount;
+					saveParticleBuffer(entities);
+					particleCount.value = newCount;
 				}
 			}
 
-			function clearEntities() {
+			function clearParticles() {
 				if (device.value) {
 					const emptyData = new Float32Array(MAX_ENTITIES * ENTITY_STRIDE / 4);
-					device.value.queue.writeBuffer(entityInBuffer.value, 0, emptyData);
-					entityCount.value = 0;
+					device.value.queue.writeBuffer(particleInBuffer.value, 0, emptyData);
+					particleCount.value = 0;
 				}
 			}
 
-			async function fetchEntityBuffer(): Promise<Float32Array | undefined> {
+			async function fetchParticleBuffer(): Promise<Float32Array | undefined> {
 				if (device.value) {
 					const readBuffer = device.value.createBuffer({
 						usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
 						size: MAX_ENTITIES * ENTITY_STRIDE,
 					});
 
-					const size = entityCount.value * ENTITY_STRIDE;
+					const size = particleCount.value * ENTITY_STRIDE;
 					const commandEncoder = device.value.createCommandEncoder();
-					commandEncoder.copyBufferToBuffer(entityInBuffer.value, 0, readBuffer, 0, size);
+					commandEncoder.copyBufferToBuffer(particleInBuffer.value, 0, readBuffer, 0, size);
 					device.value.queue.submit([commandEncoder.finish()]);
 
 					await readBuffer.mapAsync(GPUMapMode.READ);
@@ -308,20 +308,20 @@ export const useSandboxStore = defineStore("sandbox", () => {
 				}
 			}
 
-			function saveEntityBuffer(data: Float32Array) {
+			function saveParticleBuffer(data: Float32Array) {
 				if (device.value) {
-					device.value.queue.writeBuffer(entityInBuffer.value, 0, data);
+					device.value.queue.writeBuffer(particleInBuffer.value, 0, data);
 				}
 			}
 
 			return {
 				update,
 				render,
-				spawnEntity,
-				spawnEntities,
-				clearEntities,
+				spawnParticle,
+				spawnParticles,
+				clearParticles,
 				buffers: {
-					entityCountBuffer,
+					particleCountBuffer,
 					gravityBuffer,
 					boundsBuffer,
 				}
@@ -331,15 +331,15 @@ export const useSandboxStore = defineStore("sandbox", () => {
 
 	watchEffect(() => {
 		if (!device.value) {
-			entityCount.value = 0;
+			particleCount.value = 0;
 		}
 	});
 
 	watchEffect(() => {
-		if (device.value && sandbox.value) {
-			device.value.queue.writeBuffer(sandbox.value.buffers.entityCountBuffer, 0, new Uint32Array([entityCount.value]));
-			device.value.queue.writeBuffer(sandbox.value.buffers.boundsBuffer, 0, new Float32Array([bounds.width, bounds.height]));
-			device.value.queue.writeBuffer(sandbox.value.buffers.gravityBuffer, 0, new Float32Array([
+		if (device.value && particles.value) {
+			device.value.queue.writeBuffer(particles.value.buffers.particleCountBuffer, 0, new Uint32Array([particleCount.value]));
+			device.value.queue.writeBuffer(particles.value.buffers.boundsBuffer, 0, new Float32Array([bounds.width, bounds.height]));
+			device.value.queue.writeBuffer(particles.value.buffers.gravityBuffer, 0, new Float32Array([
 				gravity.strength * Math.cos((gravity.angle + 90) * (Math.PI / 180)),
 				gravity.strength * Math.sin((gravity.angle + 90) * (Math.PI / 180)),
 			]));
@@ -347,23 +347,23 @@ export const useSandboxStore = defineStore("sandbox", () => {
 	});
 
 	function update() {
-		sandbox.value?.update();
+		particles.value?.update();
 	}
 
 	function render() {
-		sandbox.value?.render();
+		particles.value?.render();
 	}
 
-	function spawnEntity(x?: number, y?: number) {
-		sandbox.value?.spawnEntity(x, y);
+	function spawnParticle(x?: number, y?: number) {
+		particles.value?.spawnParticle(x, y);
 	}
 
-	function spawnEntities(count: number, x?: number, y?: number) {
-		sandbox.value?.spawnEntities(count, x, y);
+	function spawnParticles(count: number, x?: number, y?: number) {
+		particles.value?.spawnParticles(count, x, y);
 	}
 
-	function clearEntities() {
-		sandbox.value?.clearEntities();
+	function clearParticles() {
+		particles.value?.clearParticles();
 	}
 
 	return {
@@ -374,9 +374,9 @@ export const useSandboxStore = defineStore("sandbox", () => {
 		bounds,
 		gravity,
 		options,
-		entityCount,
-		spawnEntity,
-		spawnEntities,
-		clearEntities,
+		particleCount,
+		spawnParticle,
+		spawnParticles,
+		clearParticles,
 	};
 });
