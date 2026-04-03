@@ -1,5 +1,5 @@
-import computeCode from "@/assets/shaders/physics/compute.wgsl?raw";
-import renderCode from "@/assets/shaders/physics/render.wgsl?raw";
+import computeCode from "@/assets/shaders/particles/compute.wgsl?raw";
+import renderCode from "@/assets/shaders/particles/render.wgsl?raw";
 import { skipHydrate } from "pinia";
 
 export const DEFAULT_COLOR = new Hsl(90, 50, 50);
@@ -251,8 +251,8 @@ export const useParticlesStore = defineStore("particles", () => {
 				}
 			}
 
-			function spawnParticle(x?: number, y?: number) {
-				spawnParticles(1, x, y);
+			async function spawnParticle(x?: number, y?: number) {
+				await spawnParticles(1, x, y);
 			}
 
 			async function spawnParticles(count: number, x?: number, y?: number) {
