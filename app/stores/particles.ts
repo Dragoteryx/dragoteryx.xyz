@@ -3,7 +3,7 @@ import renderCode from "@/assets/shaders/particles/render.wgsl?raw";
 import { skipHydrate } from "pinia";
 
 export const DEFAULT_COLOR = new Hsl(90, 50, 50);
-export const MAX_PARTICLES = 5000;//65536;
+export const MAX_PARTICLES = 5000;//100_000;
 export const PARTICLE_STRIDE = 32;
 
 export interface Bounds {

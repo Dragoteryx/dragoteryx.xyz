@@ -93,7 +93,7 @@ fn resolve_collisions(@builtin(global_invocation_id) gid: vec3u) {
 						normal.x * sin_a + normal.y * cos_a,
 					);
 
-					ent1.curr_pos += rotated_normal * delta * 0.25;
+					ent1.curr_pos += rotated_normal * delta * 0.1;
 				}
 			}
 		}
