@@ -13,9 +13,9 @@
 <script setup lang="ts">
 	useHead({ title: "Sandbox" });
 
-	const sandboxStore = useParticlesStore();
+	const particlesStore = useParticlesStore();
 
 	function clear() {
-		sandboxStore.clearParticles();
+		particlesStore.clearParticles();
 	}
 </script>
