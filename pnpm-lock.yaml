@@ -39,6 +39,9 @@ importers:
         specifier: ^5.0.7
         version: 5.0.7(@vue/compiler-sfc@3.5.34)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3))
     devDependencies:
+      '@iconify-json/lucide':
+        specifier: ^1.2.109
+        version: 1.2.109
       '@webgpu/types':
         specifier: ^0.1.70
         version: 0.1.70
@@ -578,6 +581,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@iconify-json/lucide@1.2.109':
+    resolution: {integrity: sha512-O5arvTVcu95soP3dGWJp/Nl5L5FYmFu2z75sSrQmGzrgrnsCU49t8+ZB7HPq//GRNXpWUoNfDRcs5yR7XMa+zw==}
 
   '@iconify/collections@1.0.687':
     resolution: {integrity: sha512-7LNBKtLhXFHo2nvYOtw87ztzynQak7I64PkxKTBK8aQv9/7Lg0vGSxgalMnkpi4SFZGcCfOoizgCG0WU6fqVnA==}
@@ -4708,6 +4714,10 @@ snapshots:
 
   '@esbuild/win32-x64@0.28.0':
     optional: true
+
+  '@iconify-json/lucide@1.2.109':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/collections@1.0.687':
     dependencies:
