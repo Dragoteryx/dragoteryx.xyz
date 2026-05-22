@@ -8,6 +8,8 @@
 </template>
 
 <script setup lang="ts">
+	const color = useCssVar("--light");
+
 	useHead({
 		titleTemplate: "%s | dragoteryx.xyz",
 		htmlAttrs: { lang: "en" },
@@ -16,6 +18,7 @@
 			{ name: "description", content: "A personal website for Dragoteryx, a software developer and content creator." },
 			{ name: "keywords", content: "dragoteryx, software developer, content creator, personal website" },
 			{ name: "viewport", content: "width=device-width, initial-scale=1.0" },
+			{ name: "theme-color", content: color },
 		],
 	});
 </script>
