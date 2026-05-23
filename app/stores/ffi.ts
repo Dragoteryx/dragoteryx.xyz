@@ -17,6 +17,11 @@ export function useWebGPU(): ComputedRef<WebGPU | undefined> {
 	return computed(() => ffiStore.webGpu);
 }
 
+export function useGPUDevice(): ComputedRef<GPUDevice | undefined> {
+	const webGpu = useWebGPU();
+	return computed(() => webGpu.value?.device);
+}
+
 export const useFfiStore = defineStore("ffi", () => {
 	const wasm = asyncComputed(() => {
 		if (import.meta.client) {
