@@ -1,5 +1,15 @@
 import convert from "color-convert";
 
+export function addSaturation(color: Color, amount: number): Color {
+	const { h, s, l } = color.hsl;
+	return new Hsl(h, s + amount, l);
+}
+
+export function addLightness(color: Color, amount: number): Color {
+	const { h, s, l } = color.hsl;
+	return new Hsl(h, s, l + amount);
+}
+
 export interface Color {
 	readonly hex: string;
 	readonly rgb: Rgb;
@@ -7,9 +17,10 @@ export interface Color {
 	readonly hsv: Hsv;
 	readonly hwb: Hwb;
 	readonly cmyk: Cmyk;
+}
 
-	addSaturation(amount: number): Color;
-	addLightness(amount: number): Color;
+export namespace Color {
+	export type Type = Exclude<keyof Color, "hex">;
 }
 
 export class Rgb implements Color {
@@ -49,14 +60,6 @@ export class Rgb implements Color {
 	public get cmyk() {
 		const [c, m, y, k] = convert.rgb.cmyk(this.r, this.g, this.b);
 		return new Cmyk(c, m, y, k);
-	}
-
-	public addSaturation(amount: number): Rgb {
-		return this.hsl.addSaturation(amount).rgb;
-	}
-
-	public addLightness(amount: number): Rgb {
-		return this.hsl.addLightness(amount).rgb;
 	}
 }
 
@@ -98,14 +101,6 @@ export class Hsl implements Color {
 		const [c, m, y, k] = convert.hsl.cmyk(this.h, this.s, this.l);
 		return new Cmyk(c, m, y, k);
 	}
-
-	public addSaturation(amount: number): Hsl {
-		return new Hsl(this.h, this.s + amount, this.l);
-	}
-
-	public addLightness(amount: number): Hsl {
-		return new Hsl(this.h, this.s, this.l + amount);
-	}
 }
 
 export class Hsv implements Color {
@@ -146,14 +141,6 @@ export class Hsv implements Color {
 		const [c, m, y, k] = convert.hsv.cmyk(this.h, this.s, this.v);
 		return new Cmyk(c, m, y, k);
 	}
-
-	public addSaturation(amount: number): Hsv {
-		return this.hsl.addSaturation(amount).hsv;
-	}
-
-	public addLightness(amount: number): Hsv {
-		return this.hsl.addLightness(amount).hsv;
-	}
 }
 
 export class Hwb implements Color {
@@ -193,14 +180,6 @@ export class Hwb implements Color {
 	public get cmyk() {
 		const [c, m, y, k] = convert.hwb.cmyk(this.h, this.w, this.b);
 		return new Cmyk(c, m, y, k);
-	}
-
-	public addSaturation(amount: number): Hwb {
-		return this.hsl.addSaturation(amount).hwb;
-	}
-
-	public addLightness(amount: number): Hwb {
-		return this.hsl.addLightness(amount).hwb;
 	}
 }
 
@@ -243,13 +222,5 @@ export class Cmyk implements Color {
 
 	public get cmyk() {
 		return this;
-	}
-
-	public addSaturation(amount: number): Cmyk {
-		return this.hsl.addSaturation(amount).cmyk;
-	}
-
-	public addLightness(amount: number): Cmyk {
-		return this.hsl.addLightness(amount).cmyk;
 	}
 }

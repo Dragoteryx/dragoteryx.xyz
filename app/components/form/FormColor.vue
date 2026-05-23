@@ -15,7 +15,7 @@
 <script setup lang="ts">
 	export interface Props {
 		reset?: Color;
-		mode: string;
+		mode: Color.Type;
 	}
 
 	const color = defineModel<Color>({ required: true });

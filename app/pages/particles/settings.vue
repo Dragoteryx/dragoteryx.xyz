@@ -10,10 +10,12 @@
 </template>
 
 <script setup lang="ts">
+	import type { Option } from "@/components/form/FormSelect.vue";
+
 	useHead({ title: "Sandbox/Settings" });
 
 	const particlesStore = useParticlesStore();
-	const colorPickers = [
+	const colorPickers: Option<Color.Type>[] = [
 		{ value: "rgb", description: "RGB" },
 		{ value: "hsl", description: "HSL" },
 		{ value: "hsv", description: "HSV" },

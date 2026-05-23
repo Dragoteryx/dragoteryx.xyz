@@ -17,7 +17,7 @@ export interface Gravity {
 }
 
 export interface Options {
-	colorPicker: string;
+	colorPicker: Color.Type;
 }
 
 export const useParticlesStore = defineStore("particles", () => {
@@ -260,7 +260,7 @@ export const useParticlesStore = defineStore("particles", () => {
 				const particles = await fetchParticleBuffer();
 				if (particles) {
 					for (let i = particleCount.value; i < newCount; i++) {
-						const entColor = color.value.addLightness(Math.random() * 10 - 5);
+						const entColor = addLightness(color.value, Math.random() * 10 - 5);
 						const posX = x ?? (Math.random() * bounds.width);
 						const posY = y ?? (Math.random() * bounds.height);
 						const { r, g, b } = entColor.rgb;
