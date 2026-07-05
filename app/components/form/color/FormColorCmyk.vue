@@ -14,28 +14,28 @@
 	const c = computed({
 		get: () => cmyk.value.c,
 		set(value) {
-			cmyk.value = new Cmyk(value, cmyk.value.m, cmyk.value.y, cmyk.value.k);
+			cmyk.value = new Cmyk(value, m.value, y.value, k.value);
 		},
 	});
 
 	const m = computed({
 		get: () => cmyk.value.m,
 		set(value) {
-			cmyk.value = new Cmyk(cmyk.value.c, value, cmyk.value.y, cmyk.value.k);
+			cmyk.value = new Cmyk(c.value, value, y.value, k.value);
 		},
 	});
 
 	const y = computed({
 		get: () => cmyk.value.y,
 		set(value) {
-			cmyk.value = new Cmyk(cmyk.value.c, cmyk.value.m, value, cmyk.value.k);
+			cmyk.value = new Cmyk(c.value, m.value, value, k.value);
 		},
 	});
 
 	const k = computed({
 		get: () => cmyk.value.k,
 		set(value) {
-			cmyk.value = new Cmyk(cmyk.value.c, cmyk.value.m, cmyk.value.y, value);
+			cmyk.value = new Cmyk(c.value, m.value, y.value, value);
 		},
 	});
 
