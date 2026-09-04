@@ -287,7 +287,7 @@ export const useParticlesStore = defineStore("particles", () => {
 				}
 			}
 
-			async function fetchParticleBuffer(): Promise<Float32Array | undefined> {
+			async function fetchParticleBuffer(): Promise<Float32Array<ArrayBuffer> | undefined> {
 				if (device.value) {
 					const readBuffer = device.value.createBuffer({
 						usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
@@ -308,7 +308,7 @@ export const useParticlesStore = defineStore("particles", () => {
 				}
 			}
 
-			function saveParticleBuffer(data: Float32Array) {
+			function saveParticleBuffer(data: Float32Array<ArrayBuffer>) {
 				if (device.value) {
 					device.value.queue.writeBuffer(particleInBuffer.value, 0, data);
 				}
