@@ -1,10 +1,16 @@
 import computeCode from "@/assets/shaders/particles/compute.wgsl?raw";
 import renderCode from "@/assets/shaders/particles/render.wgsl?raw";
+import bvhCode from "@/assets/shaders/particles/bvh.wgsl?raw";
 import { skipHydrate } from "pinia";
 
 export const DEFAULT_COLOR = new Hsl(90, 50, 50);
-export const MAX_PARTICLES = 5000;//100_000;
+export const MAX_PARTICLES = 25_000;
 export const PARTICLE_STRIDE = 32;
+export const NODE_STRIDE = 32;
+export const SORT_KEY_STRIDE = 8;
+export const SORT_PARAMS_STRIDE = 256;
+export const MAX_SORT_SIZE = 2 ** Math.ceil(Math.log2(MAX_PARTICLES));
+export const MAX_SORT_STEPS = Math.log2(MAX_SORT_SIZE) * (Math.log2(MAX_SORT_SIZE) + 1) / 2;
 
 export interface Bounds {
 	width: number;
@@ -48,6 +54,7 @@ export const useParticlesStore = defineStore("particles", () => {
 	const particles = computed(() => {
 		if (device.value) {
 			const computeModule = device.value.createShaderModule({ code: computeCode });
+			const bvhModule = device.value.createShaderModule({ code: bvhCode });
 			const renderModule = device.value.createShaderModule({ code: renderCode });
 			const format = navigator.gpu.getPreferredCanvasFormat();
 			const reverseParticleBuffers = ref(false);
@@ -81,6 +88,36 @@ export const useParticlesStore = defineStore("particles", () => {
 				size: 8,
 			});
 
+			const sortKeysBuffer = device.value.createBuffer({
+				usage: GPUBufferUsage.STORAGE,
+				size: MAX_SORT_SIZE * SORT_KEY_STRIDE,
+			});
+
+			const sortParamsBuffer = device.value.createBuffer({
+				usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+				size: MAX_SORT_STEPS * SORT_PARAMS_STRIDE,
+			});
+
+			const nodesBuffer = device.value.createBuffer({
+				usage: GPUBufferUsage.STORAGE,
+				size: (MAX_PARTICLES * 2 - 1) * NODE_STRIDE,
+			});
+
+			const refitFlagsBuffer = device.value.createBuffer({
+				usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+				size: MAX_PARTICLES * 4,
+			});
+
+			const sortParams = new Uint32Array(MAX_SORT_STEPS * SORT_PARAMS_STRIDE / 4);
+			for (let k = 2, step = 0; k <= MAX_SORT_SIZE; k *= 2) {
+				for (let j = k / 2; j >= 1; j /= 2, step++) {
+					sortParams[step * SORT_PARAMS_STRIDE / 4 + 0] = k;
+					sortParams[step * SORT_PARAMS_STRIDE / 4 + 1] = j;
+				}
+			}
+
+			device.value.queue.writeBuffer(sortParamsBuffer, 0, sortParams);
+
 			const computeBindGroupLayout = device.value.createBindGroupLayout({
 				entries: [
 					{ binding: 0, visibility: GPUShaderStage.COMPUTE, buffer: { type: "read-only-storage" } },
@@ -88,6 +125,7 @@ export const useParticlesStore = defineStore("particles", () => {
 					{ binding: 2, visibility: GPUShaderStage.COMPUTE, buffer: { type: "uniform" } },
 					{ binding: 3, visibility: GPUShaderStage.COMPUTE, buffer: { type: "uniform" } },
 					{ binding: 4, visibility: GPUShaderStage.COMPUTE, buffer: { type: "uniform" } },
+					{ binding: 5, visibility: GPUShaderStage.COMPUTE, buffer: { type: "read-only-storage" } },
 				],
 			});
 
@@ -99,6 +137,7 @@ export const useParticlesStore = defineStore("particles", () => {
 					{ binding: 2, resource: { buffer: particleCountBuffer } },
 					{ binding: 3, resource: { buffer: gravityBuffer } },
 					{ binding: 4, resource: { buffer: boundsBuffer } },
+					{ binding: 5, resource: { buffer: nodesBuffer } },
 				],
 			});
 
@@ -110,6 +149,7 @@ export const useParticlesStore = defineStore("particles", () => {
 					{ binding: 2, resource: { buffer: particleCountBuffer } },
 					{ binding: 3, resource: { buffer: gravityBuffer } },
 					{ binding: 4, resource: { buffer: boundsBuffer } },
+					{ binding: 5, resource: { buffer: nodesBuffer } },
 				],
 			});
 
@@ -141,14 +181,109 @@ export const useParticlesStore = defineStore("particles", () => {
 				},
 			});
 
+			const bvhBindGroupLayout = device.value.createBindGroupLayout({
+				entries: [
+					{ binding: 0, visibility: GPUShaderStage.COMPUTE, buffer: { type: "read-only-storage" } },
+					{ binding: 1, visibility: GPUShaderStage.COMPUTE, buffer: { type: "storage" } },
+					{ binding: 2, visibility: GPUShaderStage.COMPUTE, buffer: { type: "storage" } },
+					{ binding: 3, visibility: GPUShaderStage.COMPUTE, buffer: { type: "storage" } },
+					{ binding: 4, visibility: GPUShaderStage.COMPUTE, buffer: { type: "uniform" } },
+					{ binding: 5, visibility: GPUShaderStage.COMPUTE, buffer: { type: "uniform" } },
+					{ binding: 6, visibility: GPUShaderStage.COMPUTE, buffer: { type: "uniform", hasDynamicOffset: true } },
+				],
+			});
+
+			const bvhBindGroup1 = device.value.createBindGroup({
+				layout: bvhBindGroupLayout,
+				entries: [
+					{ binding: 0, resource: { buffer: particleBuffer1 } },
+					{ binding: 1, resource: { buffer: sortKeysBuffer } },
+					{ binding: 2, resource: { buffer: nodesBuffer } },
+					{ binding: 3, resource: { buffer: refitFlagsBuffer } },
+					{ binding: 4, resource: { buffer: particleCountBuffer } },
+					{ binding: 5, resource: { buffer: boundsBuffer } },
+					{ binding: 6, resource: { buffer: sortParamsBuffer, size: 8 } },
+				],
+			});
+
+			const bvhBindGroup2 = device.value.createBindGroup({
+				layout: bvhBindGroupLayout,
+				entries: [
+					{ binding: 0, resource: { buffer: particleBuffer2 } },
+					{ binding: 1, resource: { buffer: sortKeysBuffer } },
+					{ binding: 2, resource: { buffer: nodesBuffer } },
+					{ binding: 3, resource: { buffer: refitFlagsBuffer } },
+					{ binding: 4, resource: { buffer: particleCountBuffer } },
+					{ binding: 5, resource: { buffer: boundsBuffer } },
+					{ binding: 6, resource: { buffer: sortParamsBuffer, size: 8 } },
+				],
+			});
+
+			const bvhPipelineLayout = device.value.createPipelineLayout({
+				bindGroupLayouts: [bvhBindGroupLayout]
+			});
+
+			const computeMortonCodesPipeline = device.value.createComputePipeline({
+				layout: bvhPipelineLayout,
+				compute: {
+					module: bvhModule,
+					entryPoint: "compute_morton_codes",
+				},
+			});
+
+			const bitonicSortStepPipeline = device.value.createComputePipeline({
+				layout: bvhPipelineLayout,
+				compute: {
+					module: bvhModule,
+					entryPoint: "bitonic_sort_step",
+				},
+			});
+
+			const buildHierarchyPipeline = device.value.createComputePipeline({
+				layout: bvhPipelineLayout,
+				compute: {
+					module: bvhModule,
+					entryPoint: "build_hierarchy",
+				},
+			});
+
+			const refitBoundsPipeline = device.value.createComputePipeline({
+				layout: bvhPipelineLayout,
+				compute: {
+					module: bvhModule,
+					entryPoint: "refit_bounds",
+				},
+			});
+
 			async function update() {
 				if (!device.value) return;
 				if (particleCount.value == 0) return;
+				const commandEncoder = device.value.createCommandEncoder();
+				const workgroups = Math.ceil(particleCount.value / 64);
+				const sortSize = 2 ** Math.ceil(Math.log2(particleCount.value));
+				const bvhBindGroup = reverseParticleBuffers.value ? bvhBindGroup2 : bvhBindGroup1;
+
+				const bvhPassEncoder = commandEncoder.beginComputePass();
+				bvhPassEncoder.setPipeline(computeMortonCodesPipeline);
+				bvhPassEncoder.setBindGroup(0, bvhBindGroup, [0]);
+				bvhPassEncoder.dispatchWorkgroups(Math.ceil(sortSize / 64));
+				bvhPassEncoder.setPipeline(bitonicSortStepPipeline);
+				for (let k = 2, step = 0; k <= sortSize; k *= 2) {
+					for (let j = k / 2; j >= 1; j /= 2, step++) {
+						bvhPassEncoder.setBindGroup(0, bvhBindGroup, [step * SORT_PARAMS_STRIDE]);
+						bvhPassEncoder.dispatchWorkgroups(Math.ceil(sortSize / 128));
+					}
+				}
+
+				bvhPassEncoder.setPipeline(buildHierarchyPipeline);
+				bvhPassEncoder.setBindGroup(0, bvhBindGroup, [0]);
+				bvhPassEncoder.dispatchWorkgroups(workgroups);
+				bvhPassEncoder.end();
+
 				for (let i = 0; i < 16; i++) {
-					const commandEncoder = device.value.createCommandEncoder();
 					const bindGroup1 = reverseParticleBuffers.value ? computeBindGroup2 : computeBindGroup1;
 					const bindGroup2 = reverseParticleBuffers.value ? computeBindGroup1 : computeBindGroup2;
-					const workgroups = Math.ceil(particleCount.value / 64);
+					const bindGroup3 = reverseParticleBuffers.value ? bvhBindGroup1 : bvhBindGroup2;
 					reverseParticleBuffers.value = !reverseParticleBuffers.value;
 
 					const passEncoder = commandEncoder.beginComputePass();
@@ -157,20 +292,28 @@ export const useParticlesStore = defineStore("particles", () => {
 					passEncoder.dispatchWorkgroups(workgroups);
 					passEncoder.end();
 
+					commandEncoder.clearBuffer(refitFlagsBuffer);
+
 					const passEncoder2 = commandEncoder.beginComputePass();
-					passEncoder2.setPipeline(resolveCollisionsPipeline);
-					passEncoder2.setBindGroup(0, bindGroup2);
+					passEncoder2.setPipeline(refitBoundsPipeline);
+					passEncoder2.setBindGroup(0, bindGroup3, [0]);
 					passEncoder2.dispatchWorkgroups(workgroups);
 					passEncoder2.end();
 
 					const passEncoder3 = commandEncoder.beginComputePass();
-					passEncoder3.setPipeline(applyWorldBoundsPipeline);
-					passEncoder3.setBindGroup(0, bindGroup1);
+					passEncoder3.setPipeline(resolveCollisionsPipeline);
+					passEncoder3.setBindGroup(0, bindGroup2);
 					passEncoder3.dispatchWorkgroups(workgroups);
 					passEncoder3.end();
 
-					device.value.queue.submit([commandEncoder.finish()]);
+					const passEncoder4 = commandEncoder.beginComputePass();
+					passEncoder4.setPipeline(applyWorldBoundsPipeline);
+					passEncoder4.setBindGroup(0, bindGroup1);
+					passEncoder4.dispatchWorkgroups(workgroups);
+					passEncoder4.end();
 				}
+
+				device.value.queue.submit([commandEncoder.finish()]);
 			}
 
 			const renderBindGroupLayout = device.value.createBindGroupLayout({
