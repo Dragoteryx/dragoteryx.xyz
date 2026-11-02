@@ -1,6 +1,6 @@
 <template>
 	<div class="flex flex-row flex-1">
-		<ResizableCanvas
+		<CanvasResizable
 			class="flex-1"
 			:mode="mode"
 			v-model:mouse-x="mouseX"
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-	import type { Props as CanvasProps, Emits } from "./ResizableCanvas.vue";
+	import type { Props as CanvasProps, Emits } from "./CanvasResizable.vue";
 
 	export interface Props extends CanvasProps {
 		controls: Controls;
