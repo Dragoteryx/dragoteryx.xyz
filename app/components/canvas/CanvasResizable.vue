@@ -39,8 +39,8 @@
 	const mouseState = ref(MouseState.Up);
 	const mouseX = defineModel<number>("mouseX");
 	const mouseY = defineModel<number>("mouseY");
-	const width = defineModel("width");
-	const height = defineModel("height");
+	const width = defineModel<number>("width");
+	const height = defineModel<number>("height");
 	const context2d = defineModel<CanvasRenderingContext2D>("context2d");
 	const contextGpu = defineModel<GPUCanvasContext>("contextGpu");
 
@@ -65,7 +65,7 @@
 			canvas.value.width = parentBounding.width.value;
 			canvas.value.height = parentBounding.height.value;
 			if (oldHeight != canvas.value.height || oldWidth != canvas.value.width) {
-				emit("sizeChange", canvas.value.height, canvas.value.height);
+				emit("sizeChange", width.value, height.value);
 			}
 		}
 	});
